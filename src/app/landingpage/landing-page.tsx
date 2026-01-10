@@ -51,16 +51,16 @@ export default function Page() {
         <GradientBackground showGrid>
             <Navbar />
 
-            <section className="pt-40 pb-20 px-4 grid-bg">
+            <section className="pt-48 pb-20 px-4 grid-bg min-h-dvh">
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center animate-fade-in relative">
 
-                        <div className="absolute z-10 -bottom-32 -left-32 h-80 w-80">
+                        {/* <div className="absolute z-10 -bottom-32 -left-32 h-80 w-80">
                             <Image src={mieayam} alt='Mie Ayam' className='h-80 w-80 object-cover'/>
                         </div>
                         <div className="absolute z-10 -top-20 -right-10 h-64 w-64">
                             <Image src={kopi} alt='Kopi' className='h-64 w-64 object-cover'/>
-                        </div>
+                        </div> */}
 
                         <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl"></div>
                         <div className="bg-teal-300/90 h-32 w-32 rounded-full absolute -bottom-52 -right-40 blur-3xl"></div>
@@ -102,7 +102,7 @@ export default function Page() {
                 </div>
             </section>
 
-            <section className="py-20 pb-28 px-4 grid-bg">
+            <section className="py-20 pb-28 px-4 grid-bg ">
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
