@@ -3,7 +3,6 @@
 import Link from 'next/link';
 // import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { GradientBackground } from '@/components/gradient-background';
 import { Navbar } from '@/components/navbar';
 import {
     // UtensilsCrossed,
