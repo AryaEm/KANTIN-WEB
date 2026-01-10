@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { GradientBackground } from '@/components/gradient-background';
 import { Navbar } from '@/components/navbar';
@@ -14,8 +14,8 @@ import {
     Sparkles,
     ArrowRight,
 } from 'lucide-react';
-import mieayam from "../../../public/mie.svg"
-import kopi from "../../../public/Kopi.svg"
+// import mieayam from "../../../public/mie.svg"
+// import kopi from "../../../public/Kopi.svg"
 
 type Feature = {
     icon: React.ElementType;
