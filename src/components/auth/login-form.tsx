@@ -1,30 +1,129 @@
-import Link from "next/link";
+"use client"
+
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { toast } from "react-toastify"
+import { storeCookie } from "@/lib/client-cookie"
+import { BASE_API_URL } from "../../../global"
+import { Eye, EyeOff } from "lucide-react";
+import CustomToast from "@/components/ui/CustomToast";
 
 export default function LoginForm() {
+    const [username, setUsername] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const router = useRouter()
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        try {
+            setLoading(true);
+
+            const { data } = await axios.post(
+                `${BASE_API_URL}/user/login`,
+                { username, password },
+                { headers: { "Content-Type": "application/json" } }
+            );
+
+            if (!data.status) {
+                toast(
+                    <CustomToast type="warning" message={data.message} />,
+                    {
+                        containerId: "toastLogin",
+                        className:
+                            "bg-slate-900 rounded-xl shadow-lg",
+                        icon: false,
+                    }
+                );
+                return;
+            }
+
+            storeCookie("token", data.token);
+            storeCookie("id", data.data.id);
+            storeCookie("username", data.data.username);
+            storeCookie("role", data.data.role);
+
+            toast(
+                <CustomToast type="success" message="Login berhasil" />,
+                {
+                    containerId: "toastLogin",
+                    className: "p-0 bg-transparent shadow-none",
+                    icon: false,
+                    autoClose: 1500,
+                }
+            );
+
+
+
+            setTimeout(() => {
+                if (data.data.role === "Admin") {
+                    router.replace("/dashboard/admin");
+                } else {
+                    router.replace("/dashboard/siswa");
+                }
+            }, 300);
+
+        } catch (err: any) {
+            toast(
+                <CustomToast
+                    type="error"
+                    message={err?.response?.data?.message ?? "Server error"}
+                />,
+                {
+                    containerId: "toastLogin",
+                    className:
+                        "bg-slate-900 border border-white/10 rounded-xl shadow-lg",
+                    icon: false,
+                }
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
             <div>
                 <label className="text-xs text-white font-medium Poppins">Username</label>
                 <input
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="mt-1 w-full rounded-lg bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
                     placeholder="Masukkan username"
                 />
             </div>
 
-            <div>
-                <label className="text-xs text-white font-medium Poppins">Password</label>
-                <input
-                    type="password"
-                    className="mt-1 w-full rounded-lg bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
-                    placeholder="Masukkan password"
-                />
+            <div className="relative flex justify-between items-end gap-2">
+                <div className="w-full">
+                    <label className="text-xs text-white font-medium Poppins">Password</label>
+                    <input
+                        type={showPassword ? `text` : `password`}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="mt-1 w-full rounded-lg bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
+                        placeholder="Masukkan password"
+                    />
+                </div>
+                <div className="cursor-pointer bg-input p-3 flex rounded-lg items-center border border-white/15 justify-center h-10 w-10" onClick={() => setShowPassword(!showPassword)}>
+                    {
+                        showPassword ?
+                            <EyeOff className="text-xl text-zinc-200" /> :
+                            <Eye className="text-xl text-zinc-200" />
+                    }
+                </div>
             </div>
 
-            <Link href={'/dashboard/siswa'}>
-                <button className="mt-4 w-full rounded-lg bg-teal-500 py-2 font-medium text-black">
-                    Login
-                </button>
-            </Link>
+            <button
+                type="submit"
+                disabled={loading}
+                className="mt-4 w-full rounded-lg bg-teal-500 py-2 font-medium text-black">
+                {loading ? "Loading..." : "Login"}
+            </button>
+
+
         </form>
     );
 }

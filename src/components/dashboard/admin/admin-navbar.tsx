@@ -1,0 +1,30 @@
+'use client';
+
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ChefHat } from 'lucide-react';
+
+export function AdminNavbar() {
+  return (
+    <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#0B1113] bg-opacity-50 backdrop-blur">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-6xl">
+        
+        <Link href="/" className="flex items-center gap-px font-bold">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-cyan-400">
+            <ChefHat className="h-5 w-5 text-primary-foreground text-teal-300" />
+          </div>
+          <span className="text-lg text-teal-300">KantinKu</span>
+        </Link>
+
+        <div className="flex items-center gap-3">
+          <Link href="/">
+            <Button variant="glass" size="sm" className='text-red-500 hover:bg-red-500 hover:text-slate-950 px-6 outline-none border border-red-500/50'>
+              Logout
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </nav>
+  );
+}
+

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-// import { ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export const metadata: Metadata = {
   title: "KantIn",
-  description: "a",
+  description: "Dev by Arya M.",
 };
 
 export default function RootLayout({
@@ -16,7 +18,12 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {children}
-        {/* <ToastContainer /> */}
+        <ToastContainer
+          containerId="toastLogin"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+        />    
       </body>
     </html>
   );

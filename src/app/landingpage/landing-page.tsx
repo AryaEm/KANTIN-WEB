@@ -48,9 +48,8 @@ const features: Feature[] = [
 
 export default function Page() {
     return (
-        <GradientBackground showGrid>
+        <>
             <Navbar />
-
             <section className="pt-48 pb-20 px-4 grid-bg min-h-dvh">
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center animate-fade-in relative">
@@ -64,7 +63,7 @@ export default function Page() {
 
                         <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl"></div>
                         <div className="bg-teal-300/90 h-32 w-32 rounded-full absolute -bottom-52 -right-40 blur-3xl"></div>
-                        
+
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 bg-teal-300/10 border border-teal-300 bg-opacity-70">
                             <Sparkles className="w-4 h-4 text-primary text-white" />
                             <span className="text-sm text-muted-foreground text-white text-opacity-80">
@@ -141,6 +140,6 @@ export default function Page() {
                     © 2026 KantinKu. Dev by <Link href={'https://aryaem.vercel.app'} target='_blank' className='text-teal-300'>Aryaem</Link>.
                 </div>
             </footer>
-        </GradientBackground>
+        </>
     );
 }

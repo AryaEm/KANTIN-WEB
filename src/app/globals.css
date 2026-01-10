@@ -41,6 +41,10 @@
   background-color: #0B1113;
 }
 
+.card-bg {
+  background-color: #10171A;
+}
+
 .grad-login {
   background: rgb(39, 42, 55);
   background: linear-gradient(65deg,
