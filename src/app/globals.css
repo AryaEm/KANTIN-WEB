@@ -1,0 +1,53 @@
+@import url("https://fonts.cdnfonts.com/css/sf-pro-display");
+@import url("https://fonts.cdnfonts.com/css/playfair-display");
+@import url("https://fonts.cdnfonts.com/css/aerospace");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.Poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.Aerospace {
+  font-family: "Aerospace", sans-serif;
+}
+
+.sfprodisplay {
+  font-family: "SF Pro Display", sans-serif;
+}
+
+.bg-login {
+  background-image: url(/Marvelrivals.jpg);
+}
+
+.bg-primary {
+  background-color: #0B1113;
+}
+
+.form-shadow {
+  box-shadow: rgba(20, 184, 166, 0.1) 0px 7px 109px 0px;
+}
+
+.bg-input {
+  background-color: #0B1113;
+}
+
+.grad-login {
+  background: rgb(39, 42, 55);
+  background: linear-gradient(65deg,
+      rgba(39, 42, 55, 1) 34%,
+      rgba(39, 42, 55, 0.309) 95%);
+}
+
+.grid-bg {
+  background-image: repeating-linear-gradient(90deg, hsla(178, 0%, 66%, 0.05) 0px, hsla(178, 0%, 66%, 0.05) 1px, transparent 1px, transparent 104px), repeating-linear-gradient(0deg, hsla(178, 0%, 66%, 0.05) 0px, hsla(178, 0%, 66%, 0.05) 1px, transparent 1px, transparent 104px), repeating-linear-gradient(0deg, hsla(178, 0%, 66%, 0.07) 0px, hsla(178, 0%, 66%, 0.07) 1px, transparent 1px, transparent 26px), repeating-linear-gradient(90deg, hsla(178, 0%, 66%, 0.07) 0px, hsla(178, 0%, 66%, 0.07) 1px, transparent 1px, transparent 26px), linear-gradient(0deg, rgb(11, 17, 19), rgb(11, 17, 19));
+}
