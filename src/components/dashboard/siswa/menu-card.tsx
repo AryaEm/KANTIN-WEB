@@ -35,7 +35,7 @@ export default function MenuCard({ menu, onAddToCart }: Props) {
             className="object-cover h-44 rounded-lg w-full"
           />
         ) : (
-          <span className="text-white/30 text-sm">No Image</span>
+          <span className="text-white/30 h-44 text-sm flex items-center justify-center">No Image</span>
         )}
       </div>
 

@@ -16,17 +16,24 @@ type IncomeReport = {
 };
 
 type PendingReport = {
-  pending_count: number;
+  data: {
+    pending_count: number;
+  }
 };
 
 export default function SummaryView() {
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const [summary, setSummary] = useState({
     totalTransaksi: 0,
     totalIncome: 0,
     totalMenu: 0,
     pending: 0,
   });
+
+  useEffect(() => {
+    setMounted(true); // menandakan component sudah mount di client
+  }, []);
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -41,6 +48,11 @@ export default function SummaryView() {
             getRaw<PendingReport>("/order/pending", token),
           ]);
 
+        console.log("OrderRes:", orderRes);
+        console.log("IncomeRes:", incomeRes);
+        console.log("MenuRes:", menuRes);
+        console.log("PendingRes:", pendingRes);
+
         if (!orderRes.status) throw new Error(orderRes.message);
         if (!incomeRes.status) throw new Error(incomeRes.message);
         if (!menuRes.status) throw new Error(menuRes.message);
@@ -50,10 +62,11 @@ export default function SummaryView() {
           totalTransaksi: orderRes.data.total_transaksi,
           totalIncome: incomeRes.data.total_income,
           totalMenu: menuRes.data.length,
-          pending: pendingRes.data.pending_count,
+          pending: pendingRes.data.data.pending_count,
         });
       } catch (error) {
         console.error("Gagal mengambil summary:", error);
+
       } finally {
         setLoading(false);
       }
@@ -61,6 +74,8 @@ export default function SummaryView() {
 
     fetchSummary();
   }, []);
+
+  if (!mounted) return null; // jangan render apapun saat SSR 
 
   const stats = [
     {
@@ -85,7 +100,7 @@ export default function SummaryView() {
     },
     {
       title: "Belum Dikonfirmasi",
-      value: loading ? "..." : summary.pending,
+      value: loading ? "..." : `${summary.pending ?? "0"}`,
       icon: <Clock size={22} />,
       color: "bg-yellow-500/20 text-yellow-400",
     },

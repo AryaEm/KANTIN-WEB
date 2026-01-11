@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 
 import AdminHeader from '@/components/dashboard/admin/admin-header';
 import AdminTabs from '@/components/dashboard/admin/admin-tabs';
@@ -11,6 +12,10 @@ import MenuView from '@/components/dashboard/admin/menu-view';
 import DiscountView from '@/components/dashboard/admin/discount-view';
 import HistoryView from '@/components/dashboard/admin/history-view';
 import { AdminNavbar } from '@/components/dashboard/admin/admin-navbar';
+
+// const AdminHeader = dynamic(() => import("@/components/dashboard/admin/admin-header"), {
+//   ssr: false,
+// });
 
 export type AdminTab =
   | 'summary'
