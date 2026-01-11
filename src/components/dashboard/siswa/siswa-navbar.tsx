@@ -2,7 +2,7 @@
 
 // import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { removeCookie, getCookie } from "@/lib/client-cookie"
+import { removeCookie } from "@/lib/client-cookie"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ChefHat } from 'lucide-react';

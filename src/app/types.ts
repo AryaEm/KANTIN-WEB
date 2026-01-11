@@ -82,7 +82,7 @@ export type OrderItem = {
   harga_satuan: number;
   subtotal: number;
 };
-  
+
 export type Order = {
   id_transaksi: number;
   kode_transaksi: string;
@@ -112,4 +112,6 @@ export interface IStan {
   telp?: string;
 }
 
-export interface IStanDetail extends Stan {}
+export interface IStanDetail extends Stan {
+  menus: Menu[];
+}
