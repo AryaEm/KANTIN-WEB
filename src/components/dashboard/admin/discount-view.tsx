@@ -38,11 +38,11 @@ export default function DiscountView() {
     fetchDiscounts();
   }, []);
 
-  const statusStyle = (status: Discount["status"]) => {
-    if (status === "aktif") return "bg-emerald-500/20 text-emerald-400";
-    if (status === "belum_aktif") return "bg-yellow-500/20 text-yellow-400";
-    return "bg-red-500/20 text-red-400";
-  };
+  // const statusStyle = (status: Discount["status"]) => {
+  //   if (status === "aktif") return "bg-emerald-500/20 text-emerald-400";
+  //   if (status === "belum_aktif") return "bg-yellow-500/20 text-yellow-400";
+  //   return "bg-red-500/20 text-red-400";
+  // };
 
   if (loading) {
     return <p className="text-white">Loading diskon...</p>;
@@ -72,13 +72,16 @@ export default function DiscountView() {
                   <Tag className="text-teal-400" size={24} />
                 </div>
 
-                <div>
-                  <h2 className="text-sm font-semibold text-white mb-px">
-                    {discount.nama_diskon}
-                  </h2>
-                  <p className="text-3xl font-bold text-teal-400">
-                    {discount.persentase_diskon}%
-                  </p>
+                <div className="flex justify-between w-full Poppins">
+                  <div>
+                    <h2 className="text-sm font-semibold text-white mb-px">
+                      {discount.nama_diskon}
+                    </h2>
+                    <p className="text-3xl font-bold text-teal-400">
+                      {discount.persentase_diskon}%
+                    </p>
+                  </div>
+                  <p className="text-teal-400/80">aktif</p>
                 </div>
               </div>
 

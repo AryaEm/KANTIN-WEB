@@ -94,3 +94,22 @@ export type Order = {
   items: OrderItem[];
   total_harga: number;
 }
+
+export interface IMenu {
+  id: number;
+  name: string;
+  description: string;
+  jenis_menu: string;
+  price: number;
+  image: string;
+  discount?: number;
+}
+
+export interface IStan {
+  id: number;
+  nama_stan: string;
+  nama_pemilik: string;
+  telp?: string;
+}
+
+export interface IStanDetail extends Stan {}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 // import { BASE_API_URL } from "../../../../global";
 import { getCookie } from "@/lib/client-cookie";
 import { get, getRaw } from "@/lib/api-bridge";
+import { MenuItem } from "@/app/types";
 import { ShoppingBag, DollarSign, UtensilsCrossed, Clock } from "lucide-react";
 
 type OrderReport = {
@@ -36,7 +37,7 @@ export default function SummaryView() {
           await Promise.all([
             getRaw<OrderReport>("/order/report/order", token),
             getRaw<IncomeReport>("/order/report/income", token),
-            get<any[]>("/menu/menu-admin", token),
+            get<MenuItem[]>("/menu/menu-admin", token),
             getRaw<PendingReport>("/order/pending", token),
           ]);
 

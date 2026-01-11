@@ -9,6 +9,29 @@ import { Eye, EyeOff } from "lucide-react";
 import CustomToast from "@/components/ui/CustomToast";
 import { toast } from "react-toastify"
 
+interface LoginResponse {
+    status: boolean;
+    message: string;
+    token: string;
+    data: {
+        id: string;
+        username: string;
+        role: "admin_stan" | "siswa";
+        siswa?: {
+            nama_siswa: string;
+            telp: string
+            jenis_kelamin: "laki_laki" | "perempuan"
+            foto: string;
+        };
+        stan?: {
+            nama_pemilik: string;
+            nama_stan: string;
+            telp: string
+            foto: string;
+        };
+    };
+}
+
 export default function LoginForm() {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -22,7 +45,7 @@ export default function LoginForm() {
         try {
             setLoading(true);
 
-            const { data } = await axios.post(
+            const { data } = await axios.post<LoginResponse>(
                 `${BASE_API_URL}/user/login`,
                 { username, password },
                 { headers: { "Content-Type": "application/json" } }
@@ -75,11 +98,17 @@ export default function LoginForm() {
                 }
             }, 300);
 
-        } catch (err: any) {
+        } catch (err: unknown) {
+            let message = "server error"
+
+            if (axios.isAxiosError(err)) {
+                message = err.response?.data?.message ?? err.message;
+            }
+
             toast(
                 <CustomToast
                     type="error"
-                    message={err?.response?.data?.message ?? "Server error"}
+                    message={message}
                 />,
                 {
                     containerId: "toastLogin",

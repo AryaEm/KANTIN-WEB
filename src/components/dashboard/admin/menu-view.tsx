@@ -9,6 +9,7 @@ import AddMenuModal from "./Menu/add-menu-modal";
 import { BASE_IMAGE_MENU } from "../../../../global";
 import CustomToast from "@/components/ui/CustomToast";
 import { toast } from "react-toastify";
+import axios from "axios";
 import { Plus, SquarePen, Tag, Trash2, UtensilsCrossed } from "lucide-react";
 
 export default function MenuView() {
@@ -75,15 +76,15 @@ export default function MenuView() {
                     autoClose: 1500,
                 }
             );
-        } catch (err: any) {
+        } catch (err: unknown) {
+            let message = "Terjadi kesalahan server";
+
+            if (axios.isAxiosError(err)) {
+                message = err.response?.data?.message ?? err.message;
+            }
+
             toast(
-                <CustomToast
-                    type="error"
-                    message={
-                        err?.response?.data?.message ??
-                        "Terjadi kesalahan server"
-                    }
-                />,
+                <CustomToast type="error" message={message} />,
                 {
                     containerId: "toastAddMenu",
                     className:
@@ -91,7 +92,7 @@ export default function MenuView() {
                     icon: false,
                 }
             );
-        }
+        }   
     };
 
     // ⬇️ INI HARUS DI COMPONENT

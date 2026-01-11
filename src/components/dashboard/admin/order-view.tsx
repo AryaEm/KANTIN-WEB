@@ -5,7 +5,7 @@ import axios from "axios";
 import { BASE_API_URL } from "../../../../global";
 import { getCookie } from "@/lib/client-cookie";
 import { Check, X } from "lucide-react";
-import { OrderStatus, OrderItem, Order } from "@/app/types";
+import { OrderStatus, Order } from "@/app/types";
 
 export default function OrderView() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -169,7 +169,7 @@ export default function OrderView() {
                     Konfirmasi
                   </button>
                   <button
-                    onClick={() => confirmOrder(order.id_transaksi)}
+                    onClick={() => rejectOrder(order.id_transaksi)}
                     className="flex items-center bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl font-medium text-xs outline-none">
                     <X size={18} className="mr-[4px]" />
                     Tolak

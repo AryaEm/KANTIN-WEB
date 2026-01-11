@@ -69,11 +69,16 @@ export default function RegisterStudentForm() {
                 router.replace("/dashboard/siswa");
             }, 1000);
 
-        } catch (err: any) {
+        } catch (err: unknown) {
+            let message = "Terjadi kesalahan server";
+            if (axios.isAxiosError(err)) {
+                message = err.response?.data?.message ?? err.message;
+            }
+
             toast(
                 <CustomToast
                     type="error"
-                    message={err?.response?.data?.message ?? "Server error"}
+                    message={message}
                 />,
                 { containerId: "toastLogin" }
             );

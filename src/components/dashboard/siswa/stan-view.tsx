@@ -8,14 +8,32 @@ import StanCard from '@/components/dashboard/siswa/stan-card'
 import StanHeader from '@/components/dashboard/siswa/stan-header'
 import MenuCard from '@/components/dashboard/siswa/menu-card'
 
-import { Stan, StanDetail } from '@/app/types'
+import { Stan, StanDetail, Menu } from '@/app/types'
 import { BASE_API_URL } from '../../../../global'
 import { getCookie } from '@/lib/client-cookie'
+
+// tipe API untuk mapping
+interface StanAPI {
+  id: number
+  nama_stan: string
+  nama_pemilik: string
+  telp?: string
+}
+
+interface MenuAPI {
+  id: number
+  name: string
+  description: string
+  jenis_menu: string
+  price: number
+  image?: string | null
+  discount?: number
+}
 
 export default function StanPage({
   addToCart,
 }: {
-  addToCart: (menu: any) => void
+  addToCart: (menu: Menu) => void
 }) {
   const [stans, setStans] = useState<Stan[]>([])
   const [selectedStan, setSelectedStan] = useState<StanDetail | null>(null)
@@ -31,12 +49,12 @@ export default function StanPage({
       })
       .then((res) => {
         if (res.data.status) {
-          const mapped: Stan[] = res.data.data.map((s: any) => ({
+          const mapped: Stan[] = res.data.data.map((s: StanAPI) => ({
             id: s.id,
             name: s.nama_stan,
             owner: s.nama_pemilik,
-            telp: s.telp || '', 
-            menus: [], 
+            telp: s.telp || '',
+            menus: [],
           }))
           setStans(mapped)
         }
@@ -62,14 +80,14 @@ export default function StanPage({
           id: s.id,
           name: s.name,
           owner: s.owner,
-          telp: s.telp,
-          menus: s.menus.map((m: any) => ({
+          telp: s.telp || '',
+          menus: s.menus.map((m: MenuAPI): Menu => ({
             id: m.id,
             name: m.name,
             description: m.description,
             jenis_menu: m.jenis_menu,
             price: m.price,
-            image: m.image,
+            image: m.image ?? '', // ✅ normalisasi ke string
             discount: m.discount,
           })),
         }
@@ -88,7 +106,7 @@ export default function StanPage({
       {!selectedStan ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stans.map((stan) => (
-            <StanCard 
+            <StanCard
               key={stan.id}
               stan={stan}
               onClick={() => handleSelectStan(stan.id)}

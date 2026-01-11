@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { removeCookie, getCookie } from "@/lib/client-cookie"
 import Link from 'next/link';
@@ -8,12 +8,12 @@ import { Button } from '@/components/ui/button';
 import { ChefHat } from 'lucide-react';
 
 export function AdminNavbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = getCookie("token");
-    setIsLoggedIn(!!token);
-  }, []);
+  // useEffect(() => {
+  //   const token = getCookie("token");
+  //   setIsLoggedIn(!!token);
+  // }, []);
 
   const router = useRouter();
 
@@ -30,7 +30,7 @@ export function AdminNavbar() {
     removeCookie("jenis_kelamin")
     removeCookie("foto")
 
-    setIsLoggedIn(false);
+    // setIsLoggedIn(false);
 
     router.replace("/");
   };
