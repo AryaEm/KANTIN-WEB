@@ -30,11 +30,11 @@ export default function OrderView() {
     } finally {
       setLoading(false);
     }
-  };
+  }; [token]
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [fetchOrders]);
 
   const confirmOrder = async (id: number) => {
     try {
