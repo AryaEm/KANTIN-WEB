@@ -3,11 +3,11 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { toast } from "react-toastify"
 import { storeCookie } from "@/lib/client-cookie"
 import { BASE_API_URL } from "../../../global"
 import { Eye, EyeOff } from "lucide-react";
 import CustomToast from "@/components/ui/CustomToast";
+import { toast } from "react-toastify"
 
 export default function LoginForm() {
     const [username, setUsername] = useState<string>("")
@@ -34,7 +34,7 @@ export default function LoginForm() {
                     {
                         containerId: "toastLogin",
                         className:
-                            "bg-slate-900 rounded-xl shadow-lg",
+                            "bg-slate-400 rounded-xl shadow-lg",
                         icon: false,
                     }
                 );
@@ -45,6 +45,17 @@ export default function LoginForm() {
             storeCookie("id", data.data.id);
             storeCookie("username", data.data.username);
             storeCookie("role", data.data.role);
+
+            if (data.data.siswa) {
+                storeCookie("nama_siswa", data.data.siswa.nama_siswa);
+                storeCookie("foto", data.data.siswa.foto);
+            }
+
+            if (data.data.stan) {
+                storeCookie("nama_pemilik", data.data.stan.nama_pemilik);
+                storeCookie("nama_stan", data.data.stan.nama_stan);
+                storeCookie("foto", data.data.stan.foto);
+            }
 
             toast(
                 <CustomToast type="success" message="Login berhasil" />,
@@ -57,7 +68,7 @@ export default function LoginForm() {
             );
 
             setTimeout(() => {
-                if (data.data.role === "Admin") {
+                if (data.data.role === "admin_stan") {
                     router.replace("/dashboard/admin");
                 } else {
                     router.replace("/dashboard/siswa");
@@ -73,7 +84,7 @@ export default function LoginForm() {
                 {
                     containerId: "toastLogin",
                     className:
-                        "bg-slate-900 border border-white/10 rounded-xl shadow-lg",
+                        "bg-red-400 border border-white/10 rounded-xl shadow-xl",
                     icon: false,
                 }
             );

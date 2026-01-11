@@ -1,40 +1,30 @@
-type HistoryItem = {
-  id: string;
-  customer: string;
-  date: string;
-  status: "Selesai";
-  items: {
-    name: string;
-    qty: number;
-    price: number;
-  }[];
-  total: number;
-};
+"use client";
+
+import { useEffect, useState } from "react";
+import { get } from "@/lib/api-bridge";
+import { HistoryItem } from "@/app/types";
+import { getCookie } from "@/lib/client-cookie";
 
 export default function HistoryView() {
-  const histories: HistoryItem[] = [
-    {
-      id: "TRX-004",
-      customer: "Diana Putri",
-      date: "14/1/2024",
-      status: "Selesai",
-      items: [
-        { name: "Soto Ayam", qty: 2, price: 28000 },
-      ],
-      total: 28000,
-    },
-    {
-      id: "TRX-005",
-      customer: "Eko Prasetyo",
-      date: "14/1/2024",
-      status: "Selesai",
-      items: [
-        { name: "Nasi Goreng Spesial", qty: 1, price: 15000 },
-        { name: "Es Teh Manis", qty: 1, price: 5000 },
-      ],
-      total: 20000,
-    },
-  ];
+  const [histories, setHistories] = useState<HistoryItem[]>([]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const token = getCookie("token");
+        const res = await get<HistoryItem[]>("/order/history/stan/selesai", token);
+
+        if (!res.status) throw new Error(res.message);
+
+        setHistories(res.data);
+      } catch (err) {
+        console.error("Gagal ambil history:", err);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
 
   return (
     <div className="space-y-6 Poppins">
@@ -45,10 +35,15 @@ export default function HistoryView() {
         >
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-lg font-semibold text-white">{history.id}</h2>
+              <h2 className="text-lg font-semibold text-white">
+                {history.kode_transaksi}
+              </h2>
+
               <p className="text-sm text-gray-400">
-                {history.customer} • {history.date}
+                {history.siswa.nama_siswa} •{" "}
+                {new Date(history.tanggal).toLocaleDateString("id-ID")}
               </p>
+
             </div>
 
             <span className="px-4 py-1 rounded-full text-sm bg-emerald-500/20 text-emerald-400">
@@ -62,7 +57,7 @@ export default function HistoryView() {
             <div className="space-y-2">
               {history.items.map((item, i) => (
                 <p key={i} className="text-white">
-                  {item.name} x{item.qty}
+                  {item.nama_menu} x{item.qty}
                 </p>
               ))}
             </div>
@@ -70,7 +65,7 @@ export default function HistoryView() {
             <div className="space-y-2 text-right">
               {history.items.map((item, i) => (
                 <p key={i} className="text-white">
-                  Rp {item.price.toLocaleString("id-ID")}
+                  Rp {item.harga_satuan.toLocaleString("id-ID")}
                 </p>
               ))}
             </div>
@@ -79,7 +74,7 @@ export default function HistoryView() {
           <div className="flex justify-between items-center mt-6">
             <p className="text-white font-semibold">Total</p>
             <p className="text-white font-semibold">
-              Rp {history.total.toLocaleString("id-ID")}
+              Rp {history.total_harga.toLocaleString("id-ID")}
             </p>
           </div>
         </div>

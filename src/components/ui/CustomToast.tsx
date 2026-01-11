@@ -9,14 +9,14 @@ export default function CustomToast({
 }) {
   const iconMap = {
     success: <CheckCircle className="text-teal-400" size={18} />,
-    error: <XCircle className="text-red-400" size={18} />,
+    error: <XCircle className="text-red-400" size={28} />,
     warning: <AlertTriangle className="text-yellow-400" size={18} />,
   };
 
   return (
-    <div className="flex gap-3 items-center rounded-xl shadow-lg px-4 py-3">
+    <div className="flex gap-3 items-center">
       {iconMap[type]}
-      <p className="text-sm font-medium text-black">{message}</p>
+      <p className="text-sm font-medium text-white">{message}</p>
     </div>
   );
 }

@@ -1,61 +1,127 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { BASE_API_URL } from "../../../../global";
+import { getCookie } from "@/lib/client-cookie";
 import { Check, X } from "lucide-react";
+import { OrderStatus, OrderItem, Order } from "@/app/types";
 
 export default function OrderView() {
-  const orders = [
-    {
-      id: "TRX-001",
-      customer: "Ahmad Rizki",
-      date: "15/1/2024",
-      status: "belum dikonfirmasi",
-      items: [
-        { name: "Nasi Goreng Spesial", qty: 2, price: 30000 },
-        { name: "Es Teh Manis", qty: 2, price: 10000 },
-      ],
-      total: 40000,
-    },
-    {
-      id: "TRX-002",
-      customer: "Siti Nurhaliza",
-      date: "15/1/2024",
-      status: "proses",
-      items: [
-        { name: "Ayam Geprek", qty: 1, price: 18000 },
-        { name: "Es Jeruk", qty: 1, price: 6000 },
-      ],
-      total: 24000,
-    },
-    {
-      id: "TRX-003",
-      customer: "Joko",
-      date: "15/1/2025",
-      status: "selesai",
-      items: [
-        { name: "Mie Ayam", qty: 2, price: 12000 },
-        { name: "Es Teh", qty: 1, price: 3000 },
-      ],
-      total: 24000,
-    },
-  ];
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
 
-const statusStyle = (status: string) => {
-    if (status === "belum dikonfirmasi")
-      return "bg-yellow-500/20 text-yellow-400";
-    if (status === "proses") return "bg-teal-500/20 text-teal-400";
-    return "bg-green-500/20 text-green-400";
+  const token = getCookie("token");
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_API_URL}/order/history/stan`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setOrders(res.data.data);
+    } catch (error) {
+      console.error("FETCH ORDER ERROR:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const confirmOrder = async (id: number) => {
+    try {
+      await axios.put(
+        `${BASE_API_URL}/order/update/${id}`,
+        { status: "proses" },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchOrders();
+    } catch (error) {
+      console.error("CONFIRM ORDER ERROR:", error);
+    }
+  };
+
+  const finishOrder = async (id: number) => {
+    try {
+      await axios.put(
+        `${BASE_API_URL}/order/update/${id}`,
+        { status: "selesai" },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchOrders();
+    } catch (error) {
+      console.error("FINISH ORDER ERROR:", error);
+    }
+  };
+
+  const rejectOrder = async (id: number) => {
+    try {
+      await axios.patch(
+        `${BASE_API_URL}/order/${id}/reject`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchOrders();
+    } catch (error) {
+      console.error("REJECT ORDER ERROR:", error);
+    }
+  };
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+
+  const statusStyle = (status: OrderStatus) => {
+    switch (status) {
+      case "belum_dikonfirmasi":
+        return "bg-yellow-500/20 text-yellow-400";
+      case "proses":
+        return "bg-teal-500/20 text-teal-400";
+      case "selesai":
+        return "bg-green-500/20 text-green-400";
+      case "ditolak":
+        return "bg-red-500/20 text-red-400";
+    }
+  };
+
+  if (loading) {
+    return <p className="text-white">Loading...</p>;
+  }
   return (
     <div className="space-y-6">
-      {orders.map((order, index) => (
+      {orders.map((order) => (
         <div
-          key={index}
+          key={order.id_transaksi}
           className="card-bg rounded-2xl p-6 border border-teal-300/25 Poppins shadow-2xl"
         >
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-sm font-semibold mb-px text-white">{order.id}</h2>
+              <h2 className="text-sm font-semibold mb-px text-white">{order.kode_transaksi}</h2>
               <p className="text-xs text-gray-400 mt-px">
-                {order.customer} • {order.date}
+                {order.siswa.nama_siswa} • {formatDate(order.tanggal)}
               </p>
             </div>
 
@@ -74,7 +140,7 @@ const statusStyle = (status: string) => {
             <div className="space-y-2">
               {order.items.map((item, i) => (
                 <p key={i} className="text-white/80">
-                  {item.name} x{item.qty}
+                  {item.nama_menu} x{item.qty}
                 </p>
               ))}
             </div>
@@ -82,7 +148,7 @@ const statusStyle = (status: string) => {
             <div className="space-y-2 text-right">
               {order.items.map((item, i) => (
                 <p key={i} className="text-white">
-                  Rp {item.price.toLocaleString("id-ID")}
+                  Rp {item.subtotal.toLocaleString("id-ID")}
                 </p>
               ))}
             </div>
@@ -90,24 +156,33 @@ const statusStyle = (status: string) => {
 
           <div className="flex justify-between items-center mt-6">
             <p className="text-white font-semibold">
-              Total: Rp {order.total.toLocaleString("id-ID")}
+              Total: Rp {order.total_harga.toLocaleString("id-ID")}
             </p>
 
             <div className="flex gap-3">
-              {order.status === "belum dikonfirmasi" && (
+              {order.status === "belum_dikonfirmasi" && (
                 <>
-                  <button className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl font-medium text-xs outline-none">
-                    <Check size={18} className="mr-[4px]"/> Konfirmasi
+                  <button
+                    onClick={() => confirmOrder(order.id_transaksi)}
+                    className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl font-medium text-xs outline-none">
+                    <Check size={18} className="mr-[4px]" />
+                    Konfirmasi
                   </button>
-                  <button className="flex items-center bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl font-medium text-xs outline-none">
-                    <X size={18} className="mr-[4px]"/> Tolak
+                  <button
+                    onClick={() => confirmOrder(order.id_transaksi)}
+                    className="flex items-center bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl font-medium text-xs outline-none">
+                    <X size={18} className="mr-[4px]" />
+                    Tolak
                   </button>
                 </>
               )}
 
               {order.status === "proses" && (
-                <button className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl font-medium text-xs outline-none">
-                  <Check size={18} className="mr-[4px]"/> Selesai
+                <button
+                  onClick={() => finishOrder(order.id_transaksi)}
+                  className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl font-medium text-xs outline-none">
+                  <Check size={18} className="mr-[4px]" />
+                  Selesai
                 </button>
               )}
             </div>

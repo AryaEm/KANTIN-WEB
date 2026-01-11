@@ -34,8 +34,29 @@ export const get = async <T>(url: string, token?: string): Promise<ApiResponse<T
     }
 };
 
+export const getRaw = async <T>(
+    url: string,
+    token?: string
+): Promise<ApiResponse<T>> => {
+    try {
+        const headers: Record<string, string> = {};
+        if (token) headers.Authorization = `Bearer ${token}`;
 
+        const response = await axiosInstance.get<T>(url, { headers });
 
+        return {
+            status: true,
+            data: response.data,
+        };
+    } catch (error) {
+        const err = error as AxiosError<{ message: string }>;
+        return {
+            status: false,
+            data: null as T,
+            message: err.response?.data?.message ?? "Unknown error",
+        };
+    }
+};
 
 
 // POST
@@ -52,22 +73,21 @@ export const post = async <T = unknown>(
             ...(isJSON && { "Content-Type": "application/json" }),
         };
 
-
         const body = isJSON ? JSON.stringify(data) : data;
 
-        const result = await axiosInstance.post<T>(url, body, { headers });
+        const result = await axiosInstance.post(url, body, { headers });
 
         return {
-            status: true,
-            data: result.data,
+            status: result.data.status,
+            message: result.data.message,
+            data: result.data.data as T, // 🔥 INI YANG BENAR
         };
     } catch (error) {
         const err = error as AxiosError<{ message: string }>;
-        const message = err.response?.data.message ?? "Unknown error";
         return {
             status: false,
-            data: [] as T,
-            message: message,
+            data: null as T,
+            message: err.response?.data.message ?? "Unknown error",
         };
     }
 };

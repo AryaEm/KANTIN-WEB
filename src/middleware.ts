@@ -1,46 +1,23 @@
-// middleware.ts
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value?.trim();
-  const role = request.cookies.get("role")?.value?.trim();
-  const { pathname } = request.nextUrl;
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get("token")?.value;
+  const role = req.cookies.get("role")?.value;
 
-  // Jika pengguna belum login
-  if (!token || !role) {
-    // Proteksi halaman /admin dan /cart: redirect ke /login
-    if (pathname.startsWith("/admin") || pathname.startsWith("/cart")) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-    // Izinkan akses ke halaman publik lainnya
-    return NextResponse.next();
+  const pathname = req.nextUrl.pathname;
+
+  if (!token && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // Jika pengguna mencoba mengakses halaman login atau signin
-  if (pathname === "/login" || pathname === "/signin") {
-    // Redirect berdasarkan peran
-    if (role === "Admin") {
-      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
-    } else if (role === "Pelanggan") {
-      return NextResponse.redirect(new URL("/", request.url));
+  if (token && role) {
+    if (pathname.startsWith("/dashboard/admin") && role !== "admin_stan") {
+      return NextResponse.redirect(new URL("/dashboard/siswa", req.url));
     }
-  }
 
-  // Proteksi halaman admin: hanya Admin yang boleh mengakses
-  if (pathname.startsWith("/admin")) {
-    if (role !== "Admin") {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-  }
-
-  // Proteksi halaman pelanggan: hanya Pelanggan yang boleh mengakses
-  if (
-    pathname.startsWith("/cart") ||
-    pathname.startsWith("/community") ||
-    pathname === "/menu" // tambahkan path pelanggan lain jika ada
-  ) {
-    if (role !== "Pelanggan") {
-      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    if (pathname.startsWith("/dashboard/siswa") && role !== "siswa") {
+      return NextResponse.redirect(new URL("/dashboard/admin", req.url));
     }
   }
 
@@ -48,12 +25,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/login",
-    "/signin",
-    "/admin/:path*",
-    "/cart/:path*",
-    "/community/:path*",
-    "/menu", // tambahkan path pelanggan lain jika ada
-  ],
+  matcher: ["/dashboard/:path*"],
 };

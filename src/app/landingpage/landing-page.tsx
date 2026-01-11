@@ -3,7 +3,7 @@
 import Link from 'next/link';
 // import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/ui/navbar';
 import {
     // UtensilsCrossed,
     ShoppingBag,
@@ -77,7 +77,7 @@ export default function Page() {
                         </h1>
 
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 text-white/60">
-                            KantinKu adalah aplikasi kantin digital yang memudahkan siswa
+                            KantinPlus adalah aplikasi kantin digital yang memudahkan siswa
                             memesan makanan dan membantu penjual mengelola pesanan dengan
                             efisien.
                         </p>
@@ -104,7 +104,7 @@ export default function Page() {
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
-                            Kenapa <span className="text-teal-300">KantinKu</span>?
+                            Kenapa <span className="text-teal-300">KantinPlus</span>?
                         </h2>
                         <p className="text-muted-foreground max-w-xl mx-auto text-white/60">
                             Solusi lengkap untuk manajemen kantin sekolah yang modern dan

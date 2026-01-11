@@ -25,8 +25,8 @@ export default function AuthContainer({ mode }: { mode: string }) {
             </h1>
             <p className="mb-6 text-center   text-sm text-white/60">
                 {mode === 'login'
-                    ? 'Masuk ke akun KantinKu Anda'
-                    : 'Daftar untuk mulai menggunakan KantinKu'}
+                    ? 'Masuk ke akun KantinPlus Anda'
+                    : 'Daftar untuk mulai menggunakan KantinPlus'}
             </p>
 
             <AuthTabs mode={mode} />
