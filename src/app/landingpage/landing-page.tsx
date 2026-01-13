@@ -13,8 +13,8 @@ import {
     Sparkles,
     ArrowRight,
 } from 'lucide-react';
-// import mieayam from "../../../public/mie.svg"
-// import kopi from "../../../public/Kopi.svg"
+// import gprek from "../../../public/geprek.webp"
+// import esjeruk from "../../../public/esjeruk.jpg"
 
 type Feature = {
     icon: React.ElementType;
@@ -53,11 +53,11 @@ export default function Page() {
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center animate-fade-in relative">
 
-                        {/* <div className="absolute z-10 -bottom-32 -left-32 h-80 w-80">
-                            <Image src={mieayam} alt='Mie Ayam' className='h-80 w-80 object-cover'/>
+                        {/* <div className="absolute z-10 -bottom-48 -left-40 h-80 w-60">
+                            <Image src={gprek} alt='Geprek' className='h-80 w-80 object-cover rounded-lg  shadow-3d border border-teal-400' />
                         </div>
-                        <div className="absolute z-10 -top-20 -right-10 h-64 w-64">
-                            <Image src={kopi} alt='Kopi' className='h-64 w-64 object-cover'/>
+                        <div className="absolute z-10 -bottom-72 -left-24 h-44 w-72">
+                            <Image src={esjeruk} alt='esjruk' className='h-full w-full object-cover rounded-lg shadow-3d border border-teal-400' />
                         </div> */}
 
                         <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl"></div>

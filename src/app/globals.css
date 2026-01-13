@@ -55,3 +55,7 @@
 .grid-bg {
   background-image: repeating-linear-gradient(90deg, hsla(178, 0%, 66%, 0.05) 0px, hsla(178, 0%, 66%, 0.05) 1px, transparent 1px, transparent 104px), repeating-linear-gradient(0deg, hsla(178, 0%, 66%, 0.05) 0px, hsla(178, 0%, 66%, 0.05) 1px, transparent 1px, transparent 104px), repeating-linear-gradient(0deg, hsla(178, 0%, 66%, 0.07) 0px, hsla(178, 0%, 66%, 0.07) 1px, transparent 1px, transparent 26px), repeating-linear-gradient(90deg, hsla(178, 0%, 66%, 0.07) 0px, hsla(178, 0%, 66%, 0.07) 1px, transparent 1px, transparent 26px), linear-gradient(0deg, rgb(11, 17, 19), rgb(11, 17, 19));
 }
+
+.shadow-3d {
+  box-shadow: rgba(94, 234, 212, 0.25) -35px -35px 60px -80px, rgba(94, 234, 212, 0.3) 0px 30px 60px -30px, rgba(94, 234, 212, 0.35) 0px -2px 6px 0px inset;
+}

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 // import { BASE_API_URL } from "../../../../global";
 import { getCookie } from "@/lib/client-cookie";
-import { get, getRaw } from "@/lib/api-bridge";
+import { getRaw } from "@/lib/api-bridge";
 import { MenuItem } from "@/app/types";
 import { ShoppingBag, DollarSign, UtensilsCrossed, Clock } from "lucide-react";
 

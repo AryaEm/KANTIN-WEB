@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import Image from "next/image";
 import { X, ChefHat, ImagePlus } from "lucide-react";
 
 export default function AddMenuModal({
@@ -18,6 +19,7 @@ export default function AddMenuModal({
     });
     const [foto, setFoto] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [jenis, setJenis] = useState<"makanan" | "minuman">("makanan");
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -43,53 +45,74 @@ export default function AddMenuModal({
     return (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 Poppins">
             <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 w-full max-w-md space-y-4">
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex justify-between items-center">
                     <div className=" flex gap-3 items-center">
-                        <ChefHat size={15} className="bg-teal-400 h-10 w-10 p-2 rounded-full text-white"/>
+                        <ChefHat size={15} className="bg-teal-400 h-10 w-10 p-2 rounded-full text-white" />
                         <h2 className="text-white font-semibold text-xl">Tambah <span className="text-teal-400">Menu</span>.</h2>
                     </div>
                     <button onClick={onClose}>
                         <X className="text-white" />
                     </button>
                 </div>
+                <div>
+                    <p className="mb-2 text-white/70 font-semibold text-sm">Nama Menu</p>
+                    <input
+                        name="nama_menu"
+                        placeholder=""
+                        onChange={handleChange}
+                        className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                    />
+                </div>
+                <div>
+                    <p className="mb-2 text-white/70 font-semibold text-sm">Harga</p>
+                    <input
+                        name="harga"
+                        type="number"
+                        onChange={handleChange}
+                        className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                    />
+                </div>
+                <div>
+                    <p className="mb-2 text-white/70 font-semibold text-sm">Kategori</p>
+                    {/* <select
+                        name="jenis"
+                        onChange={handleChange}
+                        className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                    >
+                        <option value="makanan" className="bg-[#5F6061] font-semibold">Makanan</option>
+                        <option value="minuman" className="bg-[#5F6061] font-semibold">Minuman</option>
+                    </select> */}
+                    <div className="flex gap-4">
+                        <button
+                            type="button"
+                            onClick={() => setJenis("makanan")}
+                            className={`p-2 w-full rounded font-semibold bg-white/20 transition${jenis === "makanan"
+                                ? "bg-teal-400 text-black border-2 border-teal-400"
+                                : "bg-white/20 text-white/50 border border-white/50 outline-none"}`}>
+                            Makanan
+                        </button>
 
-                <input
-                    name="nama_menu"
-                    placeholder="Nama menu"
-                    onChange={handleChange}
-                    className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
-                />
+                        <button
+                            type="button"
+                            onClick={() => setJenis("minuman")}
+                            className={`p-2 w-full rounded font-semibold bg-white/20 transition${jenis === "minuman"
+                                ? "bg-teal-400 text-black border-2 border-teal-400"
+                                : "bg-white/20 text-white/50 border border-white/50 outline-none"}`}>
+                            Minuman
+                        </button>
+                    </div>
+                </div>
 
-                <input
-                    name="harga"
-                    type="number"
-                    placeholder="Harga"
-                    onChange={handleChange}
-                    className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
-                />
 
-                <select
-                    name="jenis"
-                    onChange={handleChange}
-                    className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
-                >
-                    <option value="makanan" className="bg-[#5F6061] font-semibold">Makanan</option>
-                    <option value="minuman" className="bg-[#5F6061] font-semibold">Minuman</option>
-                </select>
+                <div>
+                    <p className="mb-2 text-white/70 font-semibold text-sm">Deskripsi</p>
+                    <textarea
+                        name="deskripsi"
+                        onChange={handleChange}
+                        className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                    />
+                </div>
 
-                <textarea
-                    name="deskripsi"
-                    placeholder="Deskripsi"
-                    onChange={handleChange}
-                    className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
-                />
-
-                {/* <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setFoto(e.target.files?.[0] || null)}
-                    className="text-white text-sm"
-                /> */}
                 <div className="relative w-full max-w-md">
                     <input
                         type="file"
@@ -113,9 +136,11 @@ export default function AddMenuModal({
                     >
                         {previewUrl ? (
                             <div className="relative w-full px-4">
-                                <img
+                                <Image
                                     src={previewUrl}
                                     alt="Preview"
+                                    width={100}
+                                    height={100}
                                     className="w-full h-32 object-cover rounded-lg"
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">

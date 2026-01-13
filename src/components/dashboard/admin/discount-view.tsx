@@ -49,11 +49,16 @@ export default function DiscountView() {
     fetchDiscounts();
   }, []);
 
-  const handleAddMenu = async (formData: FormData) => {
+  const handleAddMenu = async (data: {
+    nama_diskon: string;
+    persentase_diskon: string;
+    tanggal_awal: string;
+    tanggal_akhir: string;
+  }) => {
     const token = getCookie("token");
 
     try {
-      const res = await post<Discount>("/diskon/create", formData, token);
+      const res = await post<Discount>("/diskon/create", data, token);
 
       if (!res.status) {
         toast(
@@ -144,8 +149,8 @@ export default function DiscountView() {
                         {discount.persentase_diskon}%
                       </p>
                     </div>
-                    <p className={`${statusStyle(discount.status)} h-fit py-2 px-3 rounded-full text-sm font-medium`}>
-                      {discount.status.replace("_", " ")}
+                    <p className={`${statusStyle(discount.status ?? "nonaktif")} h-fit py-2 px-3 rounded-full text-sm font-medium`}>
+                      {(discount.status ?? "nonaktif").replace("_", " ")}
                     </p>
                   </div>
                 </div>
@@ -156,7 +161,7 @@ export default function DiscountView() {
                   </p>
 
                   <div className="flex gap-4">
-                    <button className="text-white hover:text-teal-400">
+                    <button className="text-white hover:text-teal-400 p-2 rounded-md bg-white/5 transition-all border border-transparent hover:border-teal-400">
                       <SquarePen size={18} />
                     </button>
                     <button className="text-white bg-red-500 hover:bg-red-600 p-2 rounded-md">
