@@ -39,6 +39,13 @@ export default function RootLayout({
           hideProgressBar
           theme="dark"
         />    
+        <ToastContainer
+          containerId="toastAddDiscount"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />    
       </body>
     </html>
   );

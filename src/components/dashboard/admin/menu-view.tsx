@@ -50,14 +50,14 @@ export default function MenuView() {
                 toast(
                     <CustomToast
                         type="warning"
-                        message={res.message ?? "Terjadi kesalahan"}
+                        message={res.message ?? "File Maksimal 5mb"}
                     />,
                     {
                         containerId: "toastAddMenu",
                         className: "bg-yellow-400 rounded-xl shadow-lg",
                         icon: false,
                     }
-                );
+                );  
                 return; // ⬅️ PENTING
             }
 
@@ -95,7 +95,6 @@ export default function MenuView() {
         }   
     };
 
-    // ⬇️ INI HARUS DI COMPONENT
     if (loading) {
         return <p className="text-white">Loading menu...</p>;
     }

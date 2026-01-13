@@ -40,14 +40,17 @@ export default function SummaryView() {
       try {
         const token = getCookie("token");
 
+        
         const [orderRes, incomeRes, menuRes, pendingRes] =
-          await Promise.all([
-            getRaw<OrderReport>("/order/report/order", token),
-            getRaw<IncomeReport>("/order/report/income", token),
-            get<MenuItem[]>("/menu/menu-admin", token),
-            getRaw<PendingReport>("/order/pending", token),
-          ]);
-
+        
+        await Promise.all([
+          getRaw<OrderReport>("/order/report/order", token),
+          getRaw<IncomeReport>("/order/report/income", token),
+          getRaw<MenuItem[]>("/menu/menu-admin", token),
+          getRaw<PendingReport>("/order/pending", token),
+        ]);
+        
+        console.log("TOKEN:", token);
         console.log("OrderRes:", orderRes);
         console.log("IncomeRes:", incomeRes);
         console.log("MenuRes:", menuRes);
@@ -94,13 +97,13 @@ export default function SummaryView() {
     },
     {
       title: "Total Menu",
-      value: loading ? "..." : summary.totalMenu,
+      value: loading ? "..." : `${summary.totalMenu ?? 0}`,
       icon: <UtensilsCrossed size={22} />,
       color: "bg-cyan-500/20 text-cyan-400",
     },
     {
       title: "Belum Dikonfirmasi",
-      value: loading ? "..." : `${summary.pending ?? "0"}`,
+      value: loading ? "..." : `${summary.pending ?? 0}`,
       icon: <Clock size={22} />,
       color: "bg-yellow-500/20 text-yellow-400",
     },
