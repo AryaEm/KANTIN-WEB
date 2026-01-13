@@ -129,7 +129,7 @@ export default function MenuView() {
                                             alt={menu.nama_menu}
                                             width={400}
                                             height={160}
-                                            className="w-full h-full object-cover object-center"
+                                            className="w-full object-cover object-center"
                                             unoptimized
                                         />
                                     ) : (

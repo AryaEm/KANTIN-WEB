@@ -19,7 +19,7 @@ export default function AddMenuModal({
     });
     const [foto, setFoto] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    const [jenis, setJenis] = useState<"makanan" | "minuman">("makanan");
+    // const [jenis, setJenis] = useState<"makanan" | "minuman">("makanan");
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -35,7 +35,7 @@ export default function AddMenuModal({
         fd.append("deskripsi", form.deskripsi);
         if (foto) fd.append("foto", foto);
 
-        for (let pair of fd.entries()) {
+        for (const pair of fd.entries()) {
             console.log(pair[0], pair[1]);
         }
 
@@ -85,8 +85,8 @@ export default function AddMenuModal({
                     <div className="flex gap-4">
                         <button
                             type="button"
-                            onClick={() => setJenis("makanan")}
-                            className={`p-2 w-full rounded font-semibold bg-white/20 transition${jenis === "makanan"
+                            onClick={() => setForm({ ...form, jenis: "makanan" })}
+                            className={`p-2 w-full rounded font-semibold bg-white/20 transition${form.jenis === "makanan"
                                 ? "bg-teal-400 text-black border-2 border-teal-400"
                                 : "bg-white/20 text-white/50 border border-white/50 outline-none"}`}>
                             Makanan
@@ -94,8 +94,8 @@ export default function AddMenuModal({
 
                         <button
                             type="button"
-                            onClick={() => setJenis("minuman")}
-                            className={`p-2 w-full rounded font-semibold bg-white/20 transition${jenis === "minuman"
+                            onClick={() => setForm({ ...form, jenis: "minuman" })}
+                            className={`p-2 w-full rounded font-semibold bg-white/20 transition${form.jenis === "minuman"
                                 ? "bg-teal-400 text-black border-2 border-teal-400"
                                 : "bg-white/20 text-white/50 border border-white/50 outline-none"}`}>
                             Minuman

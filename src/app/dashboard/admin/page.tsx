@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
+// import dynamic from 'next/dynamic';
 
 import AdminHeader from '@/components/dashboard/admin/admin-header';
 import AdminTabs from '@/components/dashboard/admin/admin-tabs';

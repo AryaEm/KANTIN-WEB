@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { BASE_API_URL } from "../../../../global";
 import { getCookie } from "@/lib/client-cookie";
@@ -13,7 +13,9 @@ export default function OrderView() {
 
   const token = getCookie("token");
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
+    if (!token) return;
+
     try {
       const res = await axios.get(
         `${BASE_API_URL}/order/history/stan`,
@@ -30,7 +32,7 @@ export default function OrderView() {
     } finally {
       setLoading(false);
     }
-  }; [token]
+  }, [token]);
 
   useEffect(() => {
     fetchOrders();
