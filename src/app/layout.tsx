@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <ToastContainer
           containerId="toastLogin"
@@ -41,6 +41,41 @@ export default function RootLayout({
         />
         <ToastContainer
           containerId="toastAddDiscount"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastDeleteOrder"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastDeleteMenu"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastDeleteDiscount"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastEditDiscount"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastEditMenu"
           position="top-right"
           autoClose={2000}
           hideProgressBar

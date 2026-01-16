@@ -39,7 +39,7 @@ export default function AddDiskonModal({
 
     return (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 Poppins">
-            <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 w-full max-w-md space-y-4">
+            <div className="bg-white/10 border border-teal-400/50 backdrop-blur-lg rounded-2xl p-6 w-full max-w-md space-y-4">
                 <div className="flex justify-between items-center mb-2">
                     <div className="flex gap-3 items-center">
                         <ChefHat size={15} className="bg-teal-400 h-10 w-10 p-2 rounded-full text-white" />
@@ -56,7 +56,7 @@ export default function AddDiskonModal({
                         name="nama_diskon"
                         placeholder="...."
                         onChange={handleChange}
-                        className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                        className="w-full p-2 rounded bg-white/20 text-white font-semibold outline-none"
                     />
                 </div>
 
@@ -67,7 +67,7 @@ export default function AddDiskonModal({
                         type="number"
                         placeholder="0"
                         onChange={handleChange}
-                        className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                        className="w-full p-2 rounded bg-white/20 text-white font-semibold outline-none"
                     />
                 </div>
 
@@ -78,7 +78,7 @@ export default function AddDiskonModal({
                             name="tanggal_awal"
                             type="date"
                             onChange={handleChange}
-                            className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                            className="w-full p-2 rounded bg-white/20 text-white font-semibold outline-none"
                         />
                     </div>
 
@@ -88,7 +88,7 @@ export default function AddDiskonModal({
                             name="tanggal_akhir"
                             type="date"
                             onChange={handleChange}
-                            className="w-full p-2 rounded bg-white/20 text-black/70 font-semibold outline-none"
+                            className="w-full p-2 rounded bg-white/20 text-white font-semibold outline-none"
                         />
                     </div>
                 </div>

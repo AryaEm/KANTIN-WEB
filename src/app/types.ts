@@ -13,6 +13,7 @@ export type MenuItem = {
   nama_menu: string;
   jenis: "makanan" | "minuman";
   harga: number;
+  deskripsi: string
   status: "tersedia" | "habis";
   foto?: string
 };
@@ -127,7 +128,7 @@ export interface IStanDetail extends Stan {
 export type HistorySiswa = {
   id_transaksi: number;
   tanggal: string;
-  status: string;
+  status: OrderStatus;
   stan: {
     nama_stan: string;
   };

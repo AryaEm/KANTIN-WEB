@@ -163,7 +163,7 @@ export default function AddMenuModal({
 
                 <button
                     onClick={handleSubmit}
-                    className="w-full bg-teal-500 hover:bg-teal-400 transition-all text-black py-2 rounded-xl font-medium outline-none"
+                    className="w-full bg-teal-500 hover:bg-teal-400 transition-all text-black py-2 rounded-xl font-semibold outline-none"
                 >
                     Simpan
                 </button>

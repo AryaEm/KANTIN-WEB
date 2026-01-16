@@ -30,7 +30,7 @@ export default function AdminDashboardPage() {
   return (
     <>
       <AdminNavbar />
-      <section className="pb-8 pt-24 px-40 bg-primary min-h-dvh">
+      <section className="pb-8 pt-24 lg:px-40 px-4 bg-primary min-h-dvh overflow-hidden">
         <AdminHeader />
 
         <AdminTabs

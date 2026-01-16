@@ -105,7 +105,7 @@ export default function OrderView() {
   };
 
   if (loading) {
-    return <p className="text-white">Loading...</p>;
+    return <p className="text-white">Loading Pesanan...</p>;
   }
   return (
     <div className="space-y-6">
@@ -156,18 +156,18 @@ export default function OrderView() {
               Total: Rp {order.total_harga.toLocaleString("id-ID")}
             </p>
 
-            <div className="flex gap-3">
+            <div className="flex lg:flex-row flex-col gap-3">
               {order.status === "belum_dikonfirmasi" && (
                 <>
                   <button
                     onClick={() => confirmOrder(order.id_transaksi)}
-                    className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl font-medium text-xs outline-none">
+                    className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium text-xs outline-none">
                     <Check size={18} className="mr-[4px]" />
                     Konfirmasi
                   </button>
                   <button
                     onClick={() => rejectOrder(order.id_transaksi)}
-                    className="flex items-center bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl font-medium text-xs outline-none">
+                    className="flex items-center bg-red-500 hover:bg-red-600 text-white px-6 justify-center py-2 lg:rounded-xl rounded-md font-medium text-xs outline-none">
                     <X size={18} className="mr-[4px]" />
                     Tolak
                   </button>
@@ -177,7 +177,7 @@ export default function OrderView() {
               {order.status === "proses" && (
                 <button
                   onClick={() => finishOrder(order.id_transaksi)}
-                  className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 rounded-xl font-medium text-xs outline-none">
+                  className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium text-xs outline-none">
                   <Check size={18} className="mr-[4px]" />
                   Selesai
                 </button>

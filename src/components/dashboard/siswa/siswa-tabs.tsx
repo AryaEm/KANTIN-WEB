@@ -38,7 +38,7 @@ const tabs: {
 
 export default function SiswaTabs({ activeTab, onChange }: Props) {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 overflow-auto">
       {tabs.map(tab => {
         const Icon = tab.icon;
 
