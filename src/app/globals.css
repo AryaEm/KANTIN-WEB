@@ -1,0 +1,106 @@
+@import url("https://fonts.cdnfonts.com/css/sf-pro-display");
+@import url("https://fonts.cdnfonts.com/css/playfair-display");
+@import url("https://fonts.cdnfonts.com/css/aerospace");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.Poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.Aerospace {
+  font-family: "Aerospace", sans-serif;
+}
+
+.sfprodisplay {
+  font-family: "SF Pro Display", sans-serif;
+}
+
+.bg-login {
+  background-image: url(/Marvelrivals.jpg);
+}
+
+.bg-primary {
+  background-color: #0B1113;
+}
+
+.form-shadow {
+  box-shadow: rgba(20, 184, 166, 0.1) 0px 7px 109px 0px;
+}
+
+.bg-input {
+  background-color: #0B1113;
+}
+
+.card-bg {
+  background-color: #10171A;
+}
+
+.grad-login {
+  background: rgb(39, 42, 55);
+  background: linear-gradient(65deg,
+      rgba(39, 42, 55, 1) 34%,
+      rgba(39, 42, 55, 0.309) 95%);
+}
+
+.grid-bg {
+  background-image: repeating-linear-gradient(90deg, hsla(178, 0%, 66%, 0.05) 0px, hsla(178, 0%, 66%, 0.05) 1px, transparent 1px, transparent 104px), repeating-linear-gradient(0deg, hsla(178, 0%, 66%, 0.05) 0px, hsla(178, 0%, 66%, 0.05) 1px, transparent 1px, transparent 104px), repeating-linear-gradient(0deg, hsla(178, 0%, 66%, 0.07) 0px, hsla(178, 0%, 66%, 0.07) 1px, transparent 1px, transparent 26px), repeating-linear-gradient(90deg, hsla(178, 0%, 66%, 0.07) 0px, hsla(178, 0%, 66%, 0.07) 1px, transparent 1px, transparent 26px), linear-gradient(0deg, rgb(11, 17, 19), rgb(11, 17, 19));
+}
+
+.shadow-3d {
+  box-shadow: rgba(94, 234, 212, 0.25) -35px -35px 60px -80px, rgba(94, 234, 212, 0.3) 0px 30px 60px -30px, rgba(94, 234, 212, 0.35) 0px -2px 6px 0px inset;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 6px 3px rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
