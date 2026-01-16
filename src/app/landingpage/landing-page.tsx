@@ -60,7 +60,7 @@ export default function Page() {
                             <Image src={esjeruk} alt='esjruk' className='h-full w-full object-cover rounded-lg shadow-3d border border-teal-400' />
                         </div> */}
 
-                        <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl"></div>
+                        <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl"></div>q
                         <div className="bg-teal-300/90 h-32 w-32 rounded-full absolute -bottom-20 left-[70rem] blur-3xl hidden lg:block"></div>
 
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 bg-teal-300/10 border border-teal-300 bg-opacity-70">
