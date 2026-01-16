@@ -1,6 +1,5 @@
 import { Menu } from '@/app/types';
 import Image from 'next/image';
-import { SUPABASE_IMAGE_BASE } from '../../../../global';
 
 type Props = {
   menu: Menu;
