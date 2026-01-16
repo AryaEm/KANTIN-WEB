@@ -87,7 +87,7 @@ export default function StanPage({
             description: m.description,
             jenis_menu: m.jenis_menu,
             price: m.price,
-            image: m.image ?? '', // ✅ normalisasi ke string
+            image: m.image ?? '', 
             discount: m.discount,
           })),
         }

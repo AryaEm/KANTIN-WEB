@@ -1,6 +1,6 @@
 import { Menu } from '@/app/types';
 import Image from 'next/image';
-import { BASE_IMAGE_MENU } from '../../../../global';
+import { SUPABASE_IMAGE_BASE } from '../../../../global';
 
 type Props = {
   menu: Menu;
@@ -28,7 +28,7 @@ export default function MenuCard({ menu, onAddToCart }: Props) {
       <div className="w-full rounded-lg bg-white/10 mb-4 flex items-center justify-center border border-white/10">
         {menu.image ? (
           <Image
-            src={`${BASE_IMAGE_MENU}/${menu.image}`}
+            src={menu.image}  
             alt={menu.name}
             width={144}
             height={144}

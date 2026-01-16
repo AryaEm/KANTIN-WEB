@@ -123,3 +123,19 @@ export interface IStan {
 export interface IStanDetail extends Stan {
   menus: Menu[];
 }
+
+export type HistorySiswa = {
+  id_transaksi: number;
+  tanggal: string;
+  status: string;
+  stan: {
+    nama_stan: string;
+  };
+  items: {
+    nama_menu: string;
+    qty: number;
+    harga_setelah_diskon: number;
+    subtotal: number;
+  }[];
+  total_harga: number;
+};

@@ -1,43 +1,48 @@
-type HistoryItem = {
-  id: string;
-  stan: string;
-  date: string;
-  status: "Selesai";
-  items: {
-    name: string;
-    qty: number;
-    price: number;
-  }[];
-  total: number;
-};
+"use client";
+
+import { useEffect, useState } from "react";
+import { get } from "@/lib/api-bridge"
+import { HistorySiswa } from "@/app/types";
+import { getCookie } from "@/lib/client-cookie";
 
 export default function HistoryView() {
-  const histories: HistoryItem[] = [
-    {
-      id: "Order #2",
-      stan: "Kantin Pak Yoyok",
-      date: "14/1/2024",
-      status: "Selesai",
-      items: [
-        { name: "Soto Ayam", qty: 2, price: 28000 },
-      ],
-      total: 28000,
-    },
-    {
-      id: "Order #3",
-      stan: "alfamart",
-      date: "14/1/2024",
-      status: "Selesai",
-      items: [
-        { name: "Nasi Goreng Spesial", qty: 1, price: 15000 },
-        { name: "Es Teh Manis", qty: 1, price: 5000 },
-      ],
-      total: 20000,
-    },
-  ];
+  const [histories, setHistories] = useState<HistorySiswa[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const token = getCookie("token");
+        const res = await get<HistorySiswa[]>("/order/history/siswa", token);
+
+        if (res.status) {
+          setHistories(res.data);
+        }
+      } catch (error) {
+        console.error("Fetch history error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
+  if (loading) {
+    return <p className="text-white">Loading...</p>;
+  }
+
+  if (histories.length === 0) {
+    return (
+      <p className="text-white text-lg font-semibold">
+        Belum ada riwayat transaksi
+      </p>
+    );
+  }
 
   return (
     <div className="space-y-6 Poppins">
+      <p className="text-white text-lg font-semibold">Belum ada riwayat transaksi</p>
       {histories.map((history, index) => (
         <div
           key={index}
@@ -45,9 +50,9 @@ export default function HistoryView() {
         >
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-lg font-semibold text-white">{history.id}</h2>
+              <h2 className="text-lg font-semibold text-white">{history.id_transaksi}</h2>
               <p className="text-sm text-gray-400">
-                {history.stan} • {history.date}
+                {history.stan.nama_stan} • {history.tanggal}
               </p>
             </div>
 
@@ -62,7 +67,7 @@ export default function HistoryView() {
             <div className="space-y-2">
               {history.items.map((item, i) => (
                 <p key={i} className="text-white/70">
-                  {item.name} x{item.qty}
+                  {item.nama_menu} x{item.qty}
                 </p>
               ))}
             </div>
@@ -70,7 +75,7 @@ export default function HistoryView() {
             <div className="space-y-2 text-right">
               {history.items.map((item, i) => (
                 <p key={i} className="text-white">
-                  Rp {item.price.toLocaleString("id-ID")}
+                  Rp {item.subtotal.toLocaleString("id-ID")}
                 </p>
               ))}
             </div>
@@ -79,7 +84,7 @@ export default function HistoryView() {
           <div className="flex justify-between items-center mt-6">
             <p className="text-white font-semibold">Total</p>
             <p className="text-white font-semibold">
-              Rp {history.total.toLocaleString("id-ID")}
+              Rp {history.total_harga.toLocaleString("id-ID")}
             </p>
           </div>
         </div>

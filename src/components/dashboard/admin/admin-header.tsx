@@ -10,7 +10,7 @@ export default function AdminHeader() {
     setNamaPemilik(getCookie("nama_pemilik"));
   }, []);
 
-  if (!namaPemilik) return null; // jangan render sebelum client mount
+  if (!namaPemilik) return null;
 
   return (
     <div className="mb-6">

@@ -49,7 +49,7 @@ export default function Page() {
     return (
         <>
             <Navbar />
-            <section className="pt-48 pb-20 px-4 grid-bg min-h-dvh">
+            <section className="pt-48 pb-20 px-4 grid-bg min-h-dvh overflow-hidden">
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center animate-fade-in relative">
 
@@ -100,7 +100,7 @@ export default function Page() {
                 </div>
             </section>
 
-            <section className="py-20 pb-28 px-4 grid-bg ">
+            <section className="py-20 pb-28 px-4 grid-bg overflow-hidden">
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
@@ -116,7 +116,7 @@ export default function Page() {
                         {features.map((feature, i) => (
                             <div
                                 key={i}
-                                className="rounded-xl p-6 py-8 text-center group bg-white/5 border-white/15 border hover:scale-105 backdrop-blur transition-all duration-300 "
+                                className="rounded-xl p-6 py-8 text-center group bg-white/5 border-white/15 hover:border-teal-400 cursor-pointer border hover:scale-105 backdrop-blur transition-all duration-300 "
                                 style={{ animationDelay: `${i * 100}ms` }}
                             >
                                 <div className="w-14 h-14 rounded-xl to-cyan-400/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -134,7 +134,26 @@ export default function Page() {
                 </div>
             </section>
 
-            <footer className="pb-8 px-4 grid-bg">
+            <section className="py-20 pb-28 px-4 grid-bg overflow-hidden relative">
+                <div className="container mx-auto max-w-6xl border glass-card rounded-lg flex justify-center items-center relative">
+
+                    <div className="text-center my-20 ">
+                        <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
+                            Siap untuk <span className="text-teal-300">Mencoba</span>?
+                        </h2>
+                        <p className="text-muted-foreground max-w-xl mx-auto text-white/60">
+                            Bergabung sekarang dan nikmati kemudahan brmemesan <br />makanan di kantin sekolah
+                        </p>
+                        <Link href="/auth   ">
+                            <Button variant="teal" size="xl" className="w-full sm:w-auto mt-6 text-teal-300">
+                                Daftar Gratis
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            <footer className="pb-8 px-4 grid-bg overflow-hidden">
                 <div className="container mx-auto text-center text-sm text-muted-foreground text-white/60">
                     © 2026 KantinKu. Dev by <Link href={'https://aryaem.vercel.app'} target='_blank' className='text-teal-300'>Aryaem</Link>.
                 </div>

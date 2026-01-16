@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 
-import AdminHeader from '@/components/dashboard/siswa/siswa-header';
-import AdminTabs from '@/components/dashboard/siswa/siswa-tabs';
+import SiswaHeader from '@/components/dashboard/siswa/siswa-header';
+import SiswaTabs from '@/components/dashboard/siswa/siswa-tabs';
 
 import StanView from '@/components/dashboard/siswa/stan-view';
 import HistoryView from '@/components/dashboard/siswa/history-view';
 import CartView from '@/components/dashboard/siswa/cart-view'
+import OrderView from '@/components/dashboard/siswa/order-view';
 import { StudentNavbar } from '@/components/dashboard/siswa/siswa-navbar';
 
 import { CartItem, Menu } from '@/app/types';
@@ -53,9 +54,9 @@ export default function SiswaDashboardPage() {
     <>
       <StudentNavbar />
       <section className="pb-8 pt-24 px-40 bg-primary min-h-dvh">
-        <AdminHeader />
+        <SiswaHeader />
 
-        <AdminTabs
+        <SiswaTabs
           activeTab={activeTab}
           onChange={setActiveTab}
         />
@@ -68,6 +69,8 @@ export default function SiswaDashboardPage() {
           {activeTab === 'keranjang' && (
             <CartView cart={cart} setCart={setCart} />
           )}
+
+          {activeTab === 'pesanan' && <OrderView />}
 
           {activeTab === 'riwayat' && <HistoryView />}
         </div>

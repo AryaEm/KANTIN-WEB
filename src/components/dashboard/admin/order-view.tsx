@@ -13,27 +13,22 @@ export default function OrderView() {
 
   const token = getCookie("token");
 
-  const fetchOrders = useCallback(async () => {
-    if (!token) return;
+ const fetchOrders = useCallback(async () => {
+  if (!token) return;
 
-    try {
-      const res = await axios.get(
-        `${BASE_API_URL}/order/history/stan`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  try {
+    const res = await axios.get(`${BASE_API_URL}/order/history/stan`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      setOrders(res.data.data);
-    } catch (error) {
-      console.error("FETCH ORDER ERROR:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
-
+    const data = res.data.data;
+    setOrders(Array.isArray(data) ? data : []);
+  } catch (error) {
+    console.error("FETCH ORDER ERROR:", error);
+  } finally {
+    setLoading(false);
+  }
+}, [token]);
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
@@ -123,7 +118,7 @@ export default function OrderView() {
             <div>
               <h2 className="text-sm font-semibold mb-px text-white">{order.kode_transaksi}</h2>
               <p className="text-xs text-gray-400 mt-px">
-                {order.siswa.nama_siswa} • {formatDate(order.tanggal)}
+                {order.siswa.nama_siswa} - {formatDate(order.tanggal)}
               </p>
             </div>
 
