@@ -24,28 +24,28 @@ export default function RootLayout({
           autoClose={2000}
           hideProgressBar
           theme="dark"
-        />    
+        />
         <ToastContainer
           containerId="toastRegisterStan"
           position="top-right"
           autoClose={2000}
           hideProgressBar
           theme="dark"
-        />    
+        />
         <ToastContainer
           containerId="toastAddMenu"
           position="top-right"
           autoClose={2000}
           hideProgressBar
           theme="dark"
-        />    
+        />
         <ToastContainer
           containerId="toastAddDiscount"
           position="top-right"
           autoClose={2000}
           hideProgressBar
           theme="dark"
-        />    
+        />
       </body>
     </html>
   );

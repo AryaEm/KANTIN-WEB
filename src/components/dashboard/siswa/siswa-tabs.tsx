@@ -34,7 +34,7 @@ const tabs: {
     value: 'riwayat',
     icon: History,
   },
-];0
+];
 
 export default function SiswaTabs({ activeTab, onChange }: Props) {
   return (
