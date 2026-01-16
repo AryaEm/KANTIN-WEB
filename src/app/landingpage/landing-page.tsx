@@ -61,7 +61,7 @@ export default function Page() {
                         </div> */}
 
                         <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl"></div>
-                        <div className="bg-teal-300/90 h-32 w-32 rounded-full absolute -bottom-52 -right-40 blur-3xl"></div>
+                        <div className="bg-teal-300/90 h-32 w-32 rounded-full absolute -bottom-20 left-[70rem] blur-3xl hidden lg:block"></div>
 
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 bg-teal-300/10 border border-teal-300 bg-opacity-70">
                             <Sparkles className="w-4 h-4 text-primary text-white" />
@@ -82,7 +82,7 @@ export default function Page() {
                             efisien.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center lg:mx-0 mx-12">
                             <Link href="/auth?mode=register">
                                 <Button variant="hero" size="xl" className="w-full sm:w-auto bg-teal-300">
                                     Mulai Sekarang
@@ -116,7 +116,7 @@ export default function Page() {
                         {features.map((feature, i) => (
                             <div
                                 key={i}
-                                className="rounded-xl p-6 py-8 text-center group bg-white/5 border-white/15 hover:border-teal-400 cursor-pointer border hover:scale-105 backdrop-blur transition-all duration-300 "
+                                className="rounded-xl p-6 py-8 text-center group bg-white/5 border-white/15 hover:border-teal-400 cursor-pointer border hover:scale-105 backdrop-blur transition-all duration-300 lg:mx-0 mx-5"
                                 style={{ animationDelay: `${i * 100}ms` }}
                             >
                                 <div className="w-14 h-14 rounded-xl to-cyan-400/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -141,11 +141,11 @@ export default function Page() {
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
                             Siap untuk <span className="text-teal-300">Mencoba</span>?
                         </h2>
-                        <p className="text-muted-foreground max-w-xl mx-auto text-white/60">
-                            Bergabung sekarang dan nikmati kemudahan brmemesan <br />makanan di kantin sekolah
+                        <p className="text-muted-foreground max-w-md mx-auto text-white/60">
+                            Bergabung sekarang dan nikmati kemudahan brmemesan makanan di kantin sekolah
                         </p>
                         <Link href="/auth   ">
-                            <Button variant="teal" size="xl" className="w-full sm:w-auto mt-6 text-teal-300">
+                            <Button variant="teal" size="xl" className="lg:w-full w-1/2 sm:w-auto mt-6 text-teal-300">
                                 Daftar Gratis
                             </Button>
                         </Link>
