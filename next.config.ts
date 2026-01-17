@@ -12,6 +12,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    domains: ['localhost', 'kantin-web.vercel.app'],
     remotePatterns: [
       {
         protocol: "https",
