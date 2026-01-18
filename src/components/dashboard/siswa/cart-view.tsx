@@ -1,3 +1,5 @@
+'use client';
+
 import EmptyCart from './empty-cart';
 import CartItem from './cart-item';
 import CartSummary from './cart-summary';
@@ -7,9 +9,11 @@ import { CartItem as Item } from '@/app/types';
 export default function CartView({
   cart,
   setCart,
+  onCheckout,
 }: {
   cart: Item[];
   setCart: React.Dispatch<React.SetStateAction<Item[]>>;
+  onCheckout: () => void;
 }) {
   if (cart.length === 0) {
     return <EmptyCart />;
@@ -20,19 +24,21 @@ export default function CartView({
       <div className="col-span-2 space-y-4">
         {cart.map(item => (
           <CartItem
-            key={item.id}
+            key={item.id_menu}
             item={item}
             onPlus={() =>
               setCart(prev =>
                 prev.map(i =>
-                  i.id === item.id ? { ...i, qty: i.qty + 1 } : i
+                  i.id_menu === item.id_menu
+                    ? { ...i, qty: i.qty + 1 }
+                    : i
                 )
               )
             }
             onMinus={() =>
               setCart(prev =>
                 prev.map(i =>
-                  i.id === item.id
+                  i.id_menu === item.id_menu
                     ? { ...i, qty: Math.max(1, i.qty - 1) }
                     : i
                 )
@@ -40,15 +46,16 @@ export default function CartView({
             }
             onRemove={() =>
               setCart(prev =>
-                prev.filter(i => i.id !== item.id)
+                prev.filter(i => i.id_menu !== item.id_menu)
               )
             }
           />
         ))}
+
       </div>
 
       {/* RIGHT */}
-      <CartSummary cart={cart} />
+      <CartSummary cart={cart} onCheckout={onCheckout} />
     </div>
   );
 }

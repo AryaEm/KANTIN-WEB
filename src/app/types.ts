@@ -33,14 +33,17 @@ export type Stan = {
   telp: string
 };
 
-export type CartItem = {
-  id: number
-  name: string
-  image?: string
-  price: number
-  originalPrice?: number
-  qty: number
+export interface CartItem {
+  id_menu: number;
+  nama_menu: string;
+  foto: string  | null
+  harga_asli: number;
+  harga_setelah_diskon: number;
+  diskon_persen: number;
+
+  qty: number;
 }
+
 
 export type StanDetail = Stan & {
   menus: Menu[]

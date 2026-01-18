@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { removeCookie } from "@/lib/client-cookie"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ChefHat } from 'lucide-react';
+import { ChefHat, LogOut, LogOutIcon, LucideLogOut } from 'lucide-react';
 
 export function AdminNavbar() {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,8 +47,8 @@ export function AdminNavbar() {
         </Link>
 
         <div className="flex items-center gap-3">
-          <Button onClick={handleLogout} variant="glass" size="sm" className='text-red-500 hover:bg-red-500 hover:text-slate-950 px-6 outline-none border border-red-500/50'>
-            Logout
+          <Button onClick={handleLogout} variant="glass" size="sm" className='text-red-500 hover:bg-red-500 hover:text-slate-950 px-6 outline-none border border-red-500/50 flex items-center leading-none'>
+            <LogOut size={18} className=''/> Logout
           </Button>
         </div>
       </div>

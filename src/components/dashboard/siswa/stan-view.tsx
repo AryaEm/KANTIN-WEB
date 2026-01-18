@@ -12,7 +12,6 @@ import { Stan, StanDetail, Menu } from '@/app/types'
 import { BASE_API_URL } from '../../../../global'
 import { getCookie } from '@/lib/client-cookie'
 
-// tipe API untuk mapping
 interface StanAPI {
   id: number
   nama_stan: string
@@ -103,13 +102,17 @@ export default function StanPage({
 
   return (
     <main className="text-white Poppins">
+      <div className='mb-5 font-semibold text-2xl'>
+        Pilih Stan
+        <p className='text-white/60 text-sm font-medium tracking-wide'>Temukan stan favoritmu</p>
+        </div>
       {!selectedStan ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stans.map((stan) => (
             <StanCard
-              key={stan.id}
-              stan={stan}
-              onClick={() => handleSelectStan(stan.id)}
+            key={stan.id}
+            stan={stan}
+            onClick={() => handleSelectStan(stan.id)}
             />
           ))}
         </div>

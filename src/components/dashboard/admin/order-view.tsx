@@ -161,13 +161,13 @@ export default function OrderView() {
                 <>
                   <button
                     onClick={() => confirmOrder(order.id_transaksi)}
-                    className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium text-xs outline-none">
+                    className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium tracking-wide text-sm outline-none">
                     <Check size={18} className="mr-[4px]" />
                     Konfirmasi
                   </button>
                   <button
                     onClick={() => rejectOrder(order.id_transaksi)}
-                    className="flex items-center bg-red-500 hover:bg-red-600 text-white px-6 justify-center py-2 lg:rounded-xl rounded-md font-medium text-xs outline-none">
+                    className="flex items-center bg-red-500 hover:bg-red-600 font-medium text-white px-6 justify-center py-2 lg:rounded-xl rounded-md tracking-wide text-sm outline-none">
                     <X size={18} className="mr-[4px]" />
                     Tolak
                   </button>
@@ -177,7 +177,7 @@ export default function OrderView() {
               {order.status === "proses" && (
                 <button
                   onClick={() => finishOrder(order.id_transaksi)}
-                  className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium text-xs outline-none">
+                  className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium tracking-wide text-sm outline-none">
                   <Check size={18} className="mr-[4px]" />
                   Selesai
                 </button>

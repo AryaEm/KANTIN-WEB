@@ -1,8 +1,14 @@
 import { CartItem } from '@/app/types';
 
-export default function CartSummary({ cart }: { cart: CartItem[] }) {
+export default function CartSummary({
+  cart,
+  onCheckout,
+}: {
+  cart: CartItem[];
+  onCheckout: () => void;
+}) {
   const total = cart.reduce(
-    (sum, item) => sum + item.price * item.qty,
+    (sum, item) => sum + item.harga_setelah_diskon * item.qty,
     0
   );
 
@@ -11,9 +17,16 @@ export default function CartSummary({ cart }: { cart: CartItem[] }) {
       <h3 className="text-lg font-semibold mb-4">Ringkasan</h3>
 
       {cart.map(item => (
-        <div key={item.id} className="flex justify-between text-sm mb-2">
-          <span className='text-white/60'>{item.name} x{item.qty}</span>
-          <span>Rp {(item.price * item.qty).toLocaleString()}</span>
+        <div
+          key={item.id_menu}
+          className="flex justify-between text-sm mb-2"
+        >
+          <span className="text-white/60">
+            {item.nama_menu} x{item.qty}
+          </span>
+          <span>
+            Rp {(item.harga_setelah_diskon * item.qty).toLocaleString()}
+          </span>
         </div>
       ))}
 
@@ -26,7 +39,10 @@ export default function CartSummary({ cart }: { cart: CartItem[] }) {
         </span>
       </div>
 
-      <button className="mt-6 w-full rounded-xl bg-teal-500 py-2 text-black font-semibold outline-none hover:bg-teal-400 transition-all">
+      <button
+        onClick={onCheckout}
+        className="mt-6 w-full rounded-xl bg-teal-500 py-2 text-black font-semibold outline-none hover:bg-teal-400 transition-all"
+      >
         Checkout
       </button>
     </div>

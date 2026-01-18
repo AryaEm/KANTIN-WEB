@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MenuItem } from "@/app/types";
 import Image from "next/image";
 import { ImagePlus } from "lucide-react";
@@ -20,32 +20,26 @@ export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
     const [foto, setFoto] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+    useEffect(() => {
+        setNamaMenu(menu.nama_menu);
+        setHarga(menu.harga.toString());
+        setJenis(menu.jenis);
+        setDeskripsi(menu.deskripsi ?? "");
+        setStatus(menu.status);
+        setFoto(null);
+        setPreviewUrl(null);
+    }, [menu.id]);
 
     const handleSubmit = () => {
         const formData = new FormData();
 
-        if (namaMenu !== menu.nama_menu)
-            formData.append("nama_menu", namaMenu);
+        formData.append("nama_menu", namaMenu);
+        formData.append("harga", harga);
+        formData.append("jenis", jenis);
+        formData.append("deskripsi", deskripsi);
+        formData.append("status", status);
 
-        if (Number(harga) !== menu.harga)
-            formData.append("harga", harga);
-
-        if (jenis !== menu.jenis)
-            formData.append("jenis", jenis);
-
-        if (deskripsi !== (menu.deskripsi ?? ""))
-            formData.append("deskripsi", deskripsi);
-
-        if (status !== menu.status)
-            formData.append("status", status);
-
-        if (foto)
-            formData.append("foto", foto);
-
-        if ([...formData.keys()].length === 0) {
-            onClose();
-            return;
-        }
+        if (foto) formData.append("foto", foto);
 
         onSubmit(menu.id, formData);
     };
@@ -95,12 +89,15 @@ export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
                     <option value="habis">Habis</option>
                 </select>
 
-                {/* <div className="relative w-full max-w-md">
+                <div className="relative w-full max-w-md">
                     <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
-                        className="hidden"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0] ?? null;
+                            setFoto(file);
+                            if (file) setPreviewUrl(URL.createObjectURL(file));
+                        }} className="hidden"
                         id="foto-upload"
                     />
                     <label
@@ -132,15 +129,15 @@ export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
                             </>
                         )}
                     </label>
-                </div> */}
+                </div>
 
-                
+                {/*                 
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
           className="text-white text-sm"
-        />
+        /> */}
 
                 <div className="flex justify-end gap-3 pt-4">
                     <button

@@ -185,11 +185,11 @@ export default function OrderView() {
                 onClick={() => {
                   setSelectedId(history.id_transaksi);
                   setShowConfirm(true);
-                }} className="px-4 py-2 mt-3 text-sm rounded-md outline-none bg-red-500/70 text-white hover:bg-red-500/90 transition-all -top-3 -right-3"
+                }} className="w-full py-3 mt-4 text-sm rounded-md outline-none text-red-500 hover:text-white tracking-wide font-semibold border-2 border-red-500 hover:bg-red-500/90 transition-all -top-3 -right-3"
               >
                 Batalkan Pesanan
               </button>
-            )}
+            )}  
           </div>
         ))}
       </div>
