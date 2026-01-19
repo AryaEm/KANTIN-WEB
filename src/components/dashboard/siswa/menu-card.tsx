@@ -12,6 +12,7 @@ type Props = {
 export default function MenuCard({ menu, onAddToCart }: Props) {
   const discount = menu.discount ?? 0;
   const hasDiscount = discount > 0;
+  const isAvailable = menu.status === "tersedia";
 
   const finalPrice = hasDiscount
     ? Math.round(menu.price - (menu.price * discount) / 100)
@@ -29,9 +30,9 @@ export default function MenuCard({ menu, onAddToCart }: Props) {
       <div className="w-full rounded-lg bg-white/10 mb-4 flex items-center justify-center border border-white/10">
         {menu.image ? (
           <Image
-            src={menu.image}  
+            src={menu.image}
             alt={menu.name}
-            width={144} 
+            width={144}
             height={144}
             className="object-cover h-44 rounded-lg w-full"
           />
@@ -42,7 +43,19 @@ export default function MenuCard({ menu, onAddToCart }: Props) {
         )}
       </div>
 
-      <h4 className="font-medium mb-1">{menu.name}</h4>
+      <div className='absolute top-5 left-5 px-2 py-[4px] bg-black/60 rounded-md text-sm'>{menu.jenis_menu}</div>
+
+      <div className='flex justify-between'>
+        <h4 className="font-medium mb-1">{menu.name}</h4>
+        <span
+          className={`text-xs px-2 py-1 rounded-full font-medium
+          ${isAvailable
+              ? "bg-green-500/20 text-green-400 border border-green-500/30"
+              : "bg-red-500/20 text-red-400 border border-red-500/30"
+            }`}
+        >
+          {menu.status}
+        </span>      </div>
       <p className='text-white/60 text-sm mb-1 line-clamp-2'>
         {menu.description}
       </p>
@@ -60,6 +73,7 @@ export default function MenuCard({ menu, onAddToCart }: Props) {
       </div>
 
       <button
+        disabled={!isAvailable}
         onClick={() =>
           onAddToCart({
             ...menu,
@@ -67,9 +81,14 @@ export default function MenuCard({ menu, onAddToCart }: Props) {
             harga_setelah_diskon: finalPrice,
           })
         }
-        className="w-full rounded-lg bg-teal-500 py-2 text-black font-medium hover:bg-teal-400 transition outline-none"
+        className={`w-full rounded-lg py-2 font-medium transition outline-none
+    ${isAvailable
+            ? "bg-teal-500 text-black hover:bg-teal-400"
+            : "bg-gray-600 text-gray-300 cursor-not-allowed"
+          }
+  `}
       >
-        Tambah ke Keranjang
+        {isAvailable ? "Tambah ke Keranjang" : "Stok Habis"}
       </button>
     </div>
   );

@@ -1,30 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MenuItem } from "@/app/types";
+import { AdminStanMenu } from "@/app/types";
 import Image from "next/image";
 import { ImagePlus } from "lucide-react";
 
-interface Props {
-    menu: MenuItem;
-    onClose: () => void;
-    onSubmit: (id: number, data: FormData) => void;
-}
+type Props = {
+  menu: AdminStanMenu;
+  onClose: () => void;
+  onSubmit: (id: number, formData: FormData) => Promise<void>;
+};
 
 export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
-    const [namaMenu, setNamaMenu] = useState(menu.nama_menu);
-    const [harga, setHarga] = useState(menu.harga.toString());
-    const [jenis, setJenis] = useState<MenuItem["jenis"]>(menu.jenis);
-    const [deskripsi, setDeskripsi] = useState(menu.deskripsi ?? "");
-    const [status, setStatus] = useState<MenuItem["status"]>(menu.status);
+    const [namaMenu, setNamaMenu] = useState(menu.name);
+    const [harga, setHarga] = useState(menu.price.toString());
+    const [jenis, setJenis] = useState<AdminStanMenu["jenis_menu"]>(menu.jenis_menu);
+    const [deskripsi, setDeskripsi] = useState(menu.description ?? "");
+    const [status, setStatus] = useState<AdminStanMenu["status"]>(menu.status);
     const [foto, setFoto] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        setNamaMenu(menu.nama_menu);
-        setHarga(menu.harga.toString());
-        setJenis(menu.jenis);
-        setDeskripsi(menu.deskripsi ?? "");
+        setNamaMenu(menu.name);
+        setHarga(menu.price.toString());
+        setJenis(menu.jenis_menu);
+        setDeskripsi(menu.description ?? "");
         setStatus(menu.status);
         setFoto(null);
         setPreviewUrl(null);

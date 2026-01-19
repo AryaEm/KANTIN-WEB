@@ -6,36 +6,55 @@ import { BASE_API_URL } from "../../../../global";
 import { getCookie } from "@/lib/client-cookie";
 import { Check, X } from "lucide-react";
 import { OrderStatus, Order } from "@/app/types";
+import { toast } from "react-toastify";
+import CustomToast from "@/components/ui/CustomToast";
+import { ArrowDown } from 'lucide-react'
+
 
 export default function OrderView() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  type OrderFilter = "default" | "belum_dikonfirmasi" | "proses";
+  const [filterStatus, setFilterStatus] =
+    useState<OrderFilter>("default");
 
   const token = getCookie("token");
 
- const fetchOrders = useCallback(async () => {
-  if (!token) return;
+  const fetchOrders = useCallback(async (filter: OrderFilter = "default") => {
+    if (!token) return;
 
-  try {
-    const res = await axios.get(`${BASE_API_URL}/order/history/stan`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      const res = await axios.get(
+        `${BASE_API_URL}/order/history/stan`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params:
+            filter === "default"
+              ? {}
+              : { status: filter },
+        }
+      );
 
-    const data = res.data.data;
-    setOrders(Array.isArray(data) ? data : []);
-  } catch (error) {
-    console.error("FETCH ORDER ERROR:", error);
-  } finally {
-    setLoading(false);
-  }
-}, [token]);
+      const data = res.data.data;
+      setOrders(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("FETCH ORDER ERROR:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
 
+  useEffect(() => {
+    fetchOrders(filterStatus);
+  }, [filterStatus, fetchOrders]);
+
+
   const confirmOrder = async (id: number) => {
     try {
-      await axios.put(
+      const res = await axios.put(
         `${BASE_API_URL}/order/update/${id}`,
         { status: "proses" },
         {
@@ -44,15 +63,55 @@ export default function OrderView() {
           },
         }
       );
+      if (!res.status) {
+        toast(
+          <CustomToast
+            type="warning"
+            message={"Gagal Update Transaksi"}
+          />,
+          {
+            containerId: "toastUpdateStatusOrder",
+            className: "bg-yellow-400 rounded-xl shadow-lg",
+            icon: false,
+          }
+        );
+        return;
+      }
       fetchOrders();
-    } catch (error) {
-      console.error("CONFIRM ORDER ERROR:", error);
+      toast(
+        <CustomToast
+          type="success"
+          message="Status Transaksi Berhasil di Update"
+        />,
+        {
+          containerId: "toastUpdateStatusOrder",
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
+        }
+      );
+    } catch (err: unknown) {
+      let message = "Terjadi kesalahan server";
+
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.message ?? err.message;
+      }
+
+      toast(
+        <CustomToast type="error" message={message} />,
+        {
+          containerId: "toastRejectOrder",
+          className:
+            "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+          icon: false,
+        }
+      );
     }
   };
 
   const finishOrder = async (id: number) => {
     try {
-      await axios.put(
+      const res = await axios.put(
         `${BASE_API_URL}/order/update/${id}`,
         { status: "selesai" },
         {
@@ -61,15 +120,55 @@ export default function OrderView() {
           },
         }
       );
+      if (!res.status) {
+        toast(
+          <CustomToast
+            type="warning"
+            message={"Gagal Update Transaksi"}
+          />,
+          {
+            containerId: "toastUpdateStatusOrder",
+            className: "bg-yellow-400 rounded-xl shadow-lg",
+            icon: false,
+          }
+        );
+        return;
+      }
       fetchOrders();
-    } catch (error) {
-      console.error("FINISH ORDER ERROR:", error);
+      toast(
+        <CustomToast
+          type="success"
+          message="Status Transaksi Berhasil di Update"
+        />,
+        {
+          containerId: "toastUpdateStatusOrder",
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
+        }
+      );
+    } catch (err: unknown) {
+      let message = "Terjadi kesalahan server";
+
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.message ?? err.message;
+      }
+
+      toast(
+        <CustomToast type="error" message={message} />,
+        {
+          containerId: "toastUpdateStatusOrder",
+          className:
+            "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+          icon: false,
+        }
+      );
     }
   };
 
   const rejectOrder = async (id: number) => {
     try {
-      await axios.patch(
+      const res = await axios.patch(
         `${BASE_API_URL}/order/${id}/reject`,
         {},
         {
@@ -78,9 +177,50 @@ export default function OrderView() {
           },
         }
       );
+      if (!res.status) {
+        toast(
+          <CustomToast
+            type="warning"
+            message={"Reject Gagal"}
+          />,
+          {
+            containerId: "toastRejectOrder",
+            className: "bg-yellow-400 rounded-xl shadow-lg",
+            icon: false,
+          }
+        );
+        return;
+      }
       fetchOrders();
-    } catch (error) {
-      console.error("REJECT ORDER ERROR:", error);
+
+      toast(
+        <CustomToast
+          type="success"
+          message="Transaksi Berhasil di Tolak"
+        />,
+        {
+          containerId: "toastRejectOrder",
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
+        }
+      );
+    } catch (err: unknown) {
+      let message = "Terjadi kesalahan server";
+
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.message ?? err.message;
+      }
+
+      toast(
+        <CustomToast type="error" message={message} />,
+        {
+          containerId: "toastRejectOrder",
+          className:
+            "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+          icon: false,
+        }
+      );
     }
   };
 
@@ -109,6 +249,25 @@ export default function OrderView() {
   }
   return (
     <div className="space-y-6">
+      <div className="flex gap-3 text-sm">
+        <div className="relative">
+          <select
+            value={filterStatus}
+            onChange={(e) =>
+              setFilterStatus(e.target.value as OrderFilter)
+            }
+            className="bg-[#0E1618] text-teal-100 border appearance-none border-teal-500/20 rounded-lg pr-10 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 hover:border-teal-400/60 transition ">
+            <option value="default">Semua Pesanan Aktif</option>
+            <option value="belum_dikonfirmasi">Belum Dikonfirmasi</option>
+            <option value="proses">Proses</option>
+          </select>
+
+          <ArrowDown
+            size={18}
+            className="pointer-events-none absolute top-3 right-3 text-teal-500/70"
+          />
+        </div>
+      </div>
       {orders.map((order) => (
         <div
           key={order.id_transaksi}

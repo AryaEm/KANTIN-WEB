@@ -12,7 +12,8 @@ import HistoryView from '@/components/dashboard/siswa/history-view';
 import CartView from '@/components/dashboard/siswa/cart-view';
 import OrderView from '@/components/dashboard/siswa/order-view';
 import { StudentNavbar } from '@/components/dashboard/siswa/siswa-navbar';
-
+import { toast } from 'react-toastify';
+import CustomToast from '@/components/ui/CustomToast';
 import { CartItem, Menu } from '@/app/types';
 
 export type SiswaTab =
@@ -80,17 +81,52 @@ export default function SiswaDashboardPage() {
       const res = await post<OrderResponse>('/order', payload, token);
 
       if (!res.status) {
-        console.error(res.message);
+        toast(
+          <CustomToast
+            type="warning"
+            message={res.message ?? "File Maksimal 5mb"}
+          />,
+          {
+            containerId: "toastOrder",
+            className: "bg-yellow-400 rounded-xl shadow-lg",
+            icon: false,
+          }
+        );
         return;
       }
 
-      // ✅ sukses
       setCart([]);
       setActiveTab('pesanan');
 
       console.log('TRANSAKSI BERHASIL:', res.data);
-    } catch (err) {
-      console.error('CHECKOUT ERROR:', err);
+      toast(
+        <CustomToast
+          type="success"
+          message="Transasksi berhasil"
+        />,
+        {
+          containerId: "toastOrder",
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
+        }
+      );
+    } catch (err: unknown) {
+      let message = "Terjadi kesalahan server";
+
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.message ?? err.message;
+      }
+
+      toast(
+        <CustomToast type="error" message={message} />,
+        {
+          containerId: "toastOrder",
+          className:
+            "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+          icon: false,
+        }
+      );
     }
   };
 

@@ -6,17 +6,54 @@ export type Menu = {
   image?: string | null;
   description: string
   discount?: number;
+  status: "tersedia" | "habis";
 };
 
+// export type MenuItem = {
+//   id: number;
+//   nama_menu: string;
+//   jenis: "makanan" | "minuman";
+//   harga: number;
+//   deskripsi: string
+//   status: "tersedia" | "habis";
+//   foto?: string
+// };
+
 export type MenuItem = {
-  id: number;
-  nama_menu: string;
+  id: number
+  nama_menu: string
+  harga: number
   jenis: "makanan" | "minuman";
-  harga: number;
+  status: "tersedia" | "habis"
   deskripsi: string
-  status: "tersedia" | "habis";
+  diskon?: {
+    id: number
+    nama_diskon: string
+    potongan: number
+  } | null
   foto?: string
+}
+
+export type Diskon = {
+  id: number;
+  nama_diskon: string;
+  persentase_diskon: number;
+  tanggal_awal: string;
+  tanggal_akhir: string;
 };
+
+export type AdminStanMenu = {
+  id: number;
+  name: string;
+  description: string;
+  jenis_menu: "makanan" | "minuman";
+  price: number;
+  image: string | null;
+  status: "tersedia" | "habis";
+  discount: number;
+  activeDiskonId: number | null; 
+};
+
 
 export type DiskonItem = {
   id: number
@@ -36,7 +73,7 @@ export type Stan = {
 export interface CartItem {
   id_menu: number;
   nama_menu: string;
-  foto: string  | null
+  foto: string | null
   harga_asli: number;
   harga_setelah_diskon: number;
   diskon_persen: number;

@@ -46,7 +46,7 @@ export default function OrderView() {
         toast(
           <CustomToast
             type="warning"
-            message={res.message ?? "File Maksimal 5mb"}
+            message={res.message ?? "error"}
           />,
           {
             containerId: "toastDeleteOrder",

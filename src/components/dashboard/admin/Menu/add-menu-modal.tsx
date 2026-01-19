@@ -19,7 +19,6 @@ export default function AddMenuModal({
     });
     const [foto, setFoto] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    // const [jenis, setJenis] = useState<"makanan" | "minuman">("makanan");
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>

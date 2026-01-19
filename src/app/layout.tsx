@@ -81,6 +81,41 @@ export default function RootLayout({
           hideProgressBar
           theme="dark"
         />
+        <ToastContainer
+          containerId="toastOrder"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastRejectOrder"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastUpdateStatusOrder"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastLepasDiskon"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastPasangDiskon"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
       </body>
     </html>
   );

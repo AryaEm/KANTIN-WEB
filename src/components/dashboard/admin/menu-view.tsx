@@ -1,6 +1,6 @@
 "use client"
 
-import { MenuItem } from "@/app/types";
+import { AdminStanMenu } from "@/app/types";
 import { useEffect, useState } from "react";
 import { get, post, drop, put } from "@/lib/api-bridge";
 import { getCookie } from "@/lib/client-cookie";
@@ -8,21 +8,24 @@ import Image from "next/image";
 import AddMenuModal from "./Menu/add-menu-modal";
 import DelMenuModal from "./Menu/delete-menu-modal";
 import EditMenuModal from "./Menu/edit-menu-modal";
+import DiskonModal from "./Diskon/diskon-modal";
 import CustomToast from "@/components/ui/CustomToast";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Plus, SquarePen, Tag, Trash2, UtensilsCrossed } from "lucide-react";
 
 export default function MenuView() {
-    const [menus, setMenus] = useState<MenuItem[]>([])
+    const [menus, setMenus] = useState<AdminStanMenu[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null)
     const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
-    const [selectedMenu, setSelectedMenu] = useState<MenuItem | null>(null)
+    const [selectedMenu, setSelectedMenu] = useState<AdminStanMenu | null>(null)
+    const [showDiskonModal, setShowDiskonModal] = useState(false);
+    const [selectedMenuForDiskon, setSelectedMenuForDiskon] = useState<AdminStanMenu | null>(null);
 
-    const statusStyle = (status: MenuItem["status"]) =>
+    const statusStyle = (status: AdminStanMenu["status"]) =>
         status === "tersedia"
             ? "bg-emerald-500/20 text-emerald-400"
             : "bg-red-500/20 text-red-400";
@@ -30,7 +33,7 @@ export default function MenuView() {
     const fetchMenus = async () => {
         try {
             const token = getCookie("token");
-            const res = await get<MenuItem[]>("/menu/menu-admin", token);
+            const res = await get<AdminStanMenu[]>("/menu/menu-admin", token);
 
             if (!res.status) throw new Error(res.message);
             setMenus(res.data);
@@ -49,7 +52,7 @@ export default function MenuView() {
         const token = getCookie("token");
 
         try {
-            const res = await post<MenuItem>("/menu/add", formData, token);
+            const res = await post<AdminStanMenu>("/menu/add", formData, token);
 
             if (!res.status) {
                 toast(
@@ -66,7 +69,8 @@ export default function MenuView() {
                 return;
             }
 
-            setMenus((prev) => [res.data, ...prev]);
+            await fetchMenus();
+
             setShowModal(false);
 
             toast(
@@ -168,7 +172,7 @@ export default function MenuView() {
         const token = getCookie("token");
 
         try {
-            const res = await put<MenuItem>(
+            const res = await put<AdminStanMenu>(
                 `/menu/update/${id}`,
                 formData,
                 token
@@ -216,6 +220,11 @@ export default function MenuView() {
     if (loading) {
         return <p className="text-white">Loading menu...</p>;
     }
+    const getFinalPrice = (price: number, discount?: number) => {
+        if (!discount || discount <= 0) return price;
+        return Math.round(price - (price * discount) / 100);
+    };
+
     return (
         <>
             <div className="space-y-8 Poppins">
@@ -240,12 +249,17 @@ export default function MenuView() {
                                 key={menu.id}
                                 className="card-bg rounded-2xl relative overflow-hidden shadow-lg border border-white/15 hover:border-teal-400/40 cursor-pointer hover:shadow hover:shadow-teal-300/20 transition-all duration-300 hover:scale-105"
                             >
+                                {menu.discount > 0 && (
+                                    <span className="absolute top-3 right-3 text-xs px-3 py-1 rounded-full bg-teal-500/70 text-white border border-teal-400 backdrop-blur">
+                                        {menu.discount}%
+                                    </span>
+                                )}
 
                                 <div className="h-40 overflow-hidden bg-gradient-to-br from-teal-900 to-slate-900 flex items-center justify-center">
-                                    {menu.foto ? (
+                                    {menu.image ? (
                                         <Image
-                                            src={`${menu.foto}?v=${menu.id}-${menu.harga}`}
-                                            alt={menu.nama_menu}
+                                            src={`${menu.image}?v=${menu.id}-${menu.price}`}
+                                            alt={menu.name}
                                             width={400}
                                             height={160}
                                             className="w-full object-cover object-center"
@@ -256,15 +270,15 @@ export default function MenuView() {
                                     )}
                                 </div>
 
-                                <div className="border border-teal-400 absolute top-[6px] left-[6px] text-white py-px text-sm px-3 rounded-xl bg-black/30">{menu.jenis}</div>
+                                <div className="border border-teal-400 absolute top-[6px] left-[6px] text-white py-px text-sm px-3 rounded-xl bg-black/30">{menu.jenis_menu}</div>
 
                                 <div className="p-4 space-y-3">
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <h2 className="text-lg font-semibold text-white">
-                                                {menu.nama_menu}
+                                                {menu.name}
                                             </h2>
-                                            <p className="text-sm text-gray-400">{menu.deskripsi}</p>
+                                            <p className="text-sm text-gray-400">{menu.description}</p>
                                         </div>
 
                                         <span
@@ -276,11 +290,17 @@ export default function MenuView() {
                                         </span>
                                     </div>
 
-                                    <div className="flex justify-between items-center">
-                                        <p className="text-xl font-bold text-teal-400">
-                                            Rp {Number(menu.harga).toLocaleString("id-ID")}
-                                        </p>
+                                    <div className="flex gap-2 items-center">
+                                        <span className="text-xl font-bold text-teal-400">
+                                            Rp {getFinalPrice(menu.price, menu.discount).toLocaleString("id-ID")}
+                                        </span>
+                                        {menu.discount > 0 && (
+                                            <span className="text-sm text-white/40 line-through">
+                                                Rp {Number(menu.price).toLocaleString("id-ID")}
+                                            </span>
+                                        )}
                                     </div>
+
                                     <div className="flex gap-2 justify-between">
                                         <button
                                             onClick={() => {
@@ -290,8 +310,14 @@ export default function MenuView() {
                                             className="text-white text-sm hover:text-teal-400 outline-none py-[6px] bg-white/5 rounded-md border border-transparent hover:border-teal-400 flex gap-2 w-full justify-center items-center">
                                             <SquarePen size={15} /> Edit
                                         </button>
-                                        <button className="text-white text-sm hover:text-teal-400 outline-none py-[6px] bg-white/5 rounded-md border border-transparent hover:border-teal-400 flex gap-2 w-full justify-center items-center">
-                                            <Tag size={15} /> Diskon
+                                        <button
+                                            onClick={() => {
+                                                setSelectedMenu(menu);
+                                                setShowDiskonModal(true);
+                                            }}
+                                            className="text-white text-sm hover:text-teal-400  outline-none py-[6px] bg-white/5 rounded-md border border-transparent hover:border-teal-400 flex gap-2 w-full justify-center items-center">
+                                            <Tag size={15} />
+                                            {menu.discount > 0 ? "lepas Diskon" : "Pasang Diskon"}
                                         </button>
                                         <button
                                             onClick={() => {
@@ -330,6 +356,18 @@ export default function MenuView() {
                         setSelectedMenu(null);
                     }}
                     onSubmit={handleUpdateMenu}
+                />
+            )}
+            {showDiskonModal && selectedMenu && (
+                <DiskonModal
+                    menuId={selectedMenu.id}
+                    hasDiscount={selectedMenu.discount > 0}
+                    activeDiskonId={selectedMenu.activeDiskonId} 
+                    onClose={() => {
+                        setShowDiskonModal(false);
+                        setSelectedMenu(null);
+                    }}
+                    onSuccess={fetchMenus}
                 />
             )}
 
