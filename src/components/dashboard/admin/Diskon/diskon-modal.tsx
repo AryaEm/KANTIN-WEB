@@ -79,7 +79,7 @@ export default function DiskonModal({
         onClose();
     };
 
-    const lepasDiskon = async () => {
+    const lepasDiskon = async () => {   
         if (!activeDiskonId) {
             console.warn("activeDiskonId kosong");
             return;
