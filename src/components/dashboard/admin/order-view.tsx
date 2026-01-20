@@ -244,12 +244,23 @@ export default function OrderView() {
     }
   };
 
+  const statusLabel = (status: OrderStatus) => {
+    switch (status) {
+      case "belum_dikonfirmasi":
+        return "Menunggu Konfirmasi";
+      case "proses":
+        return "Proses"
+      default:
+        return status;
+    }
+  };
+
   if (loading) {
     return <p className="text-white">Loading Pesanan...</p>;
   }
   return (
     <div className="space-y-6">
-      <div className="flex gap-3 text-sm">
+      {/* <div className="flex gap-3 text-sm">
         <div className="relative">
           <select
             value={filterStatus}
@@ -267,7 +278,39 @@ export default function OrderView() {
             className="pointer-events-none absolute top-3 right-3 text-teal-500/70"
           />
         </div>
+      </div> */}
+      <div className="flex gap-3">
+        <button
+          onClick={() => setFilterStatus("default")}
+          className={`px-6 py-2.5 rounded-xl font-medium transition
+          ${filterStatus === "default"
+              ? "bg-teal-500 text-black outline-none"
+              : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
+            }`}>
+          Semua Pesanan
+        </button>
+
+        <button
+          onClick={() => setFilterStatus("belum_dikonfirmasi")}
+          className={`px-6 py-2.5 rounded-xl font-medium transition
+          ${filterStatus === "belum_dikonfirmasi"
+              ? "bg-teal-500 text-black outline-none"
+              : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
+            }`}>
+          Belum Dikonfirmasi
+        </button>
+
+        <button
+          onClick={() => setFilterStatus("proses")}
+          className={`px-6 py-2.5 rounded-xl font-medium transition
+          ${filterStatus === "proses"
+              ? "bg-teal-500 text-black outline-none"
+              : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
+            }`}>
+          Proses
+        </button>
       </div>
+
       {orders.map((order) => (
         <div
           key={order.id_transaksi}
@@ -286,7 +329,7 @@ export default function OrderView() {
                 order.status
               )}`}
             >
-              {order.status}
+              {statusLabel(order.status)}
             </span>
           </div>
 

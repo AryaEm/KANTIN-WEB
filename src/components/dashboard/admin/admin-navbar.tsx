@@ -47,7 +47,7 @@ export function AdminNavbar() {
         </Link>
 
         <div className="flex items-center gap-3">
-          <Button onClick={handleLogout} variant="glass" size="sm" className='text-red-500 hover:bg-red-500 hover:text-slate-950 px-6 outline-none border border-red-500/50 flex items-center leading-none'>
+          <Button onClick={handleLogout} variant="glass" size="sm" className='rounded-md text-red-500 hover:bg-red-500 hover:text-slate-950 px-6 outline-none border border-red-500/50 flex items-center leading-none'>
             <LogOut size={18} className=''/> Logout
           </Button>
         </div>

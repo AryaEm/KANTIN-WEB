@@ -233,7 +233,7 @@ export default function MenuView() {
 
                     <button
                         onClick={() => setShowModal(true)}
-                        className="flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-black px-5 py-2.5 rounded-xl font-semibold outline-none text-sm">
+                        className="flex items-center gap-2 bg-teal-500 tracking-wide hover:bg-teal-600 text-black px-5 py-2.5 rounded-xl font-semibold outline-none text-sm">
                         <Plus size={20} /> Tambah Menu
                     </button>
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { AdminTab } from '@/app/dashboard/admin/page';
-import { LayoutDashboard, ClipboardList, UtensilsCrossed, Tag, History } from 'lucide-react';
+import { LayoutDashboard, ClipboardList, UtensilsCrossed, Tag, History, Users } from 'lucide-react';
 
 interface Props {
   activeTab: AdminTab;
@@ -37,6 +37,11 @@ const tabs: {
     label: 'History',
     value: 'history',
     icon: History,
+  },
+  {
+    label: 'Pelanggan',
+    value: 'pelanggan',
+    icon: Users,
   },
 ];
 

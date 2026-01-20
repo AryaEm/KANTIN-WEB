@@ -19,6 +19,10 @@ export default function HistoryView() {
         const token = getCookie("token");
         if (!token) return;
 
+        if (year < 2000 || year > 2100) return;
+        if (filterType === "month" && (month < 1 || month > 12)) return;
+        if (filterType === "week" && (week < 1 || week > 53)) return;
+
         let url = "/order/history/stan/selesai";
 
         if (filterType !== "all") {
@@ -38,85 +42,131 @@ export default function HistoryView() {
           url += `?${query.toString()}`;
         }
 
-        const res = await get<any[]>(url, token);
+        const res = await get<any>(url, token);
 
-        if (Array.isArray(res)) {
-          setHistories(res);
+        if (res?.status === false) {
+          console.error("API Error:", res.message);
+          setHistories([]); // reset biar UI aman
           return;
         }
 
-        if (res?.status === false) {
-          throw new Error(res.message || "Gagal mengambil data");
-        }
-
-        setHistories(res.data ?? []);
+        setHistories(res.data ?? res ?? []);
       } catch (err) {
         console.error("Gagal ambil history:", err);
+        setHistories([]); // fallback
       }
     };
 
     fetchHistory();
   }, [filterType, year, month, week]);
 
+  useEffect(() => {
+    if (filterType === "all") return;
+
+    if (filterType === "month") {
+      setWeek(1); // reset minggu
+    }
+
+    if (filterType === "week") {
+      setMonth(new Date().getMonth() + 1); // reset bulan
+    }
+  }, [filterType]);
+
 
   return (
     <div className="space-y-6 Poppins">
-      <div className="mb-4 space-y-3 text-sm">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative">
-            <p className="text-white/70 pb-2">Kategori</p>
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value as any)}
-              className=" bg-[#0E1618] text-teal-100 border appearance-none border-teal-500/20 rounded-lg pr-10 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-teal-500/40 ">
-              <option value="all">Semua Waktu</option>
-              <option value="month">Per Bulan</option>
-              <option value="week">Per Minggu</option>
-            </select>
-            <ArrowDown size={18} className="pointer-events-none absolute top-10 right-2 text-teal-500/70" />
-          </div>
+      <div className="mb-6 space-y-4 text-sm">
 
-          {filterType !== "all" && (
+        {/* Filter Button */}
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setFilterType("all")}
+            className={`px-6 py-2.5 rounded-xl font-medium transition
+            ${filterType === "all"
+                ? "bg-teal-500 text-black outline-none"
+                : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
+              }`}>
+            Semua Waktu
+          </button>
+
+          <button
+            onClick={() => setFilterType("month")}
+            className={`px-6 py-2.5 rounded-xl font-medium transition
+            ${filterType === "month"
+                ? "bg-teal-500 text-black outline-none"
+                : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
+              }`}>
+            Per Bulan
+          </button>
+
+          <button
+            onClick={() => setFilterType("week")}
+            className={`px-6 py-2.5 rounded-xl font-medium transition
+            ${filterType === "week"
+                ? "bg-teal-500 text-black outline-none"
+                : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
+              }`}>
+            Per Minggu
+          </button>
+        </div>
+
+        {filterType !== "all" && (
+          <div className="flex gap-3 items-end">
             <div>
               <p className="text-white/70 pb-2">Tahun</p>
               <input
                 type="number"
+                min={2000}
+                max={2100}
                 value={year}
-                onChange={(e) => setYear(Number(e.target.value))}
-                placeholder="Tahun (contoh: 2025)"
-                className="bg-[#0E1618] text-teal-100 border appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border-teal-500/20 rounded-lg px-4 py-2.5 w-36 placeholder:text-teal-400/50 focus:outline-none focus:ring-2 focus:ring-teal-500/40 " />
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val >= 2000 && val <= 2100) setYear(val);
+                }}
+                placeholder="Contoh: 2025"
+                className="bg-[#0E1618] text-teal-100 border border-teal-500/20 rounded-xl px-4 py-2.5 w-36"
+              />
             </div>
-          )}
 
-          {filterType === "month" && (
-            <div>
-              <p className="text-white/70 pb-2">Bulan</p>
-              <input
-                type="number"
-                min={1}
-                max={12}
-                value={month}
-                onChange={(e) => setMonth(Number(e.target.value))}
-                placeholder="Bulan (1–12)"
-                className="bg-[#0E1618] text-teal-100 border appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border-teal-500/20 rounded-lg px-4 py-2.5 w-36 placeholder:text-teal-400/50 focus:outline-none focus:ring-2 focus:ring-teal-500/40 " />
-            </div>
-          )}
+            {filterType === "month" && (
+              <div>
+                <p className="text-white/70 pb-2">Bulan</p>
+                <input
+                  type="number"
+                  min={1}
+                  max={12}
+                  value={month}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    if (val >= 1 && val <= 12) setMonth(val);
+                  }}
+                  placeholder="1 - 12"
+                  className="bg-[#0E1618] text-teal-100 border border-teal-500/20 rounded-xl px-4 py-2.5 w-32"
+                />
+              </div>
+            )}
 
-          {filterType === "week" && (
-            <div>
-              <p className="text-white/70 pb-2">Minggu</p>
-              <input
-                type="number"
-                min={1}
-                max={53}
-                value={week}
-                onChange={(e) => setWeek(Number(e.target.value))}
-                placeholder="Minggu ke- (1–53)"
-                className="bg-[#0E1618] text-teal-100 border appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border-teal-500/20 rounded-lg px-4 py-2.5 w-40 placeholder:text-teal-400/50 focus:outline-none focus:ring-2 focus:ring-teal-500/40 " />
-            </div>
-          )}
-        </div>
+            {filterType === "week" && (
+              <div>
+                <p className="text-white/70 pb-2">Minggu</p>
+                <input
+                  type="number"
+                  min={1}
+                  max={53}
+                  value={week}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    if (val >= 1 && val <= 53) setWeek(val);
+                  }}
+                  placeholder="1 - 53"
+                  className="bg-[#0E1618] text-teal-100 border border-teal-500/20 rounded-xl px-4 py-2.5 w-32"
+                />
+              </div>
+            )}
+          </div>
+        )}
 
+        {/* Keterangan */}
         {filterType === "month" && (
           <p className="text-teal-400/70 text-xs">
             Menampilkan transaksi pada <b>bulan tertentu</b> di tahun yang dipilih.
@@ -137,6 +187,7 @@ export default function HistoryView() {
           </p>
         )}
       </div>
+
 
       {histories.length === 0 ? (
         <div className="flex justify-center">
@@ -175,7 +226,11 @@ export default function HistoryView() {
 
                 <p className="text-sm text-gray-400">
                   {history.siswa.nama_siswa} -{" "}
-                  {new Date(history.tanggal).toLocaleDateString("id-ID")}
+                  {new Date(history.tanggal).toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </p>
               </div>
 
