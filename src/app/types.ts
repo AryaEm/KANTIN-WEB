@@ -180,3 +180,15 @@ export type HistorySiswa = {
   }[];
   total_harga: number;
 };
+
+export type AdminProfileResponse = {
+  id: number;
+  username: string;
+  role: string;
+  stan?: {
+    id: number
+    nama_stan: string;
+    nama_pemilik: string;
+    telp: string;
+  } | null;
+};

@@ -19,7 +19,7 @@ export type AdminTab =
   | 'menu'
   | 'discount'
   | 'history'
-  | 'pelanggan'
+  | 'siswa'
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState<AdminTab>('summary');
@@ -41,7 +41,7 @@ export default function AdminDashboardPage() {
           {activeTab === 'menu' && <MenuView />}
           {activeTab === 'discount' && <DiscountView />}
           {activeTab === 'history' && <HistoryView />}
-          {activeTab === 'pelanggan' && <SiswaListView />}
+          {activeTab === 'siswa' && <SiswaListView />}
         </div>
       </section>
     </>

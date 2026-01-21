@@ -39,8 +39,8 @@ const tabs: {
     icon: History,
   },
   {
-    label: 'Pelanggan',
-    value: 'pelanggan',
+    label: 'Siswa',
+    value: 'siswa',
     icon: Users,
   },
 ];

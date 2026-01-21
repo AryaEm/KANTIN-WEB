@@ -12,11 +12,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['localhost', 'kantin-web.vercel.app'],
+    domains: [
+      'localhost',
+      'kantin-web.vercel.app',
+      'dspsbwhzynraqkusdqth.supabase.co'
+    ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "dspsbwhzynraqkusdqth.supabase.co",
+        pathname: "/storage/v1/object/public/foto_siswa/**",
       },
     ],
   },
