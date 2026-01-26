@@ -1,21 +1,12 @@
 'use client';
 
-// import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { removeCookie } from "@/lib/client-cookie"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ChefHat, LogOut, User } from 'lucide-react';
-// import { get, put } from '@/lib/api-bridge';
 
 export function AdminNavbar() {
-  // const [openProfile, setOpenProfile] = useState(false);
-
-  // useEffect(() => {
-  //   const token = getCookie("token");
-  //   setIsLoggedIn(!!token);
-  // }, []);
-
   const router = useRouter();
 
   const handleLogout = () => {

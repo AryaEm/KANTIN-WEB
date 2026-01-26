@@ -27,7 +27,7 @@ export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
         setDeskripsi(menu.description ?? "");
         setStatus(menu.status);
         setFoto(null);
-        setPreviewUrl(null);
+        setPreviewUrl(null);    
     }, [menu.id]);
 
     const handleSubmit = () => {

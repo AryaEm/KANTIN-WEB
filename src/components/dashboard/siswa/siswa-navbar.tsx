@@ -1,20 +1,12 @@
 'use client';
 
-// import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { removeCookie } from "@/lib/client-cookie"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ChefHat } from 'lucide-react';
+import { ChefHat, User, LogOut } from 'lucide-react';
 
 export function StudentNavbar() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // useEffect(() => {
-  //   const token = getCookie("token");
-  //   setIsLoggedIn(!!token);
-  // }, []);
-
   const router = useRouter();
 
   const handleLogout = () => {
@@ -30,9 +22,7 @@ export function StudentNavbar() {
     removeCookie("jenis_kelamin")
     removeCookie("foto")
 
-    // setIsLoggedIn(false);
-
-    router.replace("/");  
+    router.replace("/");
   };
 
   return (
@@ -46,10 +36,20 @@ export function StudentNavbar() {
           <span className="text-lg text-teal-300">KantinPlus</span>
         </Link>
 
-        <div className="flex items-center gap-3">
-          <Button onClick={handleLogout} variant="glass" size="sm" className='text-red-500 hover:bg-red-500 hover:text-slate-950 px-6 outline-none border border-red-500/50'>
-            Logout
-          </Button>
+        <div className='flex gap-3'>
+          <div className="flex items-center gap-3">
+            <Link href={'/dashboard/siswa/profil'}> 
+              <Button variant="glass" size="sm" className='rounded-md text-white/70 hover:bg-teal-400 hover:text-slate-950 px-6 outline-none border border-white/50 flex items-center leading-none'>
+                <User size={18} className='' /> Profil
+              </Button>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button onClick={handleLogout} size="sm" className='rounded-md text-red-500 hover:bg-red-500/20 p-3 outline-none flex items-center leading-none'>
+                <LogOut size={18}/>
+            </Button>
+          </div>
         </div>
       </div>
     </nav>

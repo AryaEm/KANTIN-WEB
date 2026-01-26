@@ -151,3 +151,18 @@ export const drop = async <T = unknown>(
         };
     }
 };
+
+export const downloadFile = async (
+    url: string,
+    token?: string
+): Promise<Blob> => {
+    const headers: Record<string, string> = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
+
+    const res = await axiosInstance.get(url, {
+        headers,
+        responseType: "blob",
+    });
+
+    return res.data;
+};

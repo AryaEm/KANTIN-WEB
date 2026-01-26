@@ -51,7 +51,7 @@ export type AdminStanMenu = {
   image: string | null;
   status: "tersedia" | "habis";
   discount: number;
-  activeDiskonId: number | null; 
+  activeDiskonId: number | null;
 };
 
 
@@ -191,4 +191,25 @@ export type AdminProfileResponse = {
     nama_pemilik: string;
     telp: string;
   } | null;
+};
+
+export type SiswaProfileResponse = {
+  id: number;
+  username: string;
+  role: string;
+  siswa?: {
+    id: number
+    nama_siswa: string;
+    foto?: string
+    telp: string;
+    jenis_kelamin: "laki_laki" | "perempuan";
+  } | null;
+};
+
+export type BestSeller = {
+  id: number;
+  name: string;
+  price: number;
+  image?: string | null;
+  totalTerjual: number;
 };

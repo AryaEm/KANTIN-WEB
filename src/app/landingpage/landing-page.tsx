@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-// import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/ui/navbar';
 import {
@@ -12,8 +11,6 @@ import {
     Sparkles,
     ArrowRight,
 } from 'lucide-react';
-// import gprek from "../../../public/geprek.webp"
-// import esjeruk from "../../../public/esjeruk.jpg"
 
 type Feature = {
     icon: React.ElementType;
@@ -48,21 +45,14 @@ export default function Page() {
     return (
         <>
             <Navbar />
-            <section className="pt-48 pb-20 px-4 grid-bg min-h-dvh overflow-hidden">
+            <section className="pt-48 pb-20 px-4 bg-primary min-h-dvh overflow-hidden grid-bg">
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center animate-fade-in relative">
 
-                        {/* <div className="absolute z-10 -bottom-48 -left-40 h-80 w-60">
-                            <Image src={gprek} alt='Geprek' className='h-80 w-80 object-cover rounded-lg  shadow-3d border border-teal-400' />
-                        </div>
-                        <div className="absolute z-10 -bottom-72 -left-24 h-44 w-72">
-                            <Image src={esjeruk} alt='esjruk' className='h-full w-full object-cover rounded-lg shadow-3d border border-teal-400' />
-                        </div> */}
+                        <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl animate-zoom-slow"></div>
+                        <div className="bg-teal-300/90 h-32 w-32 rounded-full absolute -bottom-20 left-[70rem] blur-3xl hidden lg:block animate-zoom-slower"></div>
 
-                        <div className="bg-teal-300/65 h-52 w-52 rounded-full absolute -top-52 -left-40 blur-3xl"></div>q
-                        <div className="bg-teal-300/90 h-32 w-32 rounded-full absolute -bottom-20 left-[70rem] blur-3xl hidden lg:block"></div>
-
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 bg-teal-300/10 border border-teal-300 bg-opacity-70">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full  mb-8 bg-teal-300/10 border border-teal-300 bg-opacity-70">
                             <Sparkles className="w-4 h-4 text-primary text-white" />
                             <span className="text-sm text-muted-foreground text-white text-opacity-80">
                                 Platform Kantin Digital #1
@@ -99,7 +89,7 @@ export default function Page() {
                 </div>
             </section>
 
-            <section className="py-20 pb-28 px-4 grid-bg overflow-hidden">
+            <section className="py-20 pb-28 px-4 bg-primary overflow-hidden grid-bg">
                 <div className="container mx-auto max-w-6xl">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
@@ -133,8 +123,8 @@ export default function Page() {
                 </div>
             </section>
 
-            <section className="py-20 pb-28 px-4 grid-bg overflow-hidden relative">
-                <div className="container mx-auto max-w-6xl border glass-card rounded-lg flex justify-center items-center relative">
+            <section className="py-20 pb-28 px-4 bg-primary overflow-hidden relative grid-bg">
+                <div className="container mx-auto max-w-6xl border border-white/20 bg-white/5 backdrop-blur rounded-lg flex justify-center items-center relative">
 
                     <div className="text-center my-20 ">
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-white">
@@ -152,7 +142,7 @@ export default function Page() {
                 </div>
             </section>
 
-            <footer className="pb-8 px-4 grid-bg overflow-hidden">
+            <footer className="pb-8 px-4 bg-primary overflow-hidden grid-bg">
                 <div className="container mx-auto text-center text-sm text-muted-foreground text-white/60">
                     © 2026 KantinKu. Dev by <Link href={'https://aryaem.vercel.app'} target='_blank' className='text-teal-300'>Aryaem</Link>.
                 </div>

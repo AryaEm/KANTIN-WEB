@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { get } from "@/lib/api-bridge";
 import { HistoryItem } from "@/app/types";
 import { getCookie } from "@/lib/client-cookie";
-import { ArrowDown, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 
 export default function HistoryView() {
   const [histories, setHistories] = useState<HistoryItem[]>([]);

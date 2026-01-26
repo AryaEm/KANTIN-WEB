@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getCookie } from "@/lib/client-cookie";
 import { get, getRaw } from "@/lib/api-bridge";
 import { MenuItem } from "@/app/types";
+import { BestSeller } from "@/app/types";
 import {
   ShoppingBag,
   DollarSign,
@@ -48,32 +49,26 @@ type IncomeBackendResponse = {
 export default function SummaryView() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
-
   const [summary, setSummary] = useState({
     totalTransaksi: 0,
     totalIncome: 0,
     totalMenu: 0,
     pending: 0,
   });
-
   const [incomeFilter, setIncomeFilter] = useState<IncomeFilter>({
     type: "all",
   });
-
   const [draftFilter, setDraftFilter] = useState<IncomeFilter>({
     type: "all",
   });
-
   const [openFilter, setOpenFilter] = useState(false);
-
+  const [bestSellers, setBestSellers] = useState<BestSeller[]>([]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    fetchSummary();
-  }, [incomeFilter]);
+  useEffect(() => { fetchSummary(); fetchBestSeller(); }, [incomeFilter]);
 
 
   const fetchIncome = async (filter: IncomeFilter) => {
@@ -124,6 +119,15 @@ export default function SummaryView() {
     }
   };
 
+  const fetchBestSeller = async () => {
+    try {
+      const token = getCookie("token");
+      const res = await getRaw<{ status: boolean; data: BestSeller[] }>("/menu/best-seller", token);
+      if (res.status) setBestSellers(res.data.data);
+    } catch (error) {
+      console.error("Gagal mengambil best seller:", error);
+    }
+  };
 
   const applyIncomeFilter = () => {
     const { type, year, month, week } = draftFilter;
@@ -187,7 +191,7 @@ export default function SummaryView() {
         {stats.map((item, index) => (
           <div
             key={index}
-            className="relative card-bg rounded-2xl p-6 flex items-center gap-4  border-white/10 "
+            className="relative card-bg rounded-2xl p-6 flex items-center gap-4 border border-white/10 hover:shadow-sm transition-all hover:shadow-teal-400/50 cursor-pointer"
           >
             <div className={`p-3 rounded-xl ${item.color}`}>
               {item.icon}
@@ -215,7 +219,31 @@ export default function SummaryView() {
         ))}
       </div>
 
-      {openFilter && (
+      <div className="border w-full min-h-20 mt-12 card-bg border-white/10 rounded-2xl overflow-hidden">
+        <h2 className="px-4 py-4 text-white text-2xl font-semibold Poppins">Menu Favorit</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 pb-4">
+          {bestSellers.length === 0 && (
+            <p className="text-gray-400 col-span-full">Belum ada data menu favorit</p>
+          )}
+          {bestSellers.map((menu) => (
+            <div key={menu.id} className="bg-white/5 p-4 rounded-xl flex flex-col items-center gap-2">
+              {menu.image && (
+                <img
+                  src={menu.image}
+                  alt={menu.name}
+                  className="w-24 h-24 object-cover rounded-lg"
+                />
+              )}
+              <h3 className="text-white font-semibold">{menu.name}</h3>
+              <p className="text-gray-300 text-sm">Terjual: {menu.totalTerjual}</p>
+              <p className="text-teal-400 font-bold">Rp {menu.price.toLocaleString("id-ID")}</p>
+            </div>
+          ))}
+      </div>
+    </div >
+
+      { openFilter && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
           <div className="bg-black/10 backdrop-blur-lg w-full max-w-sm rounded-2xl p-6 border border-white/10">
             <h3 className="text-lg font-semibold text-white mb-4">
@@ -296,7 +324,8 @@ export default function SummaryView() {
             </div>
           </div>
         </div>
-      )}
+      )
+}
     </>
   );
 }

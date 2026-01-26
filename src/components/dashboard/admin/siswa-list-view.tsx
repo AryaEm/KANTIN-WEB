@@ -68,7 +68,7 @@ export default function SiswaListView() {
                 <div className="card-bg p-6 rounded-2xl border border-white/10">
                     <p className="text-white/70 flex items-center gap-2">
                         <Crown size={18} className="text-yellow-400" />
-                        Langganan (15x transaksi)
+                        Langganan (30x transaksi)
                     </p>
                     <h2 className="text-3xl font-bold text-yellow-400 mt-2">
                         {totalLangganan}
@@ -78,7 +78,7 @@ export default function SiswaListView() {
                 <div className="card-bg p-6 rounded-2xl border border-white/10">
                     <p className="text-white/70 flex items-center gap-2">
                         <ChessKing size={18} className="text-green-400" />
-                        Orang Kaya (pengeluaran 200rb)
+                        Orang Kaya (pengeluaran 500rb)
                     </p>
                     <h2 className="text-3xl font-bold text-green-400 mt-2">
                         {totalOrangKaya}
@@ -119,16 +119,16 @@ export default function SiswaListView() {
                                             <User className="text-white/60" size={18} />
                                         )}
                                     </div>
-                                    {langganan && (
+                                    {langganan && !orangKaya && (
                                         <Crown className="text-yellow-400 absolute -top-3 " size={18} />
                                     )}
-                                    {orangKaya && (
+                                    {orangKaya && !langganan && (
                                         <ChessKing className="text-green-400 absolute -top-3" size={18} />
                                     )}
                                     {orangKaya && langganan && (
                                         <>
-                                            <ChessKing className="text-green-400 absolute -top-3" size={18} />
-                                            <Crown className="text-yellow-400 absolute -top-3 " size={18} />
+                                            <ChessKing className="text-green-400 absolute -top-3 right-1 rotate-[20deg]" size={18} />
+                                            <Crown className="text-yellow-400 absolute -top-3 left-1 -rotate-[20deg]" size={18} />
                                         </>
                                     )}
 

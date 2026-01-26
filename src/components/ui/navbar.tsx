@@ -6,8 +6,8 @@ import { ChefHat } from 'lucide-react';
 
 export function Navbar() {
   return (
-    <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#0B1113] bg-opacity-50 backdrop-blur">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-6xl">
+    <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#0B1113] bg-opacity-10 backdrop-blur">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4 max-w-6xl">
 
         <Link href="/" className="flex items-center gap-px font-bold">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-cyan-400">

@@ -105,7 +105,7 @@ export default function ProfileView() {
             toast(
                 <CustomToast type="error" message={message} />,
                 {
-                    containerId: "toastAddMenu",
+                    containerId: "toastEditDataAdmin",
                     className:
                         "bg-red-400 border border-white/10 rounded-xl shadow-xl",
                     icon: false,
@@ -184,7 +184,7 @@ export default function ProfileView() {
 
                             <button
                                 onClick={() => setShowEdit(true)}
-                                className="inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-teal-400 border border-teal-500/40 hover:bg-teal-500/10 transition"
+                                className="inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-teal-400 transition-all border border-teal-500/40 hover:bg-teal-500/10"
                             >
                                 Edit
                             </button>

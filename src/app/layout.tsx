@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 export const metadata: Metadata = {
-  title: "KantIn",
+  title: "KantinIn",
   description: "Dev by Arya M.",
 };
 
@@ -118,6 +118,20 @@ export default function RootLayout({
         />
         <ToastContainer
           containerId="toastEditDataAdmin"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastEditDataSiswa"
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          theme="dark"
+        />
+        <ToastContainer
+          containerId="toastEditDataProfilSiswa"
           position="top-right"
           autoClose={2000}
           hideProgressBar
