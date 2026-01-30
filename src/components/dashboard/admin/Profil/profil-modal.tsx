@@ -33,15 +33,18 @@ export default function EditProfilModal({ profile, onClose, onSubmit }: Props) {
         setPassword("");
     }, [profile.id]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!profile.stan) return;
-        onSubmit(profile.stan.id, {
+
+        await onSubmit(profile.stan.id, {
             username,
             nama_stan: namaStan,
             nama_pemilik: namaPemilik,
             telp,
             password: password || undefined,
         });
+
+        onClose();
     };
 
     return (

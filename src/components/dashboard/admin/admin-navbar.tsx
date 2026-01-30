@@ -21,6 +21,8 @@ export function AdminNavbar() {
     removeCookie("alamat")
     removeCookie("jenis_kelamin")
     removeCookie("foto")
+    removeCookie("cart")
+    removeCookie("user")
 
     router.replace("/");
   };

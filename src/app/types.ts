@@ -184,7 +184,7 @@ export type HistorySiswa = {
 export type AdminProfileResponse = {
   id: number;
   username: string;
-  role: string;
+  role: "admin";
   stan?: {
     id: number
     nama_stan: string;
@@ -193,18 +193,21 @@ export type AdminProfileResponse = {
   } | null;
 };
 
+
+
 export type SiswaProfileResponse = {
   id: number;
   username: string;
-  role: string;
+  role: "siswa";
   siswa?: {
-    id: number
+    id: number;
     nama_siswa: string;
-    foto?: string
     telp: string;
     jenis_kelamin: "laki_laki" | "perempuan";
-  } | null;
+    foto?: string;
+  };
 };
+
 
 export type BestSeller = {
   id: number;

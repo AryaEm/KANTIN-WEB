@@ -6,14 +6,12 @@ import Link from "next/link";
 import axios from "axios";
 import { Edit } from "lucide-react";
 import { toast } from "react-toastify";
-
+import { storeCookie } from "@/lib/client-cookie";
 import { get, put } from "@/lib/api-bridge";
 import { getCookie } from "@/lib/client-cookie";
 import { SiswaProfileResponse } from "@/app/types";
 import CustomToast from "@/components/ui/CustomToast";
 import EditSiswaProfilModal from "@/components/dashboard/siswa/Profil/profil-modal";
-
-import chefProfil from "../../../../../public/Chefff.svg";
 
 export default function ProfileView() {
   const [profile, setProfile] = useState<SiswaProfileResponse | null>(null);
@@ -39,6 +37,9 @@ export default function ProfileView() {
       if (!res.status) throw new Error(res.message);
 
       setProfile(res.data);
+
+      updateSiswaCookies(res.data);
+
     } catch (err) {
       console.error(err);
     } finally {
@@ -46,71 +47,65 @@ export default function ProfileView() {
     }
   };
 
-  const handleUpdateFoto = async (file: File) => {
-  if (!profile?.siswa?.id) return;
 
-  const token = getCookie("token");
-  const formData = new FormData();
-  formData.append("foto", file);
 
-  try {
-    const res = await put(
-      `/user/siswa/pic/${profile.siswa.id}`,
-      formData,
-      token
-    );
+  function updateSiswaCookies(data: SiswaProfileResponse) {
+    storeCookie("username", data.username);
 
-    if (!res.status) {
-      toast(
-        <CustomToast
-          type="warning"
-          message={res.message ?? "Gagal update foto profil siswa"}
-        />,
-        {
-          containerId: "toastEditDataProfilSiswa",
-          className: "bg-yellow-400 rounded-xl shadow-lg",
-          icon: false,
-        }
-      );
-      return;
+    if (data.siswa) {
+      storeCookie("nama_siswa", data.siswa.nama_siswa);
+      storeCookie("telp", data.siswa.telp);
+      storeCookie("jenis_kelamin", data.siswa.jenis_kelamin);
+      storeCookie("foto", data.siswa.foto ?? "");
     }
-
-    await fetchProfile();
-
-    toast(
-      <CustomToast
-        type="success"
-        message="Foto profil berhasil diperbarui"
-      />,
-      {
-        containerId: "toastEditDataProfilSiswa",
-        className: "p-0 bg-transparent shadow-none",
-        icon: false,
-        autoClose: 1500,
-      }
-    );
-  } catch (err: any) {
-    toast(
-      <CustomToast
-        type="error"
-        message={err.message ?? "Gagal upload foto"}
-      />,
-      {
-        containerId: "toastEditDataProfilSiswa",
-        className: "bg-red-400 border border-white/10 rounded-xl shadow-xl",
-        icon: false,
-      }
-    );
   }
-};
+
+
+  const handleUpdateFoto = async (file: File) => {
+    if (!profile?.siswa?.id) return;
+
+    const token = getCookie("token");
+    const formData = new FormData();
+    formData.append("foto", file);
+
+    try {
+      const res = await put<SiswaProfileResponse>(
+        `/user/siswa/pic/${profile.siswa.id}`,
+        formData,
+        token
+      );
+
+      if (!res.status) {
+        toast(<CustomToast type="warning" message="File Tidak Boleh Diatas 5mb" />, {
+          containerId: "toastEditDataProfilSiswa",
+        });
+        return;
+      }
+
+      if (res.data.siswa?.foto) {
+        storeCookie("foto", res.data.siswa.foto);
+      }
+
+      setProfile(res.data);
+
+      toast(
+        <CustomToast type="success" message="Foto profil diperbarui" />,
+        { containerId: "toastEditDataProfilSiswa" }
+      );
+    } catch {
+      toast(
+        <CustomToast type="error" message="Gagal upload foto" />,
+        { containerId: "toastEditDataProfilSiswa" }
+      );
+    }
+  };
 
   const handleUpdateProfile = async (
     siswaId: number,
     payload: {
       nama_siswa: string;
       telp: string;
-      foto?: string;
-      jenis_kelamin: string;
+      jenis_kelamin: "laki_laki" | "perempuan";
       username: string;
       password?: string;
     }
@@ -125,41 +120,30 @@ export default function ProfileView() {
       );
 
       if (!res.status) {
-        toast(
-          <CustomToast
-            type="warning"
-            message={res.message ?? "Gagal update profil siswa"}
-          />,
-          { containerId: "toastEditDataSiswa" }
-        );
+        toast(<CustomToast type="warning" message="Gagal Update Data Siswa" />, {
+          containerId: "toastEditDataSiswa",
+        });
         return;
       }
 
       await fetchProfile();
 
       toast(
-        <CustomToast
-          type="success"
-          message="Profil siswa berhasil diperbarui"
-        />,
+        <CustomToast type="success" message="Profil berhasil diperbarui" />,
         {
           containerId: "toastEditDataSiswa",
-          autoClose: 1500,
+          autoClose: 1200,
         }
       );
-    } catch (err) {
-      let message = "Terjadi kesalahan server";
-
-      if (axios.isAxiosError(err)) {
-        message = err.response?.data?.message ?? err.message;
-      }
-
+    } catch {
       toast(
-        <CustomToast type="error" message={message} />,
+        <CustomToast type="error" message="Terjadi kesalahan server" />,
         { containerId: "toastEditDataSiswa" }
       );
     }
   };
+
+
 
   if (loading) {
     return (
@@ -184,7 +168,7 @@ export default function ProfileView() {
           <div className="-mt-14 mb-4">
             <div className="w-28 h-28 relative rounded-full bg-zinc-900">
               <Image
-                src={profile.siswa?.foto ?? chefProfil}
+                src={profile.siswa?.foto ?? "No Profil"}
                 alt="Profil"
                 width={112}
                 height={112}

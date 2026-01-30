@@ -9,6 +9,7 @@ import { AdminProfileResponse } from "@/app/types";
 import { put } from "@/lib/api-bridge";
 import { toast } from "react-toastify";
 import CustomToast from "@/components/ui/CustomToast";
+import { storeCookie } from "@/lib/client-cookie";
 import axios from "axios";
 import EditProfilModal from "@/components/dashboard/admin/Profil/profil-modal";
 import chefProfil from "../../../../../public/Chefff.svg"
@@ -21,31 +22,34 @@ export default function ProfileView() {
     useEffect(() => {
         fetchProfile();
     }, []);
-
     const fetchProfile = async () => {
         try {
             const token = getCookie("token");
+            if (!token) throw new Error("Token tidak ditemukan");
 
-            if (!token) {
-                throw new Error("Token tidak ditemukan");
-            }
+            const res = await get<AdminProfileResponse>("/user/profil", token);
 
-            const res = await get<AdminProfileResponse>(
-                "/user/profil",
-                token
-            );
-
-            if (!res.status) {
-                throw new Error(res.message);
-            }
+            if (!res.status) throw new Error(res.message);
 
             setProfile(res.data);
+            updateAdminCookies(res.data); 
         } catch (err) {
             console.error(err);
         } finally {
             setLoading(false);
         }
     };
+
+
+    function updateAdminCookies(data: AdminProfileResponse) {
+        storeCookie("username", data.username);
+
+        if (data.stan) {
+            storeCookie("nama_stan", data.stan.nama_stan);
+            storeCookie("nama_pemilik", data.stan.nama_pemilik);
+            storeCookie("telp", data.stan.telp);
+        }
+    }
 
     const handleUpdateProfile = async (
         stanId: number,
@@ -113,6 +117,7 @@ export default function ProfileView() {
             );
         }
     };
+
 
 
     if (loading) {
