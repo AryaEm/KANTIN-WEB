@@ -1,95 +1,214 @@
 import { Menu } from '@/app/types';
 import Image from 'next/image';
+import { ShoppingCart, Tag, Plus, Minus, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 type Props = {
   menu: Menu;
+  cartQuantity?: number; // Quantity yang sudah ada di cart
   onAddToCart: (menu: Menu & {
     harga_asli: number;
     harga_setelah_diskon: number;
   }) => void;
+  onUpdateQuantity?: (menuId: number, newQuantity: number) => void;
 };
 
-export default function MenuCard({ menu, onAddToCart }: Props) {
+export default function MenuCard({ menu, cartQuantity = 0, onAddToCart, onUpdateQuantity }: Props) {
+  const [quantity, setQuantity] = useState(cartQuantity);
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const discount = menu.discount ?? 0;
   const hasDiscount = discount > 0;
   const isAvailable = menu.status === "tersedia";
+  const isInCart = quantity > 0;
 
   const finalPrice = hasDiscount
     ? Math.round(menu.price - (menu.price * discount) / 100)
     : menu.price;
 
+  // Sync dengan cart quantity dari parent
+  useEffect(() => {
+    setQuantity(cartQuantity);
+  }, [cartQuantity]);
+
+  const handleAddToCart = () => {
+    if (!isAvailable) return;
+    
+    onAddToCart({
+      ...menu,
+      harga_asli: menu.price,
+      harga_setelah_diskon: finalPrice,
+    });
+    
+    setQuantity(1);
+    setShowSuccess(true);
+    
+    setTimeout(() => setShowSuccess(false), 2000);
+  };
+
+  const handleIncrease = () => {
+    const newQty = quantity + 1;
+    setQuantity(newQty);
+    onUpdateQuantity?.(menu.id, newQty);
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      const newQty = quantity - 1;
+      setQuantity(newQty);
+      onUpdateQuantity?.(menu.id, newQty);
+    } else {
+      setQuantity(0);
+      onUpdateQuantity?.(menu.id, 0);
+    }
+  };
+
   return (
-    <div className="relative rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition Poppins">
-      {hasDiscount && (
-        <span className="absolute top-2 right-1 text-xs px-3 py-1 rounded-full 
-          bg-teal-500/60 text-white border border-teal-400">
-          {menu.discount}%
-        </span>
+    <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-2xl border-2 border-gray-200 hover:border-orange-300 hover:shadow-lg p-5 transition-all group Poppins">
+      {/* Success Animation */}
+      {showSuccess && (
+        <div className="absolute inset-0 bg-green-500/20 backdrop-blur-sm rounded-2xl z-50 flex items-center justify-center animate-fade-in">
+          <div className="bg-white rounded-2xl p-4 shadow-2xl flex items-center gap-3 animate-scale-in">
+            <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+              <Check className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="font-bold text-gray-900">Ditambahkan!</p>
+              <p className="text-sm text-gray-600">Ke keranjang</p>
+            </div>
+          </div>
+        </div>
       )}
 
-      <div className="w-full rounded-lg bg-white/10 mb-4 flex items-center justify-center border border-white/10">
+      {/* Discount Badge */}
+      {hasDiscount && (
+        <div className="absolute top-3 right-3 flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white shadow-md z-10">
+          <Tag className="w-3 h-3" />
+          <span className="text-xs font-bold">{menu.discount}%</span>
+        </div>
+      )}
+
+      {/* In Cart Badge */}
+      {isInCart && (
+        <div className="absolute top-3 left-3 z-20">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500 text-white shadow-lg">
+            <ShoppingCart className="w-3.5 h-3.5" />
+            <span className="text-xs font-bold">{quantity} di keranjang</span>
+          </div>
+        </div>
+      )}
+
+      {/* Image Section */}
+      <div className="relative w-full rounded-xl overflow-hidden mb-4 bg-gray-100 border-2 border-gray-200">
         {menu.image ? (
           <Image
             src={menu.image}
             alt={menu.name}
-            width={144}
-            height={144}
-            className="object-cover h-44 rounded-lg w-full"
+            width={400}
+            height={250}
+            className="object-cover h-48 w-full group-hover:scale-110 transition-transform duration-300"
           />
         ) : (
-          <span className="text-white/30 h-44 text-sm flex items-center justify-center">
-            No Image
-          </span>
+          <div className="h-48 flex items-center justify-center">
+            <span className="text-gray-400 text-sm font-medium">
+              No Image
+            </span>
+          </div>
         )}
+
+        <div className="absolute bottom-3 left-3 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-lg text-white text-xs font-semibold capitalize">
+          {menu.jenis_menu}
+        </div>
       </div>
 
-      <div className='absolute top-5 left-5 px-2 py-[4px] bg-black/60 rounded-md text-sm'>{menu.jenis_menu}</div>
-
-      <div className='flex justify-between'>
-        <h4 className="font-medium mb-1">{menu.name}</h4>
+      {/* Title and Status */}
+      <div className="flex justify-between items-start mb-2">
+        <h4 className="Fredoka font-bold text-gray-900 text-lg flex-1 pr-2">
+          {menu.name}
+        </h4>
         <span
-          className={`text-xs px-2 py-1 rounded-full font-medium
+          className={`text-xs px-2.5 py-1 rounded-full font-bold whitespace-nowrap
           ${isAvailable
-              ? "bg-green-500/20 text-green-400 border border-green-500/30"
-              : "bg-red-500/20 text-red-400 border border-red-500/30"
+              ? "bg-green-100 text-green-600 border-2 border-green-300"
+              : "bg-red-100 text-red-600 border-2 border-red-300"
             }`}
         >
           {menu.status}
-        </span>      </div>
-      <p className='text-white/60 text-sm mb-1 line-clamp-2'>
-        {menu.description}
-      </p>
-
-      <div className="flex items-center gap-2 mb-4">
-        {hasDiscount && (
-          <span className="text-xs text-white/40 line-through">
-            Rp {menu.price.toLocaleString()}
-          </span>
-        )}
-
-        <span className="text-teal-400 font-semibold">
-          Rp {finalPrice.toLocaleString()}
         </span>
       </div>
 
-      <button
-        disabled={!isAvailable}
-        onClick={() =>
-          onAddToCart({
-            ...menu,
-            harga_asli: menu.price,
-            harga_setelah_diskon: finalPrice,
-          })
-        }
-        className={`w-full rounded-lg py-2 font-medium transition outline-none
-        ${isAvailable
-            ? "bg-teal-500 text-black hover:bg-teal-400"
-            : "bg-gray-600 text-gray-300 cursor-not-allowed"
-          }
-  `}
-      >
-        {isAvailable ? "Tambah ke Keranjang" : "Stok Habis"}
-      </button>
+      {/* Description */}
+      <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
+        {menu.description}
+      </p>
+
+      {/* Price */}
+      <div className="flex items-center gap-2 mb-4">
+        {hasDiscount && (
+          <span className="text-sm text-gray-400 line-through font-medium">
+            Rp {menu.price.toLocaleString('id-ID')}
+          </span>
+        )}
+
+        <span className="text-orange-600 font-bold text-lg Fredoka">
+          Rp {finalPrice.toLocaleString('id-ID')}
+        </span>
+      </div>
+
+      {/* Action Buttons */}
+      {!isInCart ? (
+        // Add to Cart Button
+        <button
+          disabled={!isAvailable}
+          onClick={handleAddToCart}
+          className={`w-full rounded-xl py-3 font-bold transition-all flex items-center justify-center gap-2
+          ${isAvailable
+              ? "bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white shadow-md hover:shadow-lg hover:scale-105"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }
+          `}
+        >
+          <ShoppingCart className="w-4 h-4" />
+          {isAvailable ? "Tambah ke Keranjang" : "Stok Habis"}
+        </button>
+      ) : (
+        // Quantity Controls
+        <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-3 border-2 border-orange-300">
+          <div className="flex items-center justify-between gap-3">
+            {/* Decrease Button */}
+            <button
+              onClick={handleDecrease}
+              className="w-10 h-10 rounded-lg bg-white hover:bg-orange-100 border-2 border-orange-300 hover:border-orange-400 flex items-center justify-center transition-all hover:scale-110 active:scale-95 group/btn"
+            >
+              <Minus className="w-5 h-5 text-orange-600 group-hover/btn:text-orange-700" />
+            </button>
+
+            {/* Quantity Display */}
+            <div className="flex-1 text-center">
+              <div className="bg-white rounded-lg py-2 px-4 border-2 border-orange-300">
+                <p className="text-xs text-gray-500 font-semibold mb-0.5">Jumlah</p>
+                <p className="text-2xl Fredoka font-black text-orange-600">{quantity}</p>
+              </div>
+            </div>
+
+            {/* Increase Button */}
+            <button
+              onClick={handleIncrease}
+              className="w-10 h-10 rounded-lg bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 border-2 border-orange-400 flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-md hover:shadow-lg"
+            >
+              <Plus className="w-5 h-5 text-white" />
+            </button>
+          </div>
+
+          {/* Subtotal */}
+          <div className="mt-3 pt-3 border-t-2 border-orange-200 flex justify-between items-center">
+            <span className="text-sm font-semibold text-gray-700">Subtotal:</span>
+            <span className="text-lg Fredoka font-black text-orange-600">
+              Rp {(finalPrice * quantity).toLocaleString('id-ID')}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

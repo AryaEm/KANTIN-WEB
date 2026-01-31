@@ -19,11 +19,6 @@ const tabs: {
     icon: LayoutDashboard,
   },
   {
-    label: 'Pesanan',
-    value: 'order',
-    icon: ClipboardList,
-  },
-  {
     label: 'Menu',
     value: 'menu',
     icon: UtensilsCrossed,
@@ -32,6 +27,11 @@ const tabs: {
     label: 'Diskon',
     value: 'discount',
     icon: Tag,
+  },
+  {
+    label: 'Pesanan',
+    value: 'order',
+    icon: ClipboardList,
   },
   {
     label: 'History',

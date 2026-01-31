@@ -27,12 +27,12 @@ export default function AuthContainer({ mode }: { mode: string }) {
                                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-yellow-500">
                                     <ChefHat className='text-white' size={24} />
                                 </div>
-                                <h2 className="font-display text-2xl font-bold text-white">KantinIn</h2>
+                                <h2 className="Fredoka text-2xl font-bold text-white">KantinIn</h2>
                             </div>
                         </div>
 
                         <div className="mb-8">
-                            <h1 className="font-display text-4xl lg:text-5xl font-bold text-white mb-3">
+                            <h1 className="Fredoka text-4xl lg:text-5xl font-bold text-white mb-3">
                                 {mode === 'login' ? 'Welcome Back!' : 'Create New Account'}
                             </h1>
                             <p className="text-white/70">
@@ -62,7 +62,7 @@ export default function AuthContainer({ mode }: { mode: string }) {
                 </div>
 
                 <div className="hidden xl:block absolute right-20 bottom-20 text-white max-w-md">
-                    <h3 className="font-display text-3xl font-bold mb-2">
+                    <h3 className="Fredoka text-3xl font-bold mb-2">
                         Pesan Makanan <span className="text-yellow-400">Tanpa Ribet</span>
                     </h3>
                     <p className="text-white/80 text-lg">

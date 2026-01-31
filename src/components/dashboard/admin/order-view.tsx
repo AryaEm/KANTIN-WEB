@@ -4,19 +4,16 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { BASE_API_URL } from "../../../../global";
 import { getCookie } from "@/lib/client-cookie";
-import { Check, X } from "lucide-react";
+import { Check, X, Clock, Package, CheckCircle, AlertCircle, User, Calendar, Receipt, ShoppingBag } from "lucide-react";
 import { OrderStatus, Order } from "@/app/types";
 import { toast } from "react-toastify";
 import CustomToast from "@/components/ui/CustomToast";
-import { ArrowDown } from 'lucide-react'
-
 
 export default function OrderView() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   type OrderFilter = "default" | "belum_dikonfirmasi" | "proses";
-  const [filterStatus, setFilterStatus] =
-    useState<OrderFilter>("default");
+  const [filterStatus, setFilterStatus] = useState<OrderFilter>("default");
 
   const token = getCookie("token");
 
@@ -43,6 +40,7 @@ export default function OrderView() {
       setLoading(false);
     }
   }, [token]);
+
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
@@ -50,7 +48,6 @@ export default function OrderView() {
   useEffect(() => {
     fetchOrders(filterStatus);
   }, [filterStatus, fetchOrders]);
-
 
   const confirmOrder = async (id: number) => {
     try {
@@ -77,7 +74,7 @@ export default function OrderView() {
         );
         return;
       }
-      fetchOrders();
+      fetchOrders(filterStatus);
       toast(
         <CustomToast
           type="success"
@@ -134,7 +131,7 @@ export default function OrderView() {
         );
         return;
       }
-      fetchOrders();
+      fetchOrders(filterStatus);
       toast(
         <CustomToast
           type="success"
@@ -191,7 +188,7 @@ export default function OrderView() {
         );
         return;
       }
-      fetchOrders();
+      fetchOrders(filterStatus);
 
       toast(
         <CustomToast
@@ -229,18 +226,40 @@ export default function OrderView() {
       day: "2-digit",
       month: "short",
       year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
 
   const statusStyle = (status: OrderStatus) => {
     switch (status) {
       case "belum_dikonfirmasi":
-        return "bg-yellow-500/20 text-yellow-400";
+        return {
+          bg: "bg-gradient-to-br from-amber-50 to-orange-50",
+          border: "border-amber-300",
+          text: "text-amber-700",
+          icon: <Clock className="w-4 h-4" />,
+        };
       case "proses":
-        return "bg-teal-500/20 text-teal-400";
+        return {
+          bg: "bg-gradient-to-br from-blue-50 to-cyan-50",
+          border: "border-blue-300",
+          text: "text-blue-700",
+          icon: <Package className="w-4 h-4" />,
+        };
       case "selesai":
-        return "bg-green-500/20 text-green-400";
+        return {
+          bg: "bg-gradient-to-br from-green-50 to-emerald-50",
+          border: "border-green-300",
+          text: "text-green-700",
+          icon: <CheckCircle className="w-4 h-4" />,
+        };
       case "ditolak":
-        return "bg-red-500/20 text-red-400";
+        return {
+          bg: "bg-gradient-to-br from-red-50 to-rose-50",
+          border: "border-red-300",
+          text: "text-red-700",
+          icon: <AlertCircle className="w-4 h-4" />,
+        };
     }
   };
 
@@ -249,145 +268,197 @@ export default function OrderView() {
       case "belum_dikonfirmasi":
         return "Menunggu Konfirmasi";
       case "proses":
-        return "Proses"
+        return "Sedang Diproses";
+      case "selesai":
+        return "Selesai";
+      case "ditolak":
+        return "Ditolak";
       default:
         return status;
     }
   };
 
   if (loading) {
-    return <p className="text-white">Loading Pesanan...</p>;
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <div className="inline-flex p-4 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full mb-4 animate-pulse">
+            <ShoppingBag className="w-8 h-8 text-orange-500" />
+          </div>
+          <p className="text-gray-600 font-medium">Memuat pesanan...</p>
+        </div>
+      </div>
+    );
   }
+
+  const filterButtons = [
+    {
+      value: "default" as OrderFilter,
+      label: "Semua Pesanan",
+      icon: <Receipt className="w-4 h-4" />,
+    },
+    {
+      value: "belum_dikonfirmasi" as OrderFilter,
+      label: "Belum Dikonfirmasi",
+      icon: <Clock className="w-4 h-4" />,
+    },
+    {
+      value: "proses" as OrderFilter,
+      label: "Sedang Diproses",
+      icon: <Package className="w-4 h-4" />,
+    },
+  ];
+
   return (
     <div className="space-y-6">
-      {/* <div className="flex gap-3 text-sm">
-        <div className="relative">
-          <select
-            value={filterStatus}
-            onChange={(e) =>
-              setFilterStatus(e.target.value as OrderFilter)
-            }
-            className="bg-[#0E1618] text-teal-100 border appearance-none border-teal-500/20 rounded-lg pr-10 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 hover:border-teal-400/60 transition ">
-            <option value="default">Semua Pesanan Aktif</option>
-            <option value="belum_dikonfirmasi">Belum Dikonfirmasi</option>
-            <option value="proses">Proses</option>
-          </select>
 
-          <ArrowDown
-            size={18}
-            className="pointer-events-none absolute top-3 right-3 text-teal-500/70"
-          />
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl Fredoka font-bold text-gray-900">Daftar Pesanan</h1>
+        <div className="flex gap-3 flex-wrap">
+          {filterButtons.map((filter) => (
+            <button
+              key={filter.value}
+              onClick={() => setFilterStatus(filter.value)}
+              className={`flex items-center gap-2 px-5 py-3 text-sm transition-all
+              font-bold rounded-xl whitespace-nowrap border-2
+              ${filterStatus === filter.value
+                  ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent shadow-lg scale-105"
+                  : "text-gray-600 bg-white border-gray-200 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
+                }`}
+            >
+              {filter.icon}
+              <span>{filter.label}</span>
+            </button>
+          ))}
         </div>
-      </div> */}
-      <div className="flex gap-3">
-        <button
-          onClick={() => setFilterStatus("default")}
-          className={`px-6 py-2.5 rounded-xl font-medium transition
-          ${filterStatus === "default"
-              ? "bg-teal-500 text-black outline-none"
-              : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
-            }`}>
-          Semua Pesanan
-        </button>
-
-        <button
-          onClick={() => setFilterStatus("belum_dikonfirmasi")}
-          className={`px-6 py-2.5 rounded-xl font-medium transition
-          ${filterStatus === "belum_dikonfirmasi"
-              ? "bg-teal-500 text-black outline-none"
-              : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
-            }`}>
-          Belum Dikonfirmasi
-        </button>
-
-        <button
-          onClick={() => setFilterStatus("proses")}
-          className={`px-6 py-2.5 rounded-xl font-medium transition
-          ${filterStatus === "proses"
-              ? "bg-teal-500 text-black outline-none"
-              : "bg-[#0E1618] text-white hover:bg-white/20 border border-teal-500/20 outline-none"
-            }`}>
-          Proses
-        </button>
       </div>
 
-      {orders.map((order) => (
-        <div
-          key={order.id_transaksi}
-          className="card-bg rounded-2xl p-6 border border-teal-300/25 Poppins shadow-2xl"
-        >
-          <div className="flex justify-between items-start">
-            <div>
-              <h2 className="text-sm font-semibold mb-px text-white">{order.kode_transaksi}</h2>
-              <p className="text-xs text-gray-400 mt-px">
-                {order.siswa.nama_siswa} - {formatDate(order.tanggal)}
-              </p>
-            </div>
-
-            <span
-              className={`px-4 py-1 rounded-full text-sm ${statusStyle(
-                order.status
-              )}`}
-            >
-              {statusLabel(order.status)}
-            </span>
+      {orders.length === 0 ? (
+        <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-12 border-2 border-gray-200 text-center">
+          <div className="inline-flex p-4 bg-gray-100 rounded-full mb-4">
+            <ShoppingBag className="w-8 h-8 text-gray-400" />
           </div>
-
-          <hr className="my-4 border-white/10" />
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-2">
-              {order.items.map((item, i) => (
-                <p key={i} className="text-white/80">
-                  {item.nama_menu} x{item.qty}
-                </p>
-              ))}
-            </div>
-
-            <div className="space-y-2 text-right">
-              {order.items.map((item, i) => (
-                <p key={i} className="text-white">
-                  Rp {item.subtotal.toLocaleString("id-ID")}
-                </p>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center mt-6">
-            <p className="text-white font-semibold">
-              Total: Rp {order.total_harga.toLocaleString("id-ID")}
-            </p>
-
-            <div className="flex lg:flex-row flex-col gap-3">
-              {order.status === "belum_dikonfirmasi" && (
-                <>
-                  <button
-                    onClick={() => confirmOrder(order.id_transaksi)}
-                    className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium tracking-wide text-sm outline-none">
-                    <Check size={18} className="mr-[4px]" />
-                    Konfirmasi
-                  </button>
-                  <button
-                    onClick={() => rejectOrder(order.id_transaksi)}
-                    className="flex items-center bg-red-500 hover:bg-red-600 font-medium text-white px-6 justify-center py-2 lg:rounded-xl rounded-md tracking-wide text-sm outline-none">
-                    <X size={18} className="mr-[4px]" />
-                    Tolak
-                  </button>
-                </>
-              )}
-
-              {order.status === "proses" && (
-                <button
-                  onClick={() => finishOrder(order.id_transaksi)}
-                  className="flex items-center bg-emerald-500 hover:bg-emerald-600 text-black px-6 py-2 lg:rounded-xl rounded-md font-medium tracking-wide text-sm outline-none">
-                  <Check size={18} className="mr-[4px]" />
-                  Selesai
-                </button>
-              )}
-            </div>
-          </div>
+          <h3 className="Fredoka text-xl font-bold text-gray-900 mb-2">
+            Belum Ada Pesanan
+          </h3>
+          <p className="text-gray-500">
+            {filterStatus === "default"
+              ? "Belum ada pesanan masuk"
+              : `Tidak ada pesanan dengan status "${filterButtons.find((f) => f.value === filterStatus)?.label}"`}
+          </p>
         </div>
-      ))}
+      ) : (
+        <div className="space-y-4">
+          {orders.map((order) => {
+            const statusInfo = statusStyle(order.status);
+            return (
+              <div
+                key={order.id_transaksi}
+                className="bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-orange-300 hover:shadow-lg transition-all group"
+              >
+                {/* Header */}
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="inline-flex p-2 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-lg">
+                        <Receipt className="w-4 h-4 text-orange-600" />
+                      </div>
+                      <h3 className="Fredoka text-lg font-bold text-gray-900">
+                        {order.kode_transaksi}
+                      </h3>
+                    </div>
+
+                    <div className="flex flex-col gap-1 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4 text-gray-400" />
+                        <span className="font-medium">{order.siswa.nama_siswa}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-gray-400" />
+                        <span>{formatDate(order.tanggal)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 ${statusInfo.border} ${statusInfo.bg}`}
+                  >
+                    {statusInfo.icon}
+                    <span className={`text-sm font-bold ${statusInfo.text}`}>
+                      {statusLabel(order.status)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="border-t-2 border-gray-100 my-4"></div>
+
+                <div className="space-y-2 mb-4">
+                  {order.items.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center py-2 px-3 rounded-lg bg-gradient-to-r from-gray-50 to-white border border-gray-100"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center">
+                          <span className="font-bold text-orange-600 text-sm">
+                            {item.qty}×
+                          </span>
+                        </div>
+                        <span className="font-medium text-gray-700">
+                          {item.nama_menu}
+                        </span>
+                      </div>
+                      <span className="font-bold text-gray-900">
+                        Rp {item.subtotal.toLocaleString("id-ID")}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-between items-center pt-4 border-t-2 border-gray-100">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600 font-medium">Total Pembayaran:</span>
+                    <span className="Fredoka text-2xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                      Rp {order.total_harga.toLocaleString("id-ID")}
+                    </span>
+                  </div>
+
+                  <div className="flex gap-3">
+                    {order.status === "belum_dikonfirmasi" && (
+                      <>
+                        <button
+                          onClick={() => confirmOrder(order.id_transaksi)}
+                          className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                        >
+                          <Check size={18} />
+                          Konfirmasi
+                        </button>
+                        <button
+                          onClick={() => rejectOrder(order.id_transaksi)}
+                          className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                        >
+                          <X size={18} />
+                          Tolak
+                        </button>
+                      </>
+                    )}
+
+                    {order.status === "proses" && (
+                      <button
+                        onClick={() => finishOrder(order.id_transaksi)}
+                        className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                      >
+                        <Check size={18} />
+                        Selesai
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

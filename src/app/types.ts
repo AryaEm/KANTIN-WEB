@@ -195,8 +195,6 @@ export type AdminProfileResponse = {
   } | null;
 };
 
-
-
 export type SiswaProfileResponse = {
   id: number;
   username: string;

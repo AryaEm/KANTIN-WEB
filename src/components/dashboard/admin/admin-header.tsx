@@ -24,7 +24,7 @@ export default function AdminHeader() {
         </span>
       </div>
       
-      <h1 className="text-4xl lg:text-5xl font-display font-bold text-gray-900 mb-3 leading-tight">
+      <h1 className="text-4xl lg:text-5xl Fredoka font-bold text-gray-900 mb-3 leading-tight">
         Selamat Datang,{" "}
         <span className="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
           {namaPemilik}

@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
-import { Edit } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { storeCookie } from "@/lib/client-cookie";
-import { get, put } from "@/lib/api-bridge";
+import { storeCookie, removeCookie } from "@/lib/client-cookie";
+import { get, put, drop } from "@/lib/api-bridge";
 import { getCookie } from "@/lib/client-cookie";
 import { SiswaProfileResponse } from "@/app/types";
 import CustomToast from "@/components/ui/CustomToast";
@@ -17,6 +18,8 @@ export default function ProfileView() {
   const [profile, setProfile] = useState<SiswaProfileResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false)
 
   const genderLabel = {
     laki_laki: "Laki-laki",
@@ -143,6 +146,81 @@ export default function ProfileView() {
     }
   };
 
+  const router = useRouter();
+
+  const handleDeleteUser = async () => {
+    if (!profile) return;
+
+    const token = getCookie("token");
+    if (!token) return;
+
+    try {
+      setDeleting(true);
+
+      const res = await drop(
+        `/user/delete/${profile.id}`,
+        token
+      );
+
+      if (!res.status) {
+        toast(
+          <CustomToast
+            type="warning"
+            message={res.message ?? "Gagal Menghapus Akun"}
+          />,
+          {
+            containerId: "ToastDeleteSiswa",
+            className: "bg-yellow-400 rounded-xl shadow-lg",
+            icon: false,
+          }
+        );
+        return;
+      }
+
+      toast(
+        <CustomToast
+          type="success"
+          message="Akun Berhasil Dihapus"
+        />,
+        {
+          containerId: "ToastDeleteSiswa",
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
+        }
+      );
+
+      removeCookie("token");
+      removeCookie("username");
+      removeCookie("nama_siswa");
+      removeCookie("jenis_kelamin");
+      removeCookie("foto");
+      removeCookie("telp");
+
+      router.replace("/");
+
+    } catch (err: unknown) {
+      let message = "Terjadi kesalahan server";
+
+      if (axios.isAxiosError(err)) {
+        message = err.response?.data?.message ?? err.message;
+      }
+
+      toast(
+        <CustomToast type="error" message={message} />,
+        {
+          containerId: "ToastDeleteSiswa",
+          className:
+            "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+          icon: false,
+        }
+      );
+    } finally {
+      setDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
 
 
   if (loading) {
@@ -172,7 +250,7 @@ export default function ProfileView() {
                 alt="Profil"
                 width={112}
                 height={112}
-                className="object-cover w-28 h-28 rounded-full border-4 border-teal-500"
+                className="object-cover w-28 h-28 rounded-full border-4 border-teal-500 flex items-center"
                 unoptimized
               />
 
@@ -246,6 +324,13 @@ export default function ProfileView() {
               >
                 Edit
               </button>
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="inline-flex w-fit items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-red-400 border-2 border-red-500/40 hover:bg-red-500/10"
+              >
+                <Trash size={18}/>
+              </button>
+
             </div>
           </div>
         </div>
@@ -258,6 +343,42 @@ export default function ProfileView() {
           onSubmit={handleUpdateProfile}
         />
       )}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/60"
+            onClick={() => setShowDeleteConfirm(false)}
+          />
+          <div className="relative bg-black/20 backdrop-blur border border-red-500/40 rounded-xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-white">
+              Hapus Akun?
+            </h3>
+
+            <p className="text-sm text-zinc-400 mt-2">
+              Akun siswa akan dihapus permanen.
+            </p>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 rounded-md bg-zinc-700 text-white"
+                disabled={deleting}
+              >
+                Batal
+              </button>
+
+              <button
+                onClick={handleDeleteUser}
+                disabled={deleting}
+                className="px-4 py-2 rounded-md bg-red-500 text-white"
+              >
+                {deleting ? "Menghapus..." : "Hapus"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </>
   );
 }

@@ -203,7 +203,7 @@ export default function SummaryView() {
 
             <div>
               <p className="text-sm font-semibold text-gray-600 mb-1">{item.title}</p>
-              <h2 className="text-2xl font-display font-bold text-gray-900">
+              <h2 className="text-2xl Fredoka font-bold text-gray-900">
                 {item.value}
               </h2>
             </div>
@@ -229,7 +229,7 @@ export default function SummaryView() {
             <Award className="w-6 h-6 text-orange-600" />
           </div>
           <div>
-            <h2 className="text-white text-2xl font-display font-bold">Menu Favorit</h2>
+            <h2 className="text-white text-2xl Fredoka font-bold">Menu Favorit</h2>
             <p className="text-white/90 text-sm">Menu terlaris bulan ini</p>
           </div>
         </div>
@@ -266,7 +266,7 @@ export default function SummaryView() {
                 </div>
               )}
 
-              <h3 className="font-display text-lg font-bold text-gray-900 mb-2">{menu.name}</h3>
+              <h3 className="Fredoka text-lg font-bold text-gray-900 mb-2">{menu.name}</h3>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm">
@@ -275,7 +275,7 @@ export default function SummaryView() {
                     <span className="text-green-700 font-semibold">{menu.totalTerjual}</span>
                   </div>
                 </div>
-                <p className="font-display text-lg font-bold text-orange-600">
+                <p className="Fredoka text-lg font-bold text-orange-600">
                   Rp {menu.price.toLocaleString("id-ID")}
                 </p>
               </div>
@@ -291,7 +291,7 @@ export default function SummaryView() {
               <div className="p-2 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-2xl font-display font-bold text-white">
+              <h3 className="text-2xl Fredoka font-bold text-white">
                 Filter Pendapatan
               </h3>
             </div>

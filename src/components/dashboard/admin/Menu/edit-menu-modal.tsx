@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { AdminStanMenu } from "@/app/types";
 import Image from "next/image";
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, X, SquarePen } from "lucide-react";
 
 type Props = {
-  menu: AdminStanMenu;
-  onClose: () => void;
-  onSubmit: (id: number, formData: FormData) => Promise<void>;
+    menu: AdminStanMenu;
+    onClose: () => void;
+    onSubmit: (id: number, formData: FormData) => Promise<void>;
 };
 
 export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
@@ -27,7 +27,7 @@ export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
         setDeskripsi(menu.description ?? "");
         setStatus(menu.status);
         setFoto(null);
-        setPreviewUrl(null);    
+        setPreviewUrl(null);
     }, [menu.id]);
 
     const handleSubmit = () => {
@@ -45,110 +45,181 @@ export default function EditMenuModal({ menu, onClose, onSubmit }: Props) {
     };
 
     return (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-            <div className="bg-white/10 border border-teal-400/50 backdrop-blur-lg p-6 rounded-2xl w-full max-w-md space-y-4">
-                <h2 className="text-lg font-semibold text-white">Edit Menu</h2>
-
-                <input
-                    className="w-full p-2 rounded-md bg-white/10 text-white"
-                    value={namaMenu}
-                    onChange={(e) => setNamaMenu(e.target.value)}
-                    placeholder="Nama menu"
-                />
-
-                <input
-                    type="number"
-                    className="w-full p-2 rounded-md bg-white/10 text-white"
-                    value={harga}
-                    onChange={(e) => setHarga(e.target.value)}
-                    placeholder="Harga"
-                />
-
-                <select
-                    className="w-full p-2 rounded-md bg-white/10 text-white"
-                    value={jenis}
-                    onChange={(e) => setJenis(e.target.value as any)}
-                >
-                    <option value="makanan">Makanan</option>
-                    <option value="minuman">Minuman</option>
-                </select>
-
-                <textarea
-                    className="w-full p-2 rounded-md bg-white/10 text-white"
-                    value={deskripsi}
-                    onChange={(e) => setDeskripsi(e.target.value)}
-                    placeholder="Deskripsi"
-                />
-
-                <select
-                    className="w-full p-2 rounded-md bg-white/10 text-white"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value as any)}
-                >
-                    <option value="tersedia">Tersedia</option>
-                    <option value="habis">Habis</option>
-                </select>
-
-                <div className="relative w-full max-w-md">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                            const file = e.target.files?.[0] ?? null;
-                            setFoto(file);
-                            if (file) setPreviewUrl(URL.createObjectURL(file));
-                        }} className="hidden"
-                        id="foto-upload"
-                    />
-                    <label
-                        htmlFor="foto-upload"
-                        className="flex items-center justify-center gap-3 w-full py-4 rounded-xl border-2 border-dashed border-white/20 hover:border-primary/50 bg-white/5 hover:bg-white/10 cursor-pointer transition-all duration-300 group"
-                    >
-                        {previewUrl ? (
-                            <div className="relative w-full px-4">
-                                <Image
-                                    src={previewUrl}
-                                    alt="Preview"
-                                    width={100}
-                                    height={100}
-                                    className="w-full h-32 object-cover rounded-lg"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span className="text-white text-sm">Ganti Foto</span>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                    <ImagePlus className="w-6 h-6 text-white/60 group-hover:text-primary transition-colors" />
-                                </div>
-                                <div className="text-left">
-                                    <p className="text-white/80 text-sm font-medium">Upload Foto Menu</p>
-                                    <p className="text-white/40 text-xs">PNG, JPG hingga 5MB</p>
-                                </div>
-                            </>
-                        )}
-                    </label>
-                </div>
-
-                {/*                 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
-          className="text-white text-sm"
-        /> */}
-
-                <div className="flex justify-end gap-3 pt-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white/15 backdrop-blur rounded-3xl p-8 mt-8 w-full max-w-4xl shadow-2xl border-2 border-orange-500 max-h-[90vh] overflow-y-auto">
+                <div className="flex justify-between items-center mb-6">
+                    <div className="flex gap-3 items-center">
+                        <div className="p-2 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl">
+                            <SquarePen size={24} className="text-white" />
+                        </div>
+                        <div>
+                            <h2 className="Fredoka tracking-wide text-2xl font-bold text-white">Edit Menu</h2>
+                            <p className="text-sm text-white/65">Perbarui informasi menu</p>
+                        </div>
+                    </div>
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-sm rounded-md bg-white/10 text-white"
+                        className="p-2 hover:bg-black/20 rounded-xl transition-colors"
+                    >
+                        <X className="text-white" size={24} />
+                    </button>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-5">
+                        <div>
+                            <label className="block mb-2 text-sm font-bold text-white/90">Nama Menu</label>
+                            <input
+                                className="w-full p-3 rounded-xl bg-white/15 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 placeholder:text-white/50 transition-all"
+                                value={namaMenu}
+                                onChange={(e) => setNamaMenu(e.target.value)}
+                                placeholder="Nama menu"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block mb-2 text-sm font-bold text-white/90">Harga</label>
+                            <input
+                                type="number"
+                                className="w-full p-3 rounded-xl bg-white/15 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 placeholder:text-white/50 transition-all"
+                                value={harga}
+                                onChange={(e) => setHarga(e.target.value)}
+                                placeholder="Harga"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block mb-2 text-sm font-bold text-white/90">Kategori</label>
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setJenis("makanan")}
+                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 ${jenis === "makanan"
+                                        ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent shadow-lg"
+                                            : "bg-white/15 text-white/90 border-white/15 hover:border-orange-300"
+                                        }`}>
+                                    Makanan
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setJenis("minuman")}
+                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 ${jenis === "minuman"
+                                        ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent shadow-lg"
+                                            : "bg-white/15 text-white/90 border-white/15 hover:border-orange-300"
+                                        }`}>
+                                    Minuman
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block mb-2 text-sm font-bold text-white/90">Status</label>
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setStatus("tersedia")}
+                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 ${status === "tersedia"
+                                        ? "bg-green-500 text-white border-transparent shadow-lg"
+                                            : "bg-white/15 text-white/90 border-white/15 hover:border-green-300"
+                                        }`}>
+                                    Tersedia
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setStatus("habis")}
+                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 ${status === "habis"
+                                        ? "bg-red-500 text-white border-transparent shadow-lg"
+                                            : "bg-white/15 text-white/90 border-white/15 hover:border-red-400"
+                                        }`}>
+                                    Habis
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div className="space-y-5">
+                        <div>
+                            <label className="block mb-2 text-sm font-bold text-white/90">Deskripsi</label>
+                            <textarea
+                                className="w-full p-3 rounded-xl bg-white/15 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 placeholder:text-white/50 transition-all"
+                                value={deskripsi}
+                                onChange={(e) => setDeskripsi(e.target.value)}
+                                placeholder="Deskripsi"
+                                rows={3}
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-sm font-bold text-white/90">Foto Menu</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0] ?? null;
+                                    setFoto(file);
+                                    if (file) setPreviewUrl(URL.createObjectURL(file));
+                                }}
+                                className="hidden"
+                                id="foto-upload-edit"
+                            />
+                            <label
+                                htmlFor="foto-upload-edit"
+                                className="flex items-center justify-center w-full h-[180px] rounded-2xl border-2 border-dashed border-white/15 hover:border-orange-400 bg-white/15 hover:bg-orange-500/15 cursor-pointer transition-all group"
+                            >
+                                {previewUrl ? (
+                                    <div className="relative w-full h-full p-4">
+                                        <Image
+                                            src={previewUrl}
+                                            alt="Preview"
+                                            width={100}
+                                            height={100}
+                                            className="w-full h-full object-cover rounded-xl"
+                                        />
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity m-4">
+                                            <span className="text-white font-bold">Ganti Foto</span>
+                                        </div>
+                                    </div>
+                                ) : menu.image ? (
+                                    <div className="relative w-full h-full p-4">
+                                        <Image
+                                            src={menu.image}
+                                            alt="Current"
+                                            width={100}
+                                            height={100}
+                                            className="w-full h-full object-cover rounded-xl"
+                                            unoptimized
+                                        />
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity m-4">
+                                            <span className="text-white font-bold">Ganti Foto</span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="text-center p-8">
+                                        <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+                                            <ImagePlus className="w-10 h-10 text-orange-600" />
+                                        </div>
+                                        <p className="text-gray-700 font-bold mb-2">Upload Foto Menu</p>
+                                        <p className="text-gray-500 text-sm">PNG, JPG hingga 5MB</p>
+                                    </div>
+                                )}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex gap-3 pt-6">
+                    <button
+                        onClick={onClose}
+                        className="flex-1 px-6 py-3 text-white/60 font-bold bg-white/5 hover:bg-white hover:text-black/70 border-2 border-white/60 rounded-xl transition-all"
                     >
                         Batal
                     </button>
                     <button
                         onClick={handleSubmit}
-                        className="px-4 py-2 text-sm rounded-md bg-teal-500 text-black font-semibold"
+                        className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
                     >
                         Simpan
                     </button>

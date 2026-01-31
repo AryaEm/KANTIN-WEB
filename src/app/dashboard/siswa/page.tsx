@@ -90,12 +90,26 @@ export default function SiswaDashboardPage() {
     }, 0)
   }
 
+  // Handler untuk update quantity dari MenuCard
+  const updateCartQuantity = (menuId: number, newQty: number) => {
+    if (newQty === 0) {
+      // Hapus item dari cart
+      setCart(prev => prev.filter(item => item.id_menu !== menuId));
+    } else {
+      // Update quantity
+      setCart(prev => 
+        prev.map(item => 
+          item.id_menu === menuId 
+            ? { ...item, qty: newQty } 
+            : item
+        )
+      );
+    }
+  };
 
   useEffect(() => {
     saveCart(cart);
   }, [cart]);
-
-
 
   const handleCheckout = async () => {
     if (cart.length === 0 || isCheckingOut) return;
@@ -164,12 +178,12 @@ export default function SiswaDashboardPage() {
     }
   };
 
-
   return (
     <>
       <StudentNavbar />
+      <section className="pb-8 pt-24 lg:px-40 px-4 bg-gradient-to-br from-orange-50 via-yellow-50 to-white min-h-screen relative overflow-hidden">
+        <div className="absolute -top-20 -right-[2%] w-[400px] h-[400px] bg-yellow-300 dashboard-blob-1 opacity-10"></div>
 
-      <section className="pb-8 pt-24 lg:px-40 px-4 bg-primary min-h-dvh overflow-hidden">
         <SiswaHeader />
 
         <SiswaTabs
@@ -179,7 +193,11 @@ export default function SiswaDashboardPage() {
 
         <div className="mt-8">
           {activeTab === 'stan' && (
-            <StanView addToCart={addToCart} />
+            <StanView 
+              addToCart={addToCart}
+              cart={cart}
+              updateCartQuantity={updateCartQuantity}
+            />
           )}
 
           {activeTab === 'keranjang' && (

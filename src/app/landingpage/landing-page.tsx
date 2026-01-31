@@ -177,7 +177,7 @@ export default function Page() {
                                     <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-yellow-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-b-3xl"></div>
                                 </div>
                             </div>
-                            
+
                         ))}
                     </div>
                 </div>
@@ -203,7 +203,7 @@ export default function Page() {
                                 Bergabung sekarang dan nikmati kemudahan memesan makanan di kantin sekolah
                             </p>
 
-                            <Link href="/auth">
+                            <Link href="/auth?mode=register">
                                 <button className="group px-10 py-5 bg-white text-orange-600 font-bold text-xl rounded-2xl transition-all duration-300 hover:scale-110 hover:shadow-2xl mt-4">
                                     <span className="flex items-center gap-2">
                                         Daftar Gratis Sekarang

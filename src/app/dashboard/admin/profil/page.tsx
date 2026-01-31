@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import CustomToast from "@/components/ui/CustomToast";
 import { storeCookie } from "@/lib/client-cookie";
 import axios from "axios";
-import { Trash } from "lucide-react";
+import { Trash, Edit, ArrowLeft, User, Store, Phone, Shield, AlertTriangle, Sparkles } from "lucide-react";
 import EditProfilModal from "@/components/dashboard/admin/Profil/profil-modal";
 import chefProfil from "../../../../../public/Chefff.svg"
 
@@ -28,6 +28,7 @@ export default function ProfileView() {
     useEffect(() => {
         fetchProfile();
     }, []);
+
     const fetchProfile = async () => {
         try {
             const token = getCookie("token");
@@ -202,119 +203,209 @@ export default function ProfileView() {
 
     if (loading) {
         return (
-            <section className="min-h-dvh flex items-center justify-center text-zinc-400 bg-primary">
-                Memuat profil...
+            <section className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-flex p-4 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full mb-4 animate-pulse">
+                        <User className="w-8 h-8 text-orange-500" />
+                    </div>
+                    <p className="text-gray-600 font-medium">Memuat profil...</p>
+                </div>
             </section>
         );
     }
 
     if (!profile) {
         return (
-            <section className="min-h-dvh flex items-center justify-center text-red-400 bg-primary">
-                Gagal memuat data profil
+            <section className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-flex p-4 bg-red-100 rounded-full mb-4">
+                        <AlertTriangle className="w-8 h-8 text-red-500" />
+                    </div>
+                    <p className="text-red-600 font-medium">Gagal memuat data profil</p>
+                </div>
             </section>
         );
     }
+
     return (
         <>
-            <section className="min-h-dvh w-full grid-bg text-white relative flex justify-center items-center gap-24">
+            <section className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white py-16 px-4 relative overflow-hidden">
+                <div className="absolute -top-20 -right-[2%] w-[400px] h-[400px] bg-yellow-300 dashboard-blob-1 opacity-10"></div>
+                <div className="absolute bottom-20 left-[5%] w-[350px] h-[350px] bg-orange-400 dashboard-blob-2 opacity-10"></div>
 
-                <div className="relative px-6 pb-6 border-2 rounded-md border-teal-500 bg-primary shadow-2xl">
-                    <div className="-mt-14 mb-4">
-                        <div className="w-28 h-28 rounded-full bg-zinc-900 border-4 border-teal-500 flex items-center justify-center text-xl font-semibold">
-                            <Image src={chefProfil} alt="Profil" className="rounded-full" />
+                <div className="max-w-4xl mx-auto relative z-10">
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-100 to-yellow-100 border-2 border-orange-300 mb-4">
+                            <Sparkles className="w-4 h-4 text-orange-500" />
+                            <span className="text-sm font-bold text-orange-600 tracking-wide">
+                                PROFIL ADMIN
+                            </span>
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2 max-w-lg">
-                        <div className="flex items-center gap-2">
-                            <h1 className="text-2xl font-semibold tracking-tight">
-                                Admin Stan
-                            </h1>
-                            <span className="text-xs px-2 py-1 rounded-full bg-teal-500/15 text-teal-400">
-                                Admin
-                            </span>
-                        </div>
-
-                        <p className="text-sm text-zinc-400 leading-relaxed">
-                            Akun administrator yang mengelola data stan, menu, dan transaksi
-                            pada sistem kantin digital.
-                        </p>
-
-                        <div className="flex flex-wrap gap-2 mt-3">
-                            <MetaItem label="Username" value={profile.username} />
-                            <MetaItem label="Role" value="Admin" />
-                        </div>
-
-                        <div className="text-sm Poppins mt-6 text-white/80 flex gap-6">
-                            <div className="flex flex-col gap-2">
-                                <p className="py-2 rounded-md pl-3 pr-16">Nama Stan</p>
-                                <p className="py-2 rounded-md pl-3 pr-16">Nama Pemilik</p>
-                                <p className="py-2 rounded-md pl-3 pr-16">Telp</p>
+                    <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 shadow-xl">
+                        <div className="flex flex-col items-center mb-8">
+                            <div className="relative mb-6">
+                                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-100 to-yellow-100 border-4 border-orange-300 flex items-center justify-center shadow-lg">
+                                    <Image
+                                        src={chefProfil}
+                                        alt="Profil Admin"
+                                        className="rounded-full w-28 h-28"
+                                    />
+                                </div>
+                                <div className="absolute bottom-1 right-1 p-2 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full shadow-lg">
+                                    <Shield className="w-5 h-5 text-white" />
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-2 w-1/2">
-                                <p className="bg-white/3 py-2 rounded-md w-full pl-3 border border-white/20">{profile.stan?.nama_stan ?? "-"}</p>
-                                <p className="bg-white/3 py-2 rounded-md w-full pl-3 border border-white/20"> {profile.stan?.nama_pemilik ?? "-"}</p>
-                                <p className="bg-white/3 py-2 rounded-md w-full pl-3 border border-white/20">{profile.stan?.telp ?? "-"}</p>
+
+                            <div className="text-center">
+                                <h1 className="text-3xl Fredoka font-bold text-gray-900 mb-2">
+                                    Admin Stan
+                                </h1>
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-orange-100 to-yellow-100 border border-orange-300">
+                                    <Shield className="w-4 h-4 text-orange-600" />
+                                    <span className="text-sm font-bold text-orange-700">
+                                        Admin
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p className="text-gray-600 text-center mt-4 max-w-md">
+                                Akun admin yang mengelola data stan, menu, dan transaksi pada sistem kantin digital.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4 border-2 border-blue-200">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg">
+                                        <User className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-blue-700">
+                                        Username
+                                    </span>
+                                </div>
+                                <p className="text-lg font-bold text-blue-900 ml-11">
+                                    {profile.username}
+                                </p>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border-2 border-purple-200">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
+                                        <Shield className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-purple-700">
+                                        Role
+                                    </span>
+                                </div>
+                                <p className="text-lg font-bold text-purple-900 ml-11">
+                                    Admin
+                                </p>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border-2 border-orange-200">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-lg">
+                                        <Store className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-orange-700">
+                                        Nama Stan
+                                    </span>
+                                </div>
+                                <p className="text-lg font-bold text-orange-900 ml-11">
+                                    {profile.stan?.nama_stan ?? "-"}
+                                </p>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border-2 border-green-200">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg">
+                                        <User className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-green-700">
+                                        Nama Pemilik
+                                    </span>
+                                </div>
+                                <p className="text-lg font-bold text-green-900 ml-11">
+                                    {profile.stan?.nama_pemilik ?? "-"}
+                                </p>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-4 border-2 border-amber-200 md:col-span-2">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-lg">
+                                        <Phone className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span className="text-sm font-semibold text-amber-700">
+                                        Nomor Telepon
+                                    </span>
+                                </div>
+                                <p className="text-lg font-bold text-amber-900 ml-11">
+                                    {profile.stan?.telp ?? "-"}
+                                </p>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between mt-8 gap-4 Poppins tracking-wide">
+                        <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t-2 border-gray-100">
                             <Link
                                 href="/dashboard/admin"
-                                className="inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm border border-zinc-800 bg-white/5 hover:bg-white/10 hover:text-white transition"
+                                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-gray-600 bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all"
                             >
+                                <ArrowLeft size={18} />
                                 Kembali
                             </Link>
 
                             <button
                                 onClick={() => setShowEdit(true)}
-                                className="inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-teal-400 transition-all border border-teal-500/40 hover:bg-teal-500/10"
+                                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
                             >
-                                Edit
+                                <Edit size={18} />
+                                Edit Profil
                             </button>
+
                             <button
                                 onClick={() => setShowDeleteConfirm(true)}
-                                className="inline-flex w-fit items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-red-400 transition-all border-2 border-red-500/40 hover:bg-red-500/10"
+                                className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
                             >
                                 <Trash size={18} />
                             </button>
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
 
-            {
-                showEdit && profile && (
-                    <EditProfilModal
-                        profile={profile}
-                        onClose={() => setShowEdit(false)}
-                        onSubmit={handleUpdateProfile}
-                    />
-                )
-            }
+            {showEdit && profile && (
+                <EditProfilModal
+                    profile={profile}
+                    onClose={() => setShowEdit(false)}
+                    onSubmit={handleUpdateProfile}
+                />
+            )}
+
             {showDeleteConfirm && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
-                    <div
-                        className="absolute inset-0 bg-black/60"
-                        onClick={() => setShowDeleteConfirm(false)}
-                    />
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div className="bg-white/15 backdrop-blur w-full max-w-md rounded-3xl p-8 border-2 border-red-500 shadow-2xl">
+                        <div className="flex justify-center mb-6">
+                            <div className="p-4 bg-gradient-to-br from-red-500 to-rose-500 rounded-full">
+                                <AlertTriangle className="w-12 h-12 text-white" />
+                            </div>
+                        </div>
 
-                    <div className="relative bg-black/15 backdrop-blur border border-red-500/40 rounded-xl p-6 w-full max-w-sm shadow-2xl">
-                        <h3 className="text-lg font-semibold text-white">
-                            Hapus Akun?
-                        </h3>
+                        <div className="text-center mb-8">
+                            <h2 className="text-2xl Fredoka font-bold text-white mb-3">
+                                Hapus Akun Admin?
+                            </h2>
+                            <p className="text-white/80 font-medium">
+                                Akun ini akan dihapus secara permanen beserta semua data stan dan menu. Tindakan ini <b>tidak dapat dibatalkan</b>.
+                            </p>
+                        </div>
 
-                        <p className="text-sm text-zinc-400 mt-2">
-                            Akun ini akan dihapus secara permanen.
-                            Tindakan ini <b>tidak dapat dibatalkan</b>.
-                        </p>
-
-                        <div className="flex justify-end gap-3 mt-6">
+                        <div className="flex gap-3">
                             <button
                                 onClick={() => setShowDeleteConfirm(false)}
-                                className="px-4 py-2 text-sm rounded-md bg-zinc-700 text-white hover:bg-zinc-600 transition"
                                 disabled={deleting}
+                                className="flex-1 px-6 py-3 text-sm font-bold text-white/50 hover:text-white hover:bg-white/20 border-2 border-white/50 rounded-xl transition-all disabled:opacity-50"
                             >
                                 Batal
                             </button>
@@ -322,30 +413,15 @@ export default function ProfileView() {
                             <button
                                 onClick={handleDeleteUser}
                                 disabled={deleting}
-                                className="px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-red-600 transition"
+                                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
                             >
-                                {deleting ? "Menghapus..." : "Hapus"}
+                                <Trash size={18} />
+                                {deleting ? "Menghapus..." : "Hapus Akun"}
                             </button>
                         </div>
                     </div>
                 </div>
             )}
-
         </>
-    );
-}
-
-function MetaItem({
-    label,
-    value,
-}: {
-    label: string;
-    value: string;
-}) {
-    return (
-        <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-zinc-900 text-zinc-300 border border-zinc-800">
-            <span className="text-zinc-500">{label}:</span>
-            <span>{value}</span>
-        </div>
     );
 }
