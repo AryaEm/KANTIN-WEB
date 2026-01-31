@@ -6,11 +6,14 @@ import Link from "next/link";
 import { get } from "@/lib/api-bridge";
 import { getCookie } from "@/lib/client-cookie";
 import { AdminProfileResponse } from "@/app/types";
-import { put } from "@/lib/api-bridge";
+import { put, drop } from "@/lib/api-bridge";
+import { removeCookie } from "@/lib/client-cookie";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import CustomToast from "@/components/ui/CustomToast";
 import { storeCookie } from "@/lib/client-cookie";
 import axios from "axios";
+import { Trash } from "lucide-react";
 import EditProfilModal from "@/components/dashboard/admin/Profil/profil-modal";
 import chefProfil from "../../../../../public/Chefff.svg"
 
@@ -18,6 +21,9 @@ export default function ProfileView() {
     const [profile, setProfile] = useState<AdminProfileResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [showEdit, setShowEdit] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
 
     useEffect(() => {
         fetchProfile();
@@ -32,7 +38,7 @@ export default function ProfileView() {
             if (!res.status) throw new Error(res.message);
 
             setProfile(res.data);
-            updateAdminCookies(res.data); 
+            updateAdminCookies(res.data);
         } catch (err) {
             console.error(err);
         } finally {
@@ -118,6 +124,80 @@ export default function ProfileView() {
         }
     };
 
+    const router = useRouter();
+
+    const handleDeleteUser = async () => {
+        if (!profile) return;
+
+        const token = getCookie("token");
+        if (!token) return;
+
+        try {
+            setDeleting(true);
+
+            const res = await drop(
+                `/user/delete/${profile.id}`,
+                token
+            );
+
+            if (!res.status) {
+                toast(
+                    <CustomToast
+                        type="warning"
+                        message={res.message ?? "Gagal Menghapus Akun"}
+                    />,
+                    {
+                        containerId: "ToastDeleteAdmin",
+                        className: "bg-yellow-400 rounded-xl shadow-lg",
+                        icon: false,
+                    }
+                );
+                return;
+            }
+
+            toast(
+                <CustomToast
+                    type="success"
+                    message="Akun Berhasil Dihapus"
+                />,
+                {
+                    containerId: "ToastDeleteAdmin",
+                    className: "p-0 bg-transparent shadow-none",
+                    icon: false,
+                    autoClose: 1500,
+                }
+            );
+
+            removeCookie("token");
+            removeCookie("username");
+            removeCookie("nama_stan");
+            removeCookie("nama_pemilik");
+            removeCookie("telp");
+
+            router.replace("/");
+
+        } catch (err: unknown) {
+            let message = "Terjadi kesalahan server";
+
+            if (axios.isAxiosError(err)) {
+                message = err.response?.data?.message ?? err.message;
+            }
+
+            toast(
+                <CustomToast type="error" message={message} />,
+                {
+                    containerId: "ToastDeleteAdmin",
+                    className:
+                        "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+                    icon: false,
+                }
+            );
+        } finally {
+            setDeleting(false);
+            setShowDeleteConfirm(false);
+        }
+    };
+
 
 
     if (loading) {
@@ -193,10 +273,16 @@ export default function ProfileView() {
                             >
                                 Edit
                             </button>
+                            <button
+                                onClick={() => setShowDeleteConfirm(true)}
+                                className="inline-flex w-fit items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-red-400 transition-all border-2 border-red-500/40 hover:bg-red-500/10"
+                            >
+                                <Trash size={18} />
+                            </button>
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {
                 showEdit && profile && (
@@ -207,6 +293,44 @@ export default function ProfileView() {
                     />
                 )
             }
+            {showDeleteConfirm && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div
+                        className="absolute inset-0 bg-black/60"
+                        onClick={() => setShowDeleteConfirm(false)}
+                    />
+
+                    <div className="relative bg-black/15 backdrop-blur border border-red-500/40 rounded-xl p-6 w-full max-w-sm shadow-2xl">
+                        <h3 className="text-lg font-semibold text-white">
+                            Hapus Akun?
+                        </h3>
+
+                        <p className="text-sm text-zinc-400 mt-2">
+                            Akun ini akan dihapus secara permanen.
+                            Tindakan ini <b>tidak dapat dibatalkan</b>.
+                        </p>
+
+                        <div className="flex justify-end gap-3 mt-6">
+                            <button
+                                onClick={() => setShowDeleteConfirm(false)}
+                                className="px-4 py-2 text-sm rounded-md bg-zinc-700 text-white hover:bg-zinc-600 transition"
+                                disabled={deleting}
+                            >
+                                Batal
+                            </button>
+
+                            <button
+                                onClick={handleDeleteUser}
+                                disabled={deleting}
+                                className="px-4 py-2 text-sm rounded-md bg-red-500 text-white hover:bg-red-600 transition"
+                            >
+                                {deleting ? "Menghapus..." : "Hapus"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </>
     );
 }
