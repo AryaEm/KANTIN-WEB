@@ -248,7 +248,6 @@ export default function SummaryView() {
               key={menu.id}
               className="bg-gradient-to-br from-gray-50 to-white p-5 rounded-2xl border-2 border-gray-200 hover:border-orange-300 hover:shadow-lg transition-all group"
             >
-              {/* Rank Badge */}
               <div className="flex justify-between items-start mb-3">
                 <div className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full">
                   <Award className="w-4 h-4 text-white" />
@@ -300,16 +299,16 @@ export default function SummaryView() {
             <div>
               <p className="Poppins pb-2 font-semibold text-white/70 tracking-wide">Kategori</p>
               <select
-                className="w-full mb-4 p-3 rounded-xl bg-gray-50 border-2 border-gray-200 font-semibold text-gray-700 focus:border-orange-400 outline-none"
+                className="w-full mb-4 p-3 rounded-xl bg-white/20 border-2 appearance-none border-white/15 font-semibold text-white focus:border-orange-400 outline-none"
                 value={draftFilter.type}
                 onChange={(e) =>
                   setDraftFilter({ type: e.target.value as any })
                 }
               >
-                <option value="all">Semua</option>
-                <option value="year">Per Tahun</option>
-                <option value="month">Per Bulan</option>
-                <option value="week">Per Minggu</option>
+                <option className="text-black" value="all">Semua</option>
+                <option className="text-black" value="year">Per Tahun</option>
+                <option className="text-black" value="month">Per Bulan</option>
+                <option className="text-black" value="week">Per Minggu</option>
               </select>
             </div>
 
@@ -320,7 +319,7 @@ export default function SummaryView() {
                 <input
                   type="number"
                   placeholder="Tahun (contoh: 2026)"
-                  className="w-full mb-4 p-3 rounded-xl bg-gray-50 border-2 border-gray-200 text-gray-700 focus:border-orange-400 outline-none"
+                  className="w-full mb-4 p-3 rounded-xl bg-white/20 border-2 appearance-none border-white/15 font-semibold text-white focus:border-orange-400 outline-none placeholder:text-white/70"
                   value={draftFilter.year ?? ""}
                   onChange={(e) =>
                     setDraftFilter((prev) => ({
@@ -338,7 +337,7 @@ export default function SummaryView() {
                 <input
                   type="number"
                   placeholder="Bulan (1-12)"
-                  className="w-full mb-4 p-3 rounded-xl bg-gray-50 border-2 border-gray-200 text-gray-700 focus:border-orange-400 outline-none"
+                  className="w-full mb-4 p-3 rounded-xl bg-white/20 border-2 appearance-none border-white/15 font-semibold text-white focus:border-orange-400 outline-none placeholder:text-white/70"
                   value={draftFilter.month ?? ""}
                   onChange={(e) =>
                     setDraftFilter((prev) => ({
@@ -356,7 +355,7 @@ export default function SummaryView() {
                 <input
                   type="number"
                   placeholder="Minggu ke- (1-52)"
-                  className="w-full mb-4 p-3 rounded-xl bg-gray-50 border-2 border-gray-200 text-gray-700 focus:border-orange-400 outline-none"
+                  className="w-full mb-4 p-3 rounded-xl bg-white/20 border-2 appearance-none border-white/15 font-semibold text-white focus:border-orange-400 outline-none placeholder:text-white/70"
                   value={draftFilter.week ?? ""}
                   onChange={(e) =>
                     setDraftFilter((prev) => ({

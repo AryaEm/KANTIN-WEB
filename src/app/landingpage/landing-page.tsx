@@ -55,8 +55,8 @@ export default function Page() {
             <section className="relative min-h-screen bg-white overflow-hidden pt-28 pb-20 px-6">
 
                 <div className="absolute top-20 right-[10%] w-[500px] h-[500px] bg-yellow-300 blob-shape opacity-20 animate-blob"></div>
-                <div className="lg:absolute hidden bottom-32 left-[5%] w-[400px] h-[400px] bg-orange-400 blob-shape opacity-15 animate-blob" style={{ animationDelay: '2s' }}></div>
-                <div className="lg:absolute hidden bottom-24 right-[10%] w-[400px] h-[400px] bg-yellow-400 blob-shape opacity-10 animate-blob" style={{ animationDelay: '4s' }}></div>
+                <div className="lg:block lg:absolute hidden bottom-32 left-[5%] w-[400px] h-[400px] bg-orange-400 blob-shape opacity-15 animate-blob" style={{ animationDelay: '2s' }}></div>
+                <div className="lg:absolute lg:block hidden bottom-24 right-[10%] w-[400px] h-[400px] bg-yellow-400 blob-shape opacity-10 animate-blob" style={{ animationDelay: '4s' }}></div>
 
                 <div className="absolute top-40 left-[30%] text-orange-400 opacity-30 animate-float">
                     <Zap size={40} />

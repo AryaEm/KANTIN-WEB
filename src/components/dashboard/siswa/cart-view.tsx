@@ -10,11 +10,14 @@ export default function CartView({
   cart,
   setCart,
   onCheckout,
+  loading,
 }: {
   cart: Item[];
   setCart: React.Dispatch<React.SetStateAction<Item[]>>;
   onCheckout: () => void;
+  loading: boolean;
 }) {
+
   if (cart.length === 0) {
     return <EmptyCart />;
   }
@@ -54,8 +57,11 @@ export default function CartView({
 
       </div>
 
-      {/* RIGHT */}
-      <CartSummary cart={cart} onCheckout={onCheckout} />
+      <CartSummary
+        cart={cart}
+        onCheckout={onCheckout}
+        loading={loading}
+      />
     </div>
   );
 }

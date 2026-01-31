@@ -98,6 +98,7 @@ export default function StanPage({
           telp: s.telp || '',
           menus: s.menus.map((m: MenuAPI): Menu => ({
             id: m.id,
+            id_stan: s.id,
             name: m.name,
             description: m.description,
             jenis_menu: m.jenis_menu,
@@ -105,7 +106,8 @@ export default function StanPage({
             price: m.price,
             image: m.image ?? '',
             discount: m.discount,
-          })),
+          }))
+
         }
 
         setSelectedStan(mapped)

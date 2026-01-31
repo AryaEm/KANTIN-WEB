@@ -3,10 +3,13 @@ import { CartItem } from '@/app/types';
 export default function CartSummary({
   cart,
   onCheckout,
+  loading,
 }: {
   cart: CartItem[];
   onCheckout: () => void;
+  loading: boolean;
 }) {
+
   const total = cart.reduce(
     (sum, item) => sum + item.harga_setelah_diskon * item.qty,
     0
@@ -40,11 +43,17 @@ export default function CartSummary({
       </div>
 
       <button
+        disabled={loading}
         onClick={onCheckout}
-        className="mt-6 w-full rounded-xl bg-teal-500 py-2 text-black font-semibold outline-none hover:bg-teal-400 transition-all"
+        className={`mt-6 w-full rounded-xl py-2 font-semibold outline-none transition-all
+    ${loading
+            ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+            : "bg-teal-500 text-black hover:bg-teal-400"
+          }`}
       >
-        Checkout
+        {loading ? "Memproses..." : "Checkout"}
       </button>
+
     </div>
   );
 }

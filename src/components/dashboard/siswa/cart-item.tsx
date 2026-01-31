@@ -8,7 +8,7 @@ export default function CartItems({
   onMinus,
   onRemove,
 }: {
-  item: CartItem;
+  item: CartItem; 
   onPlus: () => void;
   onMinus: () => void;
   onRemove: () => void;
@@ -24,6 +24,7 @@ export default function CartItems({
               width={80}
               height={80}
               className="h-full object-cover rounded-lg"
+              unoptimized
             />
           ) : (
             <span className="text-white/30 text-sm flex justify-center items-center h-full text-center">

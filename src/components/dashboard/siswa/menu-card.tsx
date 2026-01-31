@@ -82,7 +82,7 @@ export default function MenuCard({ menu, onAddToCart }: Props) {
           })
         }
         className={`w-full rounded-lg py-2 font-medium transition outline-none
-    ${isAvailable
+        ${isAvailable
             ? "bg-teal-500 text-black hover:bg-teal-400"
             : "bg-gray-600 text-gray-300 cursor-not-allowed"
           }

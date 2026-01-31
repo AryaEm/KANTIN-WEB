@@ -5,6 +5,7 @@ import { removeCookie } from "@/lib/client-cookie"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ChefHat, User, LogOut } from 'lucide-react';
+import { clearCart } from '@/lib/cart-cookie';
 
 export function StudentNavbar() {
   const router = useRouter();
@@ -24,6 +25,7 @@ export function StudentNavbar() {
     removeCookie("cart")
     removeCookie("user")
 
+    clearCart();
     router.replace("/");
   };
 

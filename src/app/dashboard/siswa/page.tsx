@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import SiswaHeader from '@/components/dashboard/siswa/siswa-header';
 import SiswaTabs from '@/components/dashboard/siswa/siswa-tabs';
@@ -14,7 +14,9 @@ import OrderView from '@/components/dashboard/siswa/order-view';
 import { StudentNavbar } from '@/components/dashboard/siswa/siswa-navbar';
 import { toast } from 'react-toastify';
 import CustomToast from '@/components/ui/CustomToast';
+import Cookies from "js-cookie";
 import { CartItem, Menu } from '@/app/types';
+import { loadCart, saveCart, clearCart } from "@/lib/cart-cookie";
 
 export type SiswaTab =
   | 'stan'
@@ -28,10 +30,26 @@ type OrderResponse = {
 
 export default function SiswaDashboardPage() {
   const [activeTab, setActiveTab] = useState<SiswaTab>('stan');
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => loadCart());
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const addToCart = (menu: Menu) => {
     setCart(prev => {
+
+      if (prev.length > 0 && prev[0].stan_id !== menu.id_stan) {
+        toast(
+          <CustomToast
+            type="warning"
+            message="Satu transaksi hanya boleh dari satu stan"
+          />,
+          {
+            containerId: "toastOrder",
+            icon: false,
+          }
+        );
+        return prev;
+      }
+
       const exist = prev.find(i => i.id_menu === menu.id);
 
       const diskon = menu.discount ?? 0;
@@ -52,6 +70,7 @@ export default function SiswaDashboardPage() {
         ...prev,
         {
           id_menu: menu.id,
+          stan_id: menu.id_stan,
           nama_menu: menu.name,
           foto: menu.image ?? null,
           harga_asli: menu.price,
@@ -63,12 +82,19 @@ export default function SiswaDashboardPage() {
     });
   };
 
+  useEffect(() => {
+    saveCart(cart);
+  }, [cart]);
+
+
 
   const handleCheckout = async () => {
-    if (cart.length === 0) return;
+    if (cart.length === 0 || isCheckingOut) return;
 
     const token = getCookie('token');
     if (!token) return;
+
+    setIsCheckingOut(true);
 
     const payload = {
       items: cart.map(item => ({
@@ -84,7 +110,7 @@ export default function SiswaDashboardPage() {
         toast(
           <CustomToast
             type="warning"
-            message={res.message ?? "File Maksimal 5mb"}
+            message={res.message ?? "Terjadi kesalahan"}
           />,
           {
             containerId: "toastOrder",
@@ -96,14 +122,11 @@ export default function SiswaDashboardPage() {
       }
 
       setCart([]);
+      clearCart();
       setActiveTab('pesanan');
 
-      console.log('TRANSAKSI BERHASIL:', res.data);
       toast(
-        <CustomToast
-          type="success"
-          message="Transasksi berhasil"
-        />,
+        <CustomToast type="success" message="Transaksi berhasil" />,
         {
           containerId: "toastOrder",
           className: "p-0 bg-transparent shadow-none",
@@ -127,8 +150,11 @@ export default function SiswaDashboardPage() {
           icon: false,
         }
       );
+    } finally {
+      setIsCheckingOut(false);
     }
   };
+
 
   return (
     <>
@@ -152,6 +178,7 @@ export default function SiswaDashboardPage() {
               cart={cart}
               setCart={setCart}
               onCheckout={handleCheckout}
+              loading={isCheckingOut}
             />
           )}
 

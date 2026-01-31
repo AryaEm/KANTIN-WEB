@@ -1,5 +1,6 @@
 export type Menu = {
   id: number;
+  id_stan: number
   name: string;
   jenis_menu: string;
   price: number;
@@ -71,6 +72,7 @@ export type Stan = {
 };
 
 export interface CartItem {
+  stan_id: number
   id_menu: number;
   nama_menu: string;
   foto: string | null

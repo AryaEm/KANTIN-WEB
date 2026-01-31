@@ -32,7 +32,7 @@ export default function AdminHeader() {
         !
       </h1>
       
-      <p className="text-lg text-gray-600 font-medium">
+      <p className="text-lg text-black/60 font-medium">
         {namaStan ? `Kelola ${namaStan} dengan mudah` : "Kelola pesanan dan menu stan Anda"}
       </p>
     </div>

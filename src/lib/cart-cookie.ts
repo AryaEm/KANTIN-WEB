@@ -1,25 +1,23 @@
-import Cookies from 'js-cookie'
-import { CartItem } from '@/app/types'
+import { CartItem } from "@/app/types";
 
-const CART_KEY = 'kantin_cart'
+const CART_KEY = "siswa_cart";
 
-export const getCartCookie = (): CartItem[] => {
-  const raw = Cookies.get(CART_KEY)
-  if (!raw) return []
-
+export const loadCart = (): CartItem[] => {
+  if (typeof window === "undefined") return [];
   try {
-    return JSON.parse(raw)
+    const raw = localStorage.getItem(CART_KEY);
+    return raw ? JSON.parse(raw) : [];
   } catch {
-    return []
+    return [];
   }
-}
+};
 
-export const setCartCookie = (cart: CartItem[]) => {
-  Cookies.set(CART_KEY, JSON.stringify(cart), {
-    expires: 1, // 1 hari
-  })
-}
+export const saveCart = (cart: CartItem[]) => {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+};
 
-export const clearCartCookie = () => {
-  Cookies.remove(CART_KEY)
-}
+export const clearCart = () => {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(CART_KEY);
+};
