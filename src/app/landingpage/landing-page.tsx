@@ -75,7 +75,7 @@ export default function Page() {
                                 </span>
                             </div>
 
-                            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-[0.35] tracking-normal Lato">
+                            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-[0.95] tracking-normal Lato">
                                 <span className="text-gray-900">Pesan</span>
                                 <br />
                                 <span className="text-gray-900">Makanan</span>
