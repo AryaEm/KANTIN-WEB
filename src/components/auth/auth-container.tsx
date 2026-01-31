@@ -18,7 +18,7 @@ export default function AuthContainer({ mode }: { mode: string }) {
                     <ChevronLeft className="group-hover:-translate-x-1 transition-transform" /> Kembali
                 </Link>
 
-                <div className="relative z-10 w-full max-w-xl ml-8 lg:ml-20 xl:ml-36 px-6 lg:px-0">
+                <div className="relative z-10 w-full max-w-xl m-2 lg:ml-20 xl:ml-36 px-6 lg:px-0">
                     <div className="bg-gray-900/40 backdrop-blur-2xl rounded-3xl p-8 lg:p-10 shadow-2xl border border-white/10 animate-fade-in-left relative">
 
 
