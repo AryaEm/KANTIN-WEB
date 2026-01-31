@@ -61,10 +61,9 @@ export default function RegisterAdminForm() {
             storeCookie("nama_pemilik", data.stan.nama_pemilik);
 
             toast(
-                <CustomToast type="success" message="Login berhasil" />,
+                <CustomToast type="success" message="Register berhasil" />,
                 {
                     containerId: "toastRegisterStan",
-                    // className: "p-0 bg-slate-800 shadow-none",
                     icon: false,
                     autoClose: 2000,
                 }
@@ -97,29 +96,28 @@ export default function RegisterAdminForm() {
             setLoading(false);
         }
     };
+
     return (
-        <form onSubmit={handleSubmit} className="space-y-3 Poppins">
-            <div className="grid grid-cols-2 gap-3">
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="text-xs text-white font-medium Poppins">Username</label>
                     <input
                         name="username"
                         value={form.username}
                         onChange={handleChange}
-                        className="mt-1 w-full rounded-lg text-sx bg-input border border-white/15 px-4 py-2 outline-none text-white/80 text-sm"
+                        className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
                         placeholder="Username"
                         required
                     />
                 </div>
 
                 <div>
-                    <label className="text-xs text-white font-medium Poppins">Password</label>
                     <input
                         name="password"
                         type="password"
                         value={form.password}
                         onChange={handleChange}
-                        className="mt-1 w-full rounded-lg bg-input border border-white/15 px-4 py-2 outline-none text-white/80 text-sm"
+                        className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
                         placeholder="Password"
                         required
                     />
@@ -127,45 +125,44 @@ export default function RegisterAdminForm() {
             </div>
 
             <div>
-                <label className="text-xs text-white font-medium Poppins">Nama Pemilik</label>
                 <input
                     name="nama_pemilik"
                     value={form.nama_pemilik}
                     onChange={handleChange}
-                    className="mt-1 w-full rounded-lg text-sx bg-input border border-white/15 px-4 py-2 outline-none text-white/80 text-sm"
-                    placeholder="Asepxx"
+                    className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
+                    placeholder="Nama Pemilik Stan"
                     required
                 />
             </div>
 
             <div>
-                <label className="text-xs text-white font-medium Poppins">Nama Stan</label>
                 <input
                     name="nama_stan"
                     value={form.nama_stan}
                     onChange={handleChange}
-                    className="mt-1 w-full rounded-lg text-sx bg-input border border-white/15 px-4 py-2 outline-none text-white/80 text-sm"
-                    placeholder="Kantin Pakxx"
+                    className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
+                    placeholder="Nama Stan"
                     required
                 />
             </div>
 
             <div>
-                <label className="text-xs text-white font-medium Poppins">Telp</label>
                 <input
                     name="telp"
                     value={form.telp}
                     onChange={handleChange}
-                    className="mt-1 w-full rounded-lg text-sx bg-input border border-white/15 px-4 py-2 outline-none text-white/80 text-sm"
-                    placeholder="08xx"
+                    className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
+                    placeholder="No. Telepon (08xx)"
+                    required
                 />
             </div>
 
             <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-teal-500 hover:bg-teal-400 transition-all py-2 font-medium text-black text-sm">
-                {loading ? "Mendaftarkan..." : "Daftar sebagai Admin Stan"}
+                className="mt-6 w-full rounded-xl bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 py-4 font-bold text-white text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                {loading ? "Mendaftarkan..." : "Create Account"}
             </button>
         </form>
     );

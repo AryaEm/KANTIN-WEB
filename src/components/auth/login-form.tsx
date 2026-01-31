@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { storeCookie } from "@/lib/client-cookie"
 import { BASE_API_URL } from "../../../global"
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, User, Lock } from "lucide-react";
 import CustomToast from "@/components/ui/CustomToast";
 import { toast } from "react-toastify"
 
@@ -123,45 +123,54 @@ export default function LoginForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-                <label className="text-xs text-white font-medium Poppins">Username</label>
-                <input
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="mt-1 w-full rounded-lg bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
-                    placeholder="Masukkan username"
-                />
+                <div className="relative">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
+                        <User size={20} />
+                    </div>
+                    <input
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full rounded-xl bg-white/10 border border-white/20 pl-12 pr-4 py-3.5 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all"
+                        placeholder="Username"
+                    />
+                </div>
             </div>
 
-            <div className="relative flex justify-between items-end gap-2">
-                <div className="w-full">
-                    <label className="text-xs text-white font-medium Poppins">Password</label>
+            <div>
+                <div className="relative">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
+                        <Lock size={20} />
+                    </div>
                     <input
                         type={showPassword ? `text` : `password`}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="mt-1 w-full rounded-lg bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
-                        placeholder="Masukkan password"
+                        className="w-full rounded-xl bg-white/10 border border-white/20 pl-12 pr-14 py-3.5 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all"
+                        placeholder="Password"
                     />
-                </div>
-                <div className="cursor-pointer bg-input p-3 flex rounded-lg items-center border border-white/15 justify-center h-10 w-10" onClick={() => setShowPassword(!showPassword)}>
-                    {
-                        showPassword ?
-                            <EyeOff className="text-xl text-zinc-200" /> :
-                            <Eye className="text-xl text-zinc-200" />
-                    }
+                    <button
+                        type="button"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-lg transition-colors"
+                        onClick={() => setShowPassword(!showPassword)}
+                    >
+                        {showPassword ? (
+                            <EyeOff className="w-5 h-5 text-white/60" />
+                        ) : (
+                            <Eye className="w-5 h-5 text-white/60" />
+                        )}
+                    </button>
                 </div>
             </div>
 
             <button
                 type="submit"
                 disabled={loading}
-                className="mt-4 w-full rounded-lg bg-teal-500 py-2 font-medium text-black">
+                className="mt-8 w-full rounded-xl bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 py-4 font-bold text-white text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
                 {loading ? "Loading..." : "Login"}
             </button>
-
-
         </form>
     );
 }

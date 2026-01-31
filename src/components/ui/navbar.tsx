@@ -18,7 +18,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link href="/auth">
-            <Button variant="glass" size="sm" className='text-orange-500 hover:bg-orange-500 hover:text-white px-6 border border-black/15'>
+            <Button variant="glass" size="sm" className='text-orange-500 hover:bg-orange-500 hover:text-white px-6 border border-black/5'>
               Login
             </Button>
           </Link>

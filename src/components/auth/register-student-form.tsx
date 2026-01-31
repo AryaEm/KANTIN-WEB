@@ -88,59 +88,60 @@ export default function RegisterStudentForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-3 Poppins">
-            <div className="grid grid-cols-2 gap-3">
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="text-xs text-white font-medium Poppins">Username</label>
                     <input
                         name="username"
                         value={form.username}
                         onChange={handleChange}
-                        className="mt-1 w-full rounded-lg text-sx bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
+                        className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
                         placeholder="Username"
+                        required
                     />
                 </div>
 
                 <div>
-                    <label className="text-xs text-white font-medium Poppins">Password</label>
                     <input
                         type="password"
                         name="password"
                         value={form.password}
                         onChange={handleChange}
-                        className="mt-1 w-full rounded-lg bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
+                        className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
                         placeholder="Password"
+                        required
                     />
                 </div>
             </div>
 
             <div>
-                <label className="text-xs text-white font-medium Poppins">Nama Lengkap</label>
                 <input
                     name="nama_siswa"
                     value={form.nama_siswa}
                     onChange={handleChange}
-                    className="mt-1 w-full rounded-lg text-sx bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
-                    placeholder="Asepxx"
+                    className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
+                    placeholder="Nama Lengkap"
+                    required
                 />
             </div>
 
             <div>
-                <label className="text-xs text-white font-medium Poppins">Telp</label>
                 <input
                     name="telp"
                     value={form.telp}
                     onChange={handleChange}
-                    className="mt-1 w-full rounded-lg text-sx bg-input border border-white/15 px-4 py-2 outline-none text-white/80"
-                    placeholder="08xx"
+                    className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none text-white placeholder:text-white/40 focus:border-orange-400 focus:bg-white/15 transition-all text-sm"
+                    placeholder="No. Telepon (08xx)"
+                    required
                 />
             </div>
 
             <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 w-full rounded-lg bg-teal-500 py-2 font-medium text-black">
-                {loading ? "Mendaftarkan..." : "Daftar sebagai Siswa"}
+                className="mt-6 w-full rounded-xl bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 py-4 font-bold text-white text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                {loading ? "Mendaftarkan..." : "Create Account"}
             </button>
         </form>
     );

@@ -52,16 +52,16 @@ export default function Page() {
 
             <Navbar />
 
-            <section className="relative min-h-screen bg-white overflow-hidden pt-32 pb-20 px-6">
+            <section className="relative min-h-screen bg-white overflow-hidden pt-28 pb-20 px-6">
 
                 <div className="absolute top-20 right-[10%] w-[500px] h-[500px] bg-yellow-300 blob-shape opacity-20 animate-blob"></div>
-                <div className="absolute bottom-32 left-[5%] w-[400px] h-[400px] bg-orange-400 blob-shape opacity-15 animate-blob" style={{ animationDelay: '2s' }}></div>
-                <div className="absolute top-[40%] right-[20%] w-[300px] h-[300px] bg-yellow-400 blob-shape opacity-10 animate-blob" style={{ animationDelay: '4s' }}></div>
+                <div className="lg:absolute hidden bottom-32 left-[5%] w-[400px] h-[400px] bg-orange-400 blob-shape opacity-15 animate-blob" style={{ animationDelay: '2s' }}></div>
+                <div className="lg:absolute hidden bottom-24 right-[10%] w-[400px] h-[400px] bg-yellow-400 blob-shape opacity-10 animate-blob" style={{ animationDelay: '4s' }}></div>
 
-                <div className="absolute top-40 left-[15%] text-orange-400 opacity-30 animate-float">
+                <div className="absolute top-40 left-[30%] text-orange-400 opacity-30 animate-float">
                     <Zap size={40} />
                 </div>
-                <div className="absolute bottom-40 right-[15%] text-yellow-500 opacity-30 animate-float" style={{ animationDelay: '1s' }}>
+                <div className="absolute bottom-40 right-20 text-yellow-500 opacity-30 animate-float" style={{ animationDelay: '1s' }}>
                     <Star size={35} />
                 </div>
 
@@ -75,7 +75,7 @@ export default function Page() {
                                 </span>
                             </div>
 
-                            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight Poppins">
+                            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-[0.35] tracking-normal Lato">
                                 <span className="text-gray-900">Pesan</span>
                                 <br />
                                 <span className="text-gray-900">Makanan</span>
@@ -101,7 +101,7 @@ export default function Page() {
                                 Platform kantin digital yang memudahkan siswa memesan makanan dan membantu penjual mengelola pesanan dengan efisien.
                             </p>
 
-                            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                            <div className="flex flex-col sm:flex-row gap-4">
                                 <Link href="/auth?mode=register">
                                     <button className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-bold text-lg rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-orange-300">
                                         <span className="relative z-10 flex items-center gap-2">
@@ -113,7 +113,7 @@ export default function Page() {
                                 </Link>
 
                                 <Link href="/auth">
-                                    <button className="px-8 py-4 bg-white border-3 border-gray-900 text-gray-900 font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-gray-50">
+                                    <button className="px-8 py-4 bg-white border border-black/10 text-black/80 hover:text-black font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-gray-50">
                                         Sudah Punya Akun
                                     </button>
                                 </Link>
@@ -147,7 +147,7 @@ export default function Page() {
                 <div className="container mx-auto max-w-7xl relative z-10">
                     <div className="text-center mb-20 opacity-0 animate-slide-up">
                         <div className="inline-block mb-4">
-                            <span className="font-display text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text text-transparent">
+                            <span className="Fredoka text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 to-yellow-500 bg-clip-text text-transparent">
                                 Kenapa KantinIn?
                             </span>
                         </div>
@@ -167,7 +167,7 @@ export default function Page() {
                                         <feature.icon className="w-8 h-8 text-white" />
                                     </div>
 
-                                    <h3 className="font-display text-2xl font-bold text-gray-900 mb-3">
+                                    <h3 className="Fredoka text-2xl font-bold text-gray-900 mb-3">
                                         {feature.title}
                                     </h3>
                                     <p className="text-gray-600 leading-relaxed">
@@ -177,14 +177,13 @@ export default function Page() {
                                     <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-yellow-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-b-3xl"></div>
                                 </div>
                             </div>
+                            
                         ))}
                     </div>
                 </div>
             </section>
 
             <section className="relative py-28 px-6 bg-white overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-100 via-orange-100 to-yellow-50 opacity-50"></div>
-
                 <div className="container mx-auto max-w-5xl relative z-10">
                     <div className="relative p-12 lg:p-16 bg-gradient-to-br from-orange-500 via-orange-400 to-yellow-400 rounded-[3rem] shadow-2xl overflow-hidden">
                         <div className="absolute inset-0 opacity-10">
@@ -194,7 +193,7 @@ export default function Page() {
 
                         <div className="relative text-center space-y-8">
                             <div className="inline-block">
-                                <h2 className="font-display text-5xl lg:text-6xl font-bold text-white mb-4">
+                                <h2 className="Fredoka text-5xl lg:text-6xl font-bold text-white mb-4">
                                     Siap untuk Mencoba?
                                 </h2>
                                 <div className="h-2 w-32 mx-auto bg-white rounded-full"></div>
@@ -217,10 +216,10 @@ export default function Page() {
                 </div>
             </section>
 
-            <footer className="py-6 px-6 bg-gray-50 border-t border-black/5">
+            <footer className="py-6 px-6 border-t border-black/10">
                 <div className="container mx-auto text-center">
                     <p className="text-gray-600 font-medium">
-                        © 2026 KantinKu. Dev by{' '}
+                        © 2026 KantinIn. Dev by{' '}
                         <Link
                             href={'https://aryaem.vercel.app'}
                             target='_blank'
@@ -228,6 +227,7 @@ export default function Page() {
                         >
                             Aryaem
                         </Link>
+                        .
                     </p>
                 </div>
             </footer>
