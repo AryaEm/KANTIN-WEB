@@ -14,7 +14,6 @@ import OrderView from '@/components/dashboard/siswa/order-view';
 import { StudentNavbar } from '@/components/dashboard/siswa/siswa-navbar';
 import { toast } from 'react-toastify';
 import CustomToast from '@/components/ui/CustomToast';
-import Cookies from "js-cookie";
 import { CartItem, Menu } from '@/app/types';
 import { loadCart, saveCart, clearCart } from "@/lib/cart-cookie";
 
@@ -35,35 +34,25 @@ export default function SiswaDashboardPage() {
 
   const addToCart = (menu: Menu) => {
     setCart(prev => {
-
+      // VALIDASI HARUS TETAP PURE
       if (prev.length > 0 && prev[0].stan_id !== menu.id_stan) {
-        toast(
-          <CustomToast
-            type="warning"
-            message="Satu transaksi hanya boleh dari satu stan"
-          />,
-          {
-            containerId: "toastOrder",
-            icon: false,
-          }
-        );
-        return prev;
+        return prev
       }
 
-      const exist = prev.find(i => i.id_menu === menu.id);
+      const exist = prev.find(i => i.id_menu === menu.id)
 
-      const diskon = menu.discount ?? 0;
+      const diskon = menu.discount ?? 0
       const hargaSetelahDiskon =
         diskon > 0
           ? menu.price - (menu.price * diskon) / 100
-          : menu.price;
+          : menu.price
 
       if (exist) {
         return prev.map(i =>
           i.id_menu === menu.id
             ? { ...i, qty: i.qty + 1 }
             : i
-        );
+        )
       }
 
       return [
@@ -78,9 +67,29 @@ export default function SiswaDashboardPage() {
           diskon_persen: diskon,
           qty: 1,
         },
-      ];
-    });
-  };
+      ]
+    })
+
+    setTimeout(() => {
+      setCart(prev => {
+        if (prev.length > 0 && prev[0].stan_id !== menu.id_stan) {
+          toast(
+            <CustomToast
+              type="warning"
+              message="Satu transaksi hanya boleh dari satu stan"
+            />,
+            {
+              containerId: "toastOrder",
+              className: "bg-yellow-400 rounded-xl shadow-lg",
+              icon: false,
+            }
+          )
+        }
+        return prev
+      })
+    }, 0)
+  }
+
 
   useEffect(() => {
     saveCart(cart);

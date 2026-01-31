@@ -17,7 +17,7 @@ export default function CartItems({
     <div className="flex justify-between items-center rounded-xl border border-white/10 bg-white/5 p-4 Poppins">
       <div className="flex items-center gap-4">
         <div className="border border-teal-400/50 rounded-lg h-20 w-20">
-          {item.diskon_persen ? (
+          {item.foto   ? (
             <Image
               src={item.foto ?? ""}
               alt={item.nama_menu}
