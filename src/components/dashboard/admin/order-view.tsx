@@ -312,8 +312,8 @@ export default function OrderView() {
   return (
     <div className="space-y-6">
 
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl Fredoka font-bold text-gray-900">Daftar Pesanan</h1>
+      <div className="flex justify-between lg:items-center flex-col lg:flex-row">
+        <h1 className="text-3xl Fredoka font-bold text-gray-900 mb-4 lg:mb-0">Daftar Pesanan</h1>
         <div className="flex gap-3 flex-wrap">
           {filterButtons.map((filter) => (
             <button
@@ -356,8 +356,7 @@ export default function OrderView() {
                 key={order.id_transaksi}
                 className="bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-orange-300 hover:shadow-lg transition-all group"
               >
-                {/* Header */}
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-4 lg:flex-row flex-col-reverse">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="inline-flex p-2 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-lg">
@@ -381,7 +380,7 @@ export default function OrderView() {
                   </div>
 
                   <div
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 ${statusInfo.border} ${statusInfo.bg}`}
+                    className={`flex items-center gap-2 px-6 lg:px-4 lg:py-2 py-4 rounded-full mb-4 lg:mb-0 border-2 ${statusInfo.border} ${statusInfo.bg}`}
                   >
                     {statusInfo.icon}
                     <span className={`text-sm font-bold ${statusInfo.text}`}>
@@ -415,8 +414,8 @@ export default function OrderView() {
                   ))}
                 </div>
 
-                <div className="flex justify-between items-center pt-4 border-t-2 border-gray-100">
-                  <div className="flex items-center gap-2">
+                <div className="flex justify-between lg:items-center items-end pt-4 border-t-2 border-gray-100 flex-col lg:flex-row">
+                  <div className="flex items-center gap-2 mb-4 lg:mb-0">
                     <span className="text-gray-600 font-medium">Total Pembayaran:</span>
                     <span className="Fredoka text-2xl font-bold bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
                       Rp {order.total_harga.toLocaleString("id-ID")}

@@ -45,7 +45,7 @@ export default function SiswaTabs({ activeTab, onChange }: Props) {
           <button
             key={tab.value}
             onClick={() => onChange(tab.value)}
-            className={`flex items-center gap-2 px-5 py-3 text-sm transition-all
+            className={`flex items-center gap-2 px-12 py-3 text-sm transition-all
               font-bold rounded-xl whitespace-nowrap border-2
               ${
                 activeTab === tab.value
