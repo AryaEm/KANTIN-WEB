@@ -120,8 +120,8 @@ export default function HistoryView() {
     <div className="space-y-6 Poppins">
       {/* Header Section */}
       <div className="bg-gradient-to-br from-white via-orange-50/50 to-yellow-50/50 rounded-2xl border-2 border-orange-200 p-6 shadow-lg">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between mb-6 flex-col lg:flex-row">
+          <div className="flex items-center gap-4 mb-4 lg:mb-0">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center shadow-lg">
               <History className="w-7 h-7 text-white" />
             </div>
@@ -133,7 +133,7 @@ export default function HistoryView() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border-2 border-orange-300 shadow-sm">
+          <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border-2 border-orange-300 shadow-sm w-full lg:w-fit">
             <FileText className="w-5 h-5 text-orange-600" />
             <div>
               <p className="text-xs text-gray-500 font-semibold">Total Riwayat</p>

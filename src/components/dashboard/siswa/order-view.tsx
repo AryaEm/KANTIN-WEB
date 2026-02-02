@@ -171,7 +171,6 @@ export default function OrderView() {
   return (
     <>
       <div className="space-y-6 Poppins">
-        {/* Header Section */}
         <div className="bg-gradient-to-br from-white via-orange-50/50 to-yellow-50/50 rounded-2xl border-2 border-orange-200 p-6 shadow-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -186,7 +185,6 @@ export default function OrderView() {
           </div>
         </div>
 
-        {/* Orders List */}
         {histories.map((history, index) => {
           const statusConfig = getStatusConfig(history.status);
           const StatusIcon = statusConfig.icon;
@@ -196,7 +194,6 @@ export default function OrderView() {
               key={index}
               className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl border-2 border-gray-200 hover:border-orange-300 p-6 shadow-md hover:shadow-xl transition-all"
             >
-              {/* Delete Button for Rejected Orders */}
               {history.status === "ditolak" && (
                 <button
                   onClick={() => {
@@ -209,8 +206,7 @@ export default function OrderView() {
                 </button>
               )}
 
-              {/* Header */}
-              <div className="flex justify-between items-start mb-5">
+              <div className="flex justify-between flex-col-reverse lg:flex-row items-start mb-5">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center">
@@ -227,14 +223,13 @@ export default function OrderView() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-lg w-fit">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-lg w-fit ">
                     <span className="text-xs text-gray-500 font-semibold">ID Transaksi:</span>
                     <span className="text-sm text-gray-900 font-bold">#{history.id_transaksi}</span>
                   </div>
                 </div>
 
-                {/* Status Badge */}
-                <div className={`flex items-center gap-2 px-4 py-2 rounded-xl border-2 ${statusConfig.bg} ${statusConfig.text} ${statusConfig.border} font-bold text-sm whitespace-nowrap`}>
+                <div className={`flex items-center gap-2 px-4 mb-4 lg:w-fit w-full lg:mb-0 py-4 lg:py-2 rounded-xl border-2 ${statusConfig.bg} ${statusConfig.text} ${statusConfig.border} font-bold text-sm whitespace-nowrap`}>
                   <StatusIcon className="w-4 h-4" />
                   {statusConfig.label}
                 </div>
@@ -242,7 +237,6 @@ export default function OrderView() {
 
               <div className="border-t-2 border-gray-100 my-4" />
 
-              {/* Items List */}
               <div className="space-y-3 mb-4">
                 <h4 className="text-sm font-bold text-gray-700 flex items-center gap-2">
                   <ShoppingBag className="w-4 h-4 text-orange-500" />
@@ -269,7 +263,6 @@ export default function OrderView() {
                 ))}
               </div>
 
-              {/* Total */}
               <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 border-2 border-orange-200">
                 <div className="flex justify-between items-center">
                   <span className="text-base font-bold text-gray-900">Total Pembayaran</span>
@@ -279,7 +272,6 @@ export default function OrderView() {
                 </div>
               </div>
 
-              {/* Cancel Button for Pending Orders */}
               {history.status === "belum_dikonfirmasi" && (
                 <button
                   onClick={() => {

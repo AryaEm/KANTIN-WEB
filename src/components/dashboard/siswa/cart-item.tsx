@@ -29,9 +29,9 @@ export default function CartItems({
         </div>
       )}
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-col lg:flex-row">
         <div className="relative flex-shrink-0">
-          <div className="w-36 h-36 rounded-xl overflow-hidden bg-gray-100 border-2 border-gray-200 group-hover:border-orange-300 transition-colors">
+          <div className="lg:w-36 h-36 w-full rounded-xl overflow-hidden bg-gray-100 border-2 border-gray-200 group-hover:border-orange-300 transition-colors">
             {item.foto ? (
               <Image
                 src={item.foto}
@@ -60,7 +60,7 @@ export default function CartItems({
               </h4>
               <button
                 onClick={onRemove}
-                className="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 border-2 border-red-200 hover:border-red-300 flex items-center justify-center transition-all hover:scale-110 group/remove"
+                className="w-8 h-8 rounded-lg absolute top-2 right-2 bg-red-50 hover:bg-red-100 border-2 border-red-200 hover:border-red-300 flex items-center justify-center transition-all hover:scale-110 group/remove"
                 aria-label="Hapus item"
               >
                 <X className="w-4 h-4 text-red-500 group-hover/remove:text-red-600" />
