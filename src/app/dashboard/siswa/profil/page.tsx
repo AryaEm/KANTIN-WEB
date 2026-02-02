@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
-import { Edit, Trash } from "lucide-react";
+import { Edit, Trash, ArrowLeft, User, Phone, UserCircle, AlertTriangle, Sparkles, Camera } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { storeCookie, removeCookie } from "@/lib/client-cookie";
@@ -19,7 +19,7 @@ export default function ProfileView() {
   const [loading, setLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleting, setDeleting] = useState(false)
+  const [deleting, setDeleting] = useState(false);
 
   const genderLabel = {
     laki_laki: "Laki-laki",
@@ -50,8 +50,6 @@ export default function ProfileView() {
     }
   };
 
-
-
   function updateSiswaCookies(data: SiswaProfileResponse) {
     storeCookie("username", data.username);
 
@@ -62,7 +60,6 @@ export default function ProfileView() {
       storeCookie("foto", data.siswa.foto ?? "");
     }
   }
-
 
   const handleUpdateFoto = async (file: File) => {
     if (!profile?.siswa?.id) return;
@@ -81,6 +78,8 @@ export default function ProfileView() {
       if (!res.status) {
         toast(<CustomToast type="warning" message="File Tidak Boleh Diatas 5mb" />, {
           containerId: "toastEditDataProfilSiswa",
+          className: "bg-yellow-400 rounded-xl shadow-lg",
+          icon: false,
         });
         return;
       }
@@ -93,12 +92,21 @@ export default function ProfileView() {
 
       toast(
         <CustomToast type="success" message="Foto profil diperbarui" />,
-        { containerId: "toastEditDataProfilSiswa" }
+        { 
+          containerId: "toastEditDataProfilSiswa",
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
+        }
       );
     } catch {
       toast(
         <CustomToast type="error" message="Gagal upload foto" />,
-        { containerId: "toastEditDataProfilSiswa" }
+        { 
+          containerId: "toastEditDataProfilSiswa",
+          className: "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+          icon: false,
+        }
       );
     }
   };
@@ -125,6 +133,8 @@ export default function ProfileView() {
       if (!res.status) {
         toast(<CustomToast type="warning" message="Gagal Update Data Siswa" />, {
           containerId: "toastEditDataSiswa",
+          className: "bg-yellow-400 rounded-xl shadow-lg",
+          icon: false,
         });
         return;
       }
@@ -135,13 +145,19 @@ export default function ProfileView() {
         <CustomToast type="success" message="Profil berhasil diperbarui" />,
         {
           containerId: "toastEditDataSiswa",
-          autoClose: 1200,
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
         }
       );
     } catch {
       toast(
         <CustomToast type="error" message="Terjadi kesalahan server" />,
-        { containerId: "toastEditDataSiswa" }
+        { 
+          containerId: "toastEditDataSiswa",
+          className: "bg-red-400 border border-white/10 rounded-xl shadow-xl",
+          icon: false,
+        }
       );
     }
   };
@@ -221,116 +237,188 @@ export default function ProfileView() {
     }
   };
 
-
-
   if (loading) {
     return (
-      <section className="min-h-dvh flex items-center justify-center text-zinc-400 bg-primary">
-        Memuat profil...
+      <section className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex p-4 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full mb-4 animate-pulse">
+            <User className="w-8 h-8 text-orange-500" />
+          </div>
+          <p className="text-gray-600 font-medium">Memuat profil...</p>
+        </div>
       </section>
     );
   }
 
   if (!profile) {
     return (
-      <section className="min-h-dvh flex items-center justify-center text-red-400 bg-primary">
-        Gagal memuat data profil
+      <section className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex p-4 bg-red-100 rounded-full mb-4">
+            <AlertTriangle className="w-8 h-8 text-red-500" />
+          </div>
+          <p className="text-red-600 font-medium">Gagal memuat data profil</p>
+        </div>
       </section>
     );
   }
 
   return (
     <>
-      <section className="min-h-dvh w-full grid-bg text-white relative flex justify-center items-center gap-24">
-        <div className="relative w-2/5 px-6 pb-6 border-2 rounded-md border-teal-500 bg-primary shadow-2xl">
-          <div className="-mt-14 mb-4">
-            <div className="w-28 h-28 relative rounded-full bg-zinc-900">
-              <Image
-                src={profile.siswa?.foto ?? "No Profil"}
-                alt="Profil"
-                width={112}
-                height={112}
-                className="object-cover w-28 h-28 rounded-full border-4 border-teal-500 flex items-center"
-                unoptimized
-              />
+      <section className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white py-16 px-4 relative overflow-hidden">
+        <div className="absolute -top-20 -right-[2%] w-[400px] h-[400px] bg-yellow-300 dashboard-blob-1 opacity-10"></div>
+        <div className="absolute bottom-20 left-[5%] w-[350px] h-[350px] bg-orange-400 dashboard-blob-2 opacity-10"></div>
 
-              <label className="bg-teal-400 h-7 w-7 flex justify-center items-center absolute bottom-1 z-30 right-1 rounded-md cursor-pointer hover:bg-teal-500 transition">
-                <Edit size={16} className="text-white" />
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={(e) => {
-                    if (e.target.files?.[0]) {
-                      handleUpdateFoto(e.target.files[0]);
-                    }
-                  }}
-                />
-              </label>
+        <div className="max-w-4xl mx-auto relative z-10">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-100 to-yellow-100 border-2 border-orange-300 mb-4">
+              <Sparkles className="w-4 h-4 text-orange-500" />
+              <span className="text-sm font-bold text-orange-600 tracking-wide">
+                PROFIL SISWA
+              </span>
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-semibold tracking-tight">Siswa</h1>
-              <span className="text-xs px-2 py-1 rounded-full bg-teal-500/15 text-teal-400">
-                Siswa
-              </span>
-            </div>
-
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Akun siswa untuk melakukan pemesanan dan memantau transaksi
-              pada sistem kantin digital.
-            </p>
-
-            <div className="flex flex-wrap gap-2 mt-3">
-              <MetaItem label="Username" value={profile.username} />
-              <MetaItem label="Role" value="Siswa" />
-            </div>
-
-            <div className="text-sm mt-6 text-white/80 flex gap-6">
-              <div className="flex flex-col gap-2">
-                <p className="py-2 pl-3 pr-16">Nama Siswa</p>
-                <p className="py-2 pl-3 pr-16">Telp</p>
-                <p className="py-2 pl-3 pr-16">Jenis Kelamin</p>
+          <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 shadow-xl">
+            <div className="flex flex-col items-center mb-8">
+              <div className="relative mb-6">
+                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-100 to-yellow-100 border-4 border-orange-300 flex items-center justify-center shadow-lg overflow-hidden">
+                  <Image
+                    src={profile.siswa?.foto ?? "/default-avatar.png"}
+                    alt="Profil Siswa"
+                    width={112}
+                    height={112}
+                    className="rounded-full w-28 h-28 object-cover"
+                    unoptimized
+                  />
+                </div>
+                <label className="absolute bottom-1 right-1 p-2 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full shadow-lg cursor-pointer hover:from-orange-600 hover:to-yellow-600 transition-all">
+                  <Camera className="w-5 h-5 text-white" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) {
+                        handleUpdateFoto(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </label>
               </div>
 
-              <div className="flex flex-col gap-2 w-1/2">
-                <p className="bg-white/3 py-2 rounded-md w-full pl-3 border border-white/20">
+              <div className="text-center">
+                <h1 className="text-3xl Fredoka font-bold text-gray-900 mb-2">
+                  {profile.siswa?.nama_siswa ?? "Siswa"}
+                </h1>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-orange-100 to-yellow-100 border border-orange-300">
+                  <UserCircle className="w-4 h-4 text-orange-600" />
+                  <span className="text-sm font-bold text-orange-700">
+                    Siswa
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-gray-600 text-center mt-4 max-w-md">
+                Akun siswa untuk melakukan pemesanan dan memantau transaksi pada sistem kantin digital.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4 border-2 border-blue-200">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold text-blue-700">
+                    Username
+                  </span>
+                </div>
+                <p className="text-lg font-bold text-blue-900 ml-11">
+                  {profile.username}
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border-2 border-purple-200">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
+                    <UserCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold text-purple-700">
+                    Role
+                  </span>
+                </div>
+                <p className="text-lg font-bold text-purple-900 ml-11">
+                  Siswa
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border-2 border-orange-200">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-lg">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold text-orange-700">
+                    Nama Siswa
+                  </span>
+                </div>
+                <p className="text-lg font-bold text-orange-900 ml-11">
                   {profile.siswa?.nama_siswa ?? "-"}
                 </p>
-                <p className="bg-white/3 py-2 rounded-md w-full pl-3 border border-white/20">
+              </div>
+
+              <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-4 border-2 border-amber-200">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-lg">
+                    <Phone className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold text-amber-700">
+                    Nomor Telepon
+                  </span>
+                </div>
+                <p className="text-lg font-bold text-amber-900 ml-11">
                   {profile.siswa?.telp ?? "-"}
                 </p>
-                <p className="bg-white/3 py-2 rounded-md w-full pl-3 border border-white/20">
-                  {profile.siswa
-                    ? genderLabel[profile.siswa.jenis_kelamin]
-                    : "-"}
+              </div>
+
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border-2 border-green-200 md:col-span-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg">
+                    <UserCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold text-green-700">
+                    Jenis Kelamin
+                  </span>
+                </div>
+                <p className="text-lg font-bold text-green-900 ml-11">
+                  {profile.siswa ? genderLabel[profile.siswa.jenis_kelamin] : "-"}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-between mt-8 gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t-2 border-gray-100">
               <Link
                 href="/dashboard/siswa"
-                className="inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm border border-zinc-800 bg-white/5 hover:bg-white/10 transition"
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-gray-600 bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all"
               >
+                <ArrowLeft size={18} />
                 Kembali
               </Link>
 
               <button
                 onClick={() => setShowEdit(true)}
-                className="inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-teal-400 border border-teal-500/40 hover:bg-teal-500/10"
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
               >
-                Edit
-              </button>
-              <button
-                onClick={() => setShowDeleteConfirm(true)}
-                className="inline-flex w-fit items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium text-red-400 border-2 border-red-500/40 hover:bg-red-500/10"
-              >
-                <Trash size={18}/>
+                <Edit size={18} />
+                Edit Profil
               </button>
 
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+              >
+                <Trash size={18} />
+              </button>
             </div>
           </div>
         </div>
@@ -343,26 +431,30 @@ export default function ProfileView() {
           onSubmit={handleUpdateProfile}
         />
       )}
+
       {showDeleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-black/60"
-            onClick={() => setShowDeleteConfirm(false)}
-          />
-          <div className="relative bg-black/20 backdrop-blur border border-red-500/40 rounded-xl p-6 w-full max-w-sm">
-            <h3 className="text-lg font-semibold text-white">
-              Hapus Akun?
-            </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white/15 backdrop-blur w-full max-w-md rounded-3xl p-8 border-2 border-red-500 shadow-2xl">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-gradient-to-br from-red-500 to-rose-500 rounded-full">
+                <AlertTriangle className="w-12 h-12 text-white" />
+              </div>
+            </div>
 
-            <p className="text-sm text-zinc-400 mt-2">
-              Akun siswa akan dihapus permanen.
-            </p>
+            <div className="text-center mb-8">
+              <h2 className="text-2xl Fredoka font-bold text-white mb-3">
+                Hapus Akun Siswa?
+              </h2>
+              <p className="text-white/80 font-medium">
+                Akun siswa akan dihapus secara permanen beserta semua data transaksi. Tindakan ini <b>tidak dapat dibatalkan</b>.
+              </p>
+            </div>
 
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 rounded-md bg-zinc-700 text-white"
                 disabled={deleting}
+                className="flex-1 px-6 py-3 text-sm font-bold text-white/50 hover:text-white hover:bg-white/20 border-2 border-white/50 rounded-xl transition-all disabled:opacity-50"
               >
                 Batal
               </button>
@@ -370,24 +462,15 @@ export default function ProfileView() {
               <button
                 onClick={handleDeleteUser}
                 disabled={deleting}
-                className="px-4 py-2 rounded-md bg-red-500 text-white"
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
               >
-                {deleting ? "Menghapus..." : "Hapus"}
+                <Trash size={18} />
+                {deleting ? "Menghapus..." : "Hapus Akun"}
               </button>
             </div>
           </div>
         </div>
       )}
-
     </>
-  );
-}
-
-function MetaItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-zinc-900 text-zinc-300 border border-zinc-800">
-      <span className="text-zinc-500">{label}:</span>
-      <span>{value}</span>
-    </div>
   );
 }

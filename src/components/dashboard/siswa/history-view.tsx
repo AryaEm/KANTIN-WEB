@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { get } from "@/lib/api-bridge";
 import { HistorySiswa } from "@/app/types";
 import { getCookie } from "@/lib/client-cookie";
-import { 
-  History, 
-  Download, 
-  Store, 
-  Calendar, 
+import {
+  History,
+  Download,
+  Store,
+  Calendar,
   ShoppingBag,
   Filter,
   CheckCircle,
@@ -118,7 +118,6 @@ export default function HistoryView() {
 
   return (
     <div className="space-y-6 Poppins">
-      {/* Header Section */}
       <div className="bg-gradient-to-br from-white via-orange-50/50 to-yellow-50/50 rounded-2xl border-2 border-orange-200 p-6 shadow-lg">
         <div className="flex items-center justify-between mb-6 flex-col lg:flex-row">
           <div className="flex items-center gap-4 mb-4 lg:mb-0">
@@ -142,7 +141,6 @@ export default function HistoryView() {
           </div>
         </div>
 
-        {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl border-2 border-gray-200 p-4 hover:border-orange-300 transition-all">
             <div className="flex items-center gap-3">
@@ -206,11 +204,10 @@ export default function HistoryView() {
                 <button
                   key={filter.value}
                   onClick={() => setFilterType(filter.value as any)}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
-                    filterType === filter.value
+                  className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all border-2 ${filterType === filter.value
                       ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent shadow-lg"
                       : "bg-gray-50 text-gray-700 border-gray-200 hover:border-orange-300 hover:bg-orange-50"
-                  }`}
+                    }`}
                 >
                   <FilterIcon className="w-4 h-4" />
                   {filter.label}
@@ -219,7 +216,6 @@ export default function HistoryView() {
             })}
           </div>
 
-          {/* Filter Inputs */}
           {filterType !== "all" && (
             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 border-2 border-orange-200">
               <div className="flex flex-wrap gap-3">
@@ -268,13 +264,12 @@ export default function HistoryView() {
                 )}
               </div>
 
-              {/* Filter Info */}
               <div className="mt-3 flex items-start gap-2">
                 <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-white text-xs font-bold">i</span>
                 </div>
                 <p className="text-sm text-gray-700 font-medium">
-                  {filterType === "month" 
+                  {filterType === "month"
                     ? "Menampilkan transaksi pada bulan tertentu di tahun yang dipilih."
                     : "Menampilkan transaksi berdasarkan minggu ke-n dalam satu tahun."}
                 </p>
@@ -282,7 +277,6 @@ export default function HistoryView() {
             </div>
           )}
 
-          {/* Loading Indicator */}
           {isFetching && (
             <div className="flex items-center gap-2 px-4 py-3 bg-blue-50 border-2 border-blue-200 rounded-xl">
               <div className="w-4 h-4 border-2 border-blue-400 border-t-blue-600 rounded-full animate-spin"></div>
@@ -292,7 +286,6 @@ export default function HistoryView() {
         </div>
       </div>
 
-      {/* History List */}
       {histories.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-2xl border-2 border-gray-200">
           <div className="inline-flex p-6 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full mb-6">
@@ -312,7 +305,6 @@ export default function HistoryView() {
               key={index}
               className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl border-2 border-gray-200 hover:border-orange-300 p-6 shadow-md hover:shadow-xl transition-all"
             >
-              {/* Header */}
               <div className="flex justify-between items-start mb-5">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
@@ -341,7 +333,6 @@ export default function HistoryView() {
                   </div>
                 </div>
 
-                {/* Status Badge */}
                 <div className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 bg-green-100 text-green-600 border-green-300 font-bold text-sm whitespace-nowrap">
                   <CheckCircle className="w-4 h-4" />
                   Selesai
@@ -350,13 +341,12 @@ export default function HistoryView() {
 
               <div className="border-t-2 border-gray-100 my-4" />
 
-              {/* Items List */}
               <div className="space-y-3 mb-4">
                 <h4 className="text-sm font-bold text-gray-700 flex items-center gap-2">
                   <ShoppingBag className="w-4 h-4 text-orange-500" />
                   Detail Pesanan
                 </h4>
-                
+
                 {history.items.map((item, i) => (
                   <div
                     key={i}
@@ -377,7 +367,6 @@ export default function HistoryView() {
                 ))}
               </div>
 
-              {/* Total */}
               <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 border-2 border-orange-200 mb-4">
                 <div className="flex justify-between items-center">
                   <span className="text-base font-bold text-gray-900">Total Pembayaran</span>
@@ -387,7 +376,6 @@ export default function HistoryView() {
                 </div>
               </div>
 
-              {/* Download Button */}
               <button
                 onClick={() => handleDownloadInvoice(history.id_transaksi)}
                 disabled={downloadingId === history.id_transaksi}
