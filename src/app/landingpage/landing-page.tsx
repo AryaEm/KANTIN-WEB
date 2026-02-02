@@ -219,15 +219,7 @@ export default function Page() {
             <footer className="py-6 px-6 border-t border-black/10">
                 <div className="container mx-auto text-center">
                     <p className="text-gray-600 font-medium">
-                        © 2026 KantinIn. Dev by{' '}
-                        <Link
-                            href={'https://aryaem.vercel.app'}
-                            target='_blank'
-                            className='text-orange-600 font-bold hover:text-orange-700 transition-colors'
-                        >
-                            Aryaem
-                        </Link>
-                        .
+                        © 2026 KantinIn
                     </p>
                 </div>
             </footer>
