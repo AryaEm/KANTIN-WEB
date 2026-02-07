@@ -112,6 +112,7 @@ export type HistoryItem = {
     harga_satuan: number
     diskon_presen: number
     harga_setelah_diskon: number
+    foto: string | null
     qty: number;
     subtotal: number;
   }[];

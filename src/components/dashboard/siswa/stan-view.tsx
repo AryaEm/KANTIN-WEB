@@ -177,7 +177,6 @@ export default function StanPage({
               </div>
             </div>
 
-            {/* Search Bar */}
             <div className="relative mb-6">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -197,7 +196,6 @@ export default function StanPage({
               )}
             </div>
 
-            {/* Stan Grid */}
             {filteredStans.length === 0 ? (
               <div className="text-center py-16 bg-white rounded-2xl border-2 border-gray-200">
                 <div className="inline-flex p-4 bg-gray-100 rounded-full mb-4">

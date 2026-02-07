@@ -198,7 +198,6 @@ export default function DiskonModal({
                                 </div>
 
                                 <div className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-4 py-2 rounded-xl font-bold group-hover:scale-110 transition-transform">
-                                    <Percent className="w-4 h-4" />
                                     <span>{d.persentase_diskon}%</span>
                                 </div>
                             </button>

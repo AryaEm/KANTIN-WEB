@@ -23,9 +23,7 @@ export default function CartSummary({
 
   const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
 
-  const serviceFee = Math.round(subtotal * 0.02);
-  
-  const total = subtotal + serviceFee;
+  const total = subtotal
 
   return (
     <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg overflow-hidden">
@@ -90,15 +88,6 @@ export default function CartSummary({
             </div>
           )}
 
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-600 font-semibold flex items-center gap-2">
-              <Wallet className="w-4 h-4" />
-              Biaya Layanan
-            </span>
-            <span className="text-sm font-bold text-gray-900">
-              Rp {serviceFee.toLocaleString('id-ID')}
-            </span>
-          </div>
         </div>
 
         <div className="border-t-2 border-gray-200" />

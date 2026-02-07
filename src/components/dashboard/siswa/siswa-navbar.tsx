@@ -69,7 +69,7 @@ export function StudentNavbar() {
                 className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors text-gray-700 hover:text-orange-600"
               >
                 <User size={18} />
-                <span className="font-medium">View Profil</span>
+                <span className="font-medium">Profil</span>
               </Link>
               
               <button

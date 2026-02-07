@@ -23,7 +23,7 @@ export default function MenuView() {
     const [showEditModal, setShowEditModal] = useState(false)
     const [selectedMenu, setSelectedMenu] = useState<AdminStanMenu | null>(null)
     const [showDiskonModal, setShowDiskonModal] = useState(false);
-    const [selectedMenuForDiskon, setSelectedMenuForDiskon] = useState<AdminStanMenu | null>(null);
+    // const [selectedMenuForDiskon, setSelectedMenuForDiskon] = useState<AdminStanMenu | null>(null);
 
     const statusStyle = (status: AdminStanMenu["status"]) =>
         status === "tersedia"
@@ -216,7 +216,6 @@ export default function MenuView() {
         }
     };
 
-
     if (loading) {
         return (
             <div className="flex items-center justify-center py-20">
@@ -293,7 +292,7 @@ export default function MenuView() {
                                     </div>
                                 </div>
 
-                                <div className="p-5 space-y-4">
+                                <div className="p-5 space-y-4 h-[28dvh] flex flex-col justify-between">
                                     <div className="flex justify-between items-start gap-3">
                                         <div className="flex-1">
                                             <h2 className="text-xl Fredoka tracking-wide font-bold text-gray-900 mb-1">
@@ -311,45 +310,47 @@ export default function MenuView() {
                                         </span>
                                     </div>
 
-                                    <div className="flex gap-2 items-center">
-                                        <span className="text-2xl Fredoka font-bold text-orange-600">
-                                            Rp {getFinalPrice(menu.price, menu.discount).toLocaleString("id-ID")}
-                                        </span>
-                                        {menu.discount > 0 && (
-                                            <span className="text-sm text-gray-400 line-through">
-                                                Rp {Number(menu.price).toLocaleString("id-ID")}
+                                    <div>
+                                        <div className="flex gap-2 items-center mb-2">
+                                            <span className="text-2xl Fredoka font-bold text-orange-600">
+                                                Rp {getFinalPrice(menu.price, menu.discount).toLocaleString("id-ID")}
                                             </span>
-                                        )}
-                                    </div>
+                                            {menu.discount > 0 && (
+                                                <span className="text-sm text-gray-400 line-through">
+                                                    Rp {Number(menu.price).toLocaleString("id-ID")}
+                                                </span>
+                                            )}
+                                        </div>
 
-                                    <div className="flex gap-2 pt-2">
-                                        <button
-                                            onClick={() => {
-                                                setSelectedMenu(menu);
-                                                setShowEditModal(true);
-                                            }}
-                                            className="flex-1 text-gray-700 text-sm font-semibold hover:text-orange-600 py-2.5 bg-gray-100 hover:bg-orange-50 rounded-xl border-2 border-gray-200 hover:border-orange-300 flex gap-2 justify-center items-center transition-all">
-                                            <SquarePen size={16} /> Edit
-                                        </button>
+                                        <div className="flex gap-2 pt-2">
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedMenu(menu);
+                                                    setShowEditModal(true);
+                                                }}
+                                                className="flex-1 text-gray-700 text-sm font-semibold hover:text-orange-600 py-2.5 bg-gray-100 hover:bg-orange-50 rounded-xl border-2 border-gray-200 hover:border-orange-300 flex gap-2 justify-center items-center transition-all">
+                                                <SquarePen size={16} /> Edit
+                                            </button>
 
-                                        <button
-                                            onClick={() => {
-                                                setSelectedMenu(menu);
-                                                setShowDiskonModal(true);
-                                            }}
-                                            className="flex-1 text-gray-700 text-sm font-semibold hover:text-yellow-600 py-2.5 bg-gray-100 hover:bg-yellow-50 rounded-xl border-2 border-gray-200 hover:border-yellow-300 flex gap-2 justify-center items-center transition-all">
-                                            <Tag size={16} />
-                                            {menu.discount > 0 ? "Lepas" : "Diskon"}
-                                        </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedMenu(menu);
+                                                    setShowDiskonModal(true);
+                                                }}
+                                                className="flex-1 text-gray-700 text-sm font-semibold hover:text-yellow-600 py-2.5 bg-gray-100 hover:bg-yellow-50 rounded-xl border-2 border-gray-200 hover:border-yellow-300 flex gap-2 justify-center items-center transition-all">
+                                                <Tag size={16} />
+                                                {menu.discount > 0 ? "Lepas" : "Diskon"}
+                                            </button>
 
-                                        <button
-                                            onClick={() => {
-                                                setSelectedMenuId(menu.id);
-                                                setShowDeleteModal(true);
-                                            }}
-                                            className="text-red-600 hover:text-white py-2.5 px-3 bg-red-50 hover:bg-red-500 rounded-xl border-2 border-red-200 hover:border-red-500 transition-all">
-                                            <Trash2 size={16} />
-                                        </button>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedMenuId(menu.id);
+                                                    setShowDeleteModal(true);
+                                                }}
+                                                className="text-red-600 hover:text-white py-2.5 px-3 bg-red-50 hover:bg-red-500 rounded-xl border-2 border-red-200 hover:border-red-500 transition-all">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
                                     </div>
 
                                 </div>
