@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { X, ChefHat, ImagePlus } from "lucide-react";
+import { X, ChefHat, ImagePlus, Loader2 } from "lucide-react";
 
 export default function AddMenuModal({
     onClose,
@@ -19,6 +19,7 @@ export default function AddMenuModal({
     });
     const [foto, setFoto] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -26,15 +27,24 @@ export default function AddMenuModal({
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = () => {
-        const fd = new FormData();
-        fd.append("nama_menu", form.nama_menu);
-        fd.append("harga", form.harga);
-        fd.append("jenis", form.jenis);
-        fd.append("deskripsi", form.deskripsi);
-        if (foto) fd.append("foto", foto);
+    const handleSubmit = async () => {
+        if (isSubmitting) return; // Prevent multiple submissions
+        
+        setIsSubmitting(true);
+        
+        try {
+            const fd = new FormData();
+            fd.append("nama_menu", form.nama_menu);
+            fd.append("harga", form.harga);
+            fd.append("jenis", form.jenis);
+            fd.append("deskripsi", form.deskripsi);
+            if (foto) fd.append("foto", foto);
 
-        onSubmit(fd);
+            await onSubmit(fd);
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -52,7 +62,8 @@ export default function AddMenuModal({
                     </div>
                     <button 
                         onClick={onClose}
-                        className="p-2 hover:bg-black/20 rounded-xl transition-colors"
+                        disabled={isSubmitting}
+                        className="p-2 hover:bg-black/20 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <X className="text-white" size={24} />
                     </button>
@@ -66,7 +77,8 @@ export default function AddMenuModal({
                                 name="nama_menu"
                                 placeholder="Contoh: Nasi Goreng Spesial"
                                 onChange={handleChange}
-                                className="w-full p-3 rounded-xl bg-white/20 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 transition-all placeholder:text-white/50"
+                                disabled={isSubmitting}
+                                className="w-full p-3 rounded-xl bg-white/20 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 transition-all placeholder:text-white/50 disabled:opacity-50 disabled:cursor-not-allowed"
                             />
                         </div>
 
@@ -77,7 +89,8 @@ export default function AddMenuModal({
                                 type="number"
                                 placeholder="15000"
                                 onChange={handleChange}
-                                className="w-full p-3 rounded-xl bg-white/20 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 transition-all placeholder:text-white/50"
+                                disabled={isSubmitting}
+                                className="w-full p-3 rounded-xl bg-white/20 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 transition-all placeholder:text-white/50 disabled:opacity-50 disabled:cursor-not-allowed"
                             />
                         </div>
 
@@ -87,7 +100,8 @@ export default function AddMenuModal({
                                 <button
                                     type="button"
                                     onClick={() => setForm({ ...form, jenis: "makanan" })}
-                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 ${
+                                    disabled={isSubmitting}
+                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                                         form.jenis === "makanan"
                                             ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent shadow-lg"
                                             : "bg-white/15 text-white/90 border-white/15 hover:border-orange-300"
@@ -98,7 +112,8 @@ export default function AddMenuModal({
                                 <button
                                     type="button"
                                     onClick={() => setForm({ ...form, jenis: "minuman" })}
-                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 ${
+                                    disabled={isSubmitting}
+                                    className={`flex-1 p-3 rounded-xl font-bold transition-all border-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                                         form.jenis === "minuman"
                                             ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent shadow-lg"
                                             : "bg-white/15 text-white/90 border-white/15 hover:border-orange-300"
@@ -114,8 +129,9 @@ export default function AddMenuModal({
                                 name="deskripsi"
                                 placeholder="Deskripsi menu..."
                                 onChange={handleChange}
+                                disabled={isSubmitting}
                                 rows={3}
-                                className="w-full p-3 rounded-xl bg-white/15 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 transition-all resize-none placeholder:text-white/50"
+                                className="w-full p-3 rounded-xl bg-white/15 border-2 border-white/15 text-white font-medium outline-none focus:border-orange-400 transition-all resize-none placeholder:text-white/50 disabled:opacity-50 disabled:cursor-not-allowed"
                             />
                         </div>
                     </div>
@@ -137,12 +153,15 @@ export default function AddMenuModal({
                                         setPreviewUrl(null);
                                     }
                                 }} 
+                                disabled={isSubmitting}
                                 className="hidden"
                                 id="foto-upload"
                             />
                             <label
                                 htmlFor="foto-upload"
-                                className="flex items-center justify-center w-full h-full min-h-[320px] rounded-2xl border-2 border-dashed border-white/15 hover:border-orange-400 bg-white/15 hover:bg-orange-500/15 cursor-pointer transition-all group"
+                                className={`flex items-center justify-center w-full h-full min-h-[320px] rounded-2xl border-2 border-dashed border-white/15 hover:border-orange-400 bg-white/15 hover:bg-orange-500/15 cursor-pointer transition-all group ${
+                                    isSubmitting ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
+                                }`}
                             >
                                 {previewUrl ? (
                                     <div className="relative w-full h-full p-4">
@@ -173,9 +192,17 @@ export default function AddMenuModal({
 
                 <button
                     onClick={handleSubmit}
-                    className="w-full mt-6 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white py-3.5 rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
+                    disabled={isSubmitting}
+                    className="w-full mt-6 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white py-3.5 rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
                 >
-                    Simpan Menu
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            Menyimpan...
+                        </>
+                    ) : (
+                        "Simpan Menu"
+                    )}
                 </button>
             </div>
         </div>

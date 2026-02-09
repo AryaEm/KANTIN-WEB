@@ -1,14 +1,19 @@
 import { CartItem } from '@/app/types';
 import { Receipt, Wallet, ShoppingBag, ArrowRight } from 'lucide-react';
+import PaymentMethodSelector, { PaymentMethod } from './payment-method-selector';
 
 export default function CartSummary({
   cart,
   onCheckout,
   loading,
+  selectedPaymentMethod,
+  onPaymentMethodChange,
 }: {
   cart: CartItem[];
   onCheckout: () => void;
   loading: boolean;
+  selectedPaymentMethod: PaymentMethod;
+  onPaymentMethodChange: (method: PaymentMethod) => void;
 }) {
 
   const subtotal = cart.reduce(
@@ -89,6 +94,14 @@ export default function CartSummary({
           )}
 
         </div>
+
+        <div className="border-t-2 border-gray-200" />
+
+        {/* Payment Method Selector */}
+        <PaymentMethodSelector
+          selectedMethod={selectedPaymentMethod}
+          onMethodChange={onPaymentMethodChange}
+        />
 
         <div className="border-t-2 border-gray-200" />
 

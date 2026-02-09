@@ -150,7 +150,6 @@ export default function StanPage({
 
   const activeFiltersCount = [filterJenis, filterStatus, filterDiskon].filter(Boolean).length
 
-  // Helper function to get cart quantity for a menu
   const getCartQuantity = (menuId: number) => {
     const cartItem = cart.find(item => item.id_menu === menuId);
     return cartItem?.qty || 0;
@@ -160,7 +159,6 @@ export default function StanPage({
     <main className="Poppins">
       {!selectedStan ? (
         <>
-          {/* Stan List View */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -222,9 +220,7 @@ export default function StanPage({
         </>
       ) : (
         <>
-          {/* Menu Detail View */}
           <div className="space-y-6">
-            {/* Back Button */}
             <button
               onClick={() => {
                 setSelectedStan(null)
@@ -237,16 +233,13 @@ export default function StanPage({
               Kembali ke Daftar Stan
             </button>
 
-            {/* Stan Header */}
             <StanHeader
               name={selectedStan.name}
               owner={selectedStan.owner}
             />
 
-            {/* Search & Filters */}
             <div className="bg-white rounded-2xl border-2 border-gray-200 p-6 shadow-sm">
               <div className="flex flex-col lg:flex-row gap-4">
-                {/* Search */}
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
@@ -266,14 +259,12 @@ export default function StanPage({
                   )}
                 </div>
 
-                {/* Filter Toggle Button */}
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all border-2 ${
-                    showFilters || activeFiltersCount > 0
-                      ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent'
-                      : 'bg-white text-gray-700 border-gray-200 hover:border-orange-400'
-                  }`}
+                  className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all border-2 ${showFilters || activeFiltersCount > 0
+                    ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent'
+                    : 'bg-white text-gray-700 border-gray-200 hover:border-orange-400'
+                    }`}
                 >
                   <Filter className="w-5 h-5" />
                   Filter
@@ -285,7 +276,6 @@ export default function StanPage({
                 </button>
               </div>
 
-              {/* Filter Options */}
               {showFilters && (
                 <div className="mt-4 pt-4 border-t-2 border-gray-100">
                   <div className="flex flex-wrap gap-3 mb-3">
@@ -330,7 +320,6 @@ export default function StanPage({
               )}
             </div>
 
-            {/* Menu Grid */}
             {loading ? (
               <div className="text-center py-20">
                 <div className="inline-block w-12 h-12 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin mb-4"></div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import SiswaHeader from '@/components/dashboard/siswa/siswa-header';
 import SiswaTabs from '@/components/dashboard/siswa/siswa-tabs';
@@ -16,6 +16,8 @@ import { toast } from 'react-toastify';
 import CustomToast from '@/components/ui/CustomToast';
 import { CartItem, Menu } from '@/app/types';
 import { loadCart, saveCart, clearCart } from "@/lib/cart-cookie";
+import PaymentQRModal from '@/components/dashboard/siswa/payment-qr-modal';
+import { PaymentMethod } from '@/components/dashboard/siswa/payment-method-selector';
 
 export type SiswaTab =
   | 'stan'
@@ -27,14 +29,27 @@ type OrderResponse = {
   order_id: number;
 };
 
+interface OrderPayload {
+  items: {
+    id_menu: number;
+    qty: number;
+  }[];
+}
+
 export default function SiswaDashboardPage() {
   const [activeTab, setActiveTab] = useState<SiswaTab>('stan');
   const [cart, setCart] = useState<CartItem[]>(() => loadCart());
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>('qris');
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [currentOrderId, setCurrentOrderId] = useState<number | undefined>();
+  const [totalAmount, setTotalAmount] = useState(0);
+  
+  // Flag untuk mencegah toast duplikat
+  const toastShownRef = useRef(false);
 
   const addToCart = (menu: Menu) => {
     setCart(prev => {
-      // VALIDASI HARUS TETAP PURE
       if (prev.length > 0 && prev[0].stan_id !== menu.id_stan) {
         return prev
       }
@@ -90,13 +105,10 @@ export default function SiswaDashboardPage() {
     }, 0)
   }
 
-  // Handler untuk update quantity dari MenuCard
   const updateCartQuantity = (menuId: number, newQty: number) => {
     if (newQty === 0) {
-      // Hapus item dari cart
       setCart(prev => prev.filter(item => item.id_menu !== menuId));
     } else {
-      // Update quantity
       setCart(prev => 
         prev.map(item => 
           item.id_menu === menuId 
@@ -118,8 +130,18 @@ export default function SiswaDashboardPage() {
     if (!token) return;
 
     setIsCheckingOut(true);
+    // Reset flag saat mulai checkout baru
+    toastShownRef.current = false;
 
-    const payload = {
+    // Calculate total
+    const total = cart.reduce(
+      (sum, item) => sum + item.harga_setelah_diskon * item.qty,
+      0
+    );
+    setTotalAmount(total);
+
+    // Payload HANYA berisi items, TIDAK ADA payment_method
+    const payload: OrderPayload = {
       items: cart.map(item => ({
         id_menu: item.id_menu,
         qty: item.qty,
@@ -141,22 +163,18 @@ export default function SiswaDashboardPage() {
             icon: false,
           }
         );
+        setIsCheckingOut(false);
         return;
       }
 
+      // Set order ID and show QR modal
+      setCurrentOrderId(res.data?.order_id);
+      setShowQRModal(true);
+
+      // Clear cart
       setCart([]);
       clearCart();
-      setActiveTab('pesanan');
 
-      toast(
-        <CustomToast type="success" message="Transaksi berhasil" />,
-        {
-          containerId: "toastOrder",
-          className: "p-0 bg-transparent shadow-none",
-          icon: false,
-          autoClose: 1500,
-        }
-      );
     } catch (err: unknown) {
       let message = "Terjadi kesalahan server";
 
@@ -173,8 +191,28 @@ export default function SiswaDashboardPage() {
           icon: false,
         }
       );
-    } finally {
       setIsCheckingOut(false);
+    }
+  };
+
+  const handleCloseQRModal = () => {
+    setShowQRModal(false);
+    setIsCheckingOut(false);
+    setActiveTab('pesanan');
+    
+    // Cek flag sebelum show toast
+    if (!toastShownRef.current) {
+      toastShownRef.current = true; // Set flag
+      
+      toast(
+        <CustomToast type="success" message="Transaksi berhasil" />,
+        {
+          containerId: "toastOrder",
+          className: "p-0 bg-transparent shadow-none",
+          icon: false,
+          autoClose: 1500,
+        }
+      );
     }
   };
 
@@ -206,6 +244,8 @@ export default function SiswaDashboardPage() {
               setCart={setCart}
               onCheckout={handleCheckout}
               loading={isCheckingOut}
+              selectedPaymentMethod={selectedPaymentMethod}
+              onPaymentMethodChange={setSelectedPaymentMethod}
             />
           )}
 
@@ -214,6 +254,15 @@ export default function SiswaDashboardPage() {
           {activeTab === 'riwayat' && <HistoryView />}
         </div>
       </section>
+
+      {/* Payment QR Modal */}
+      <PaymentQRModal
+        isOpen={showQRModal}
+        onClose={handleCloseQRModal}
+        paymentMethod={selectedPaymentMethod}
+        totalAmount={totalAmount}
+        orderId={currentOrderId}
+      />
     </>
   );
 }

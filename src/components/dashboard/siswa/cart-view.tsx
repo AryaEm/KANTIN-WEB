@@ -6,17 +6,22 @@ import CartSummary from './cart-summary';
 import { ShoppingBag, Package } from 'lucide-react';
 
 import { CartItem as Item } from '@/app/types';
+import { PaymentMethod } from './payment-method-selector';
 
 export default function CartView({
   cart,
   setCart,
   onCheckout,
   loading,
+  selectedPaymentMethod,
+  onPaymentMethodChange,
 }: {
   cart: Item[];
   setCart: React.Dispatch<React.SetStateAction<Item[]>>;
   onCheckout: () => void;
   loading: boolean;
+  selectedPaymentMethod: PaymentMethod;
+  onPaymentMethodChange: (method: PaymentMethod) => void;
 }) {
 
   if (cart.length === 0) {
@@ -102,6 +107,8 @@ export default function CartView({
               cart={cart}
               onCheckout={onCheckout}
               loading={loading}
+              selectedPaymentMethod={selectedPaymentMethod}
+              onPaymentMethodChange={onPaymentMethodChange}
             />
           </div>
         </div>

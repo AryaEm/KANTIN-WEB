@@ -288,7 +288,7 @@ export default function MenuView() {
                                     <div className="absolute top-3 left-3">
                                         <span className="inline-block px-3 py-1 bg-white/90 backdrop-blur text-gray-700 text-xs font-bold rounded-full border-2 border-gray-200">
                                             {menu.jenis_menu}
-                                        </span>
+                                        </span> 
                                     </div>
                                 </div>
 
