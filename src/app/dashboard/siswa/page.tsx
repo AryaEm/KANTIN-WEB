@@ -200,9 +200,8 @@ export default function SiswaDashboardPage() {
     setIsCheckingOut(false);
     setActiveTab('pesanan');
     
-    // Cek flag sebelum show toast
     if (!toastShownRef.current) {
-      toastShownRef.current = true; // Set flag
+      toastShownRef.current = true; 
       
       toast(
         <CustomToast type="success" message="Transaksi berhasil" />,
@@ -255,7 +254,6 @@ export default function SiswaDashboardPage() {
         </div>
       </section>
 
-      {/* Payment QR Modal */}
       <PaymentQRModal
         isOpen={showQRModal}
         onClose={handleCloseQRModal}
